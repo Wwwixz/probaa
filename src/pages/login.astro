@@ -1,20 +1,12 @@
 ---
 import AppLayout from '../layouts/AppLayout.astro';
-import backgroundBlob from '../assets/images/background-blob.png';
+import { LoginForm } from '../features/auth/LoginForm';
 ---
 
 <AppLayout title="Вход — TUTU">
-	<main class="relative min-h-screen w-full overflow-hidden bg-black">
-		<img
-			src={backgroundBlob.src}
-			alt=""
-			aria-hidden="true"
-			class="absolute inset-0 h-full w-full object-cover"
-		/>
-
-		<!-- Форма входа будет добавлена следующим коммитом -->
-		<div class="relative z-10">
-			<!-- TODO: LoginForm island -->
+	<main class="login-page">
+		<div class="login-page__content">
+			<LoginForm client:load />
 		</div>
 	</main>
 </AppLayout>
