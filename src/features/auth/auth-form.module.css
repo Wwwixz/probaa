@@ -1,0 +1,146 @@
+.loginPage {
+  position: relative;
+  min-height: 100vh;
+  width: 100%;
+  overflow: hidden;
+  background-color: #000;
+  isolation: isolate;
+}
+
+.loginPage::before {
+  content: "";
+  position: absolute;
+  inset: -5%;
+  background-image: url("../../assets/images/background-blob.svg");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  filter: blur(12px) saturate(1.1);
+  transform: scale(1.08);
+  opacity: 0.9;
+  z-index: 0;
+}
+
+.loginPageContent {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  min-height: 100vh;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+}
+
+.loginForm {
+  width: 343px;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  border-radius: var(--radius-lg);
+  background: var(--color-surface-strong);
+  padding: 1.5rem;
+  box-shadow: var(--shadow-card);
+}
+
+.loginFormTitle {
+  font-size: 1.125rem;
+  font-weight: 700;
+  color: var(--color-ink);
+}
+
+/* Фиолетовый акцент — используется и для слова "TUTU" внутри
+   заголовка входа, и для всего заголовка "Забыли пароль?" */
+.loginFormAccent {
+  color: var(--color-brand-violet);
+}
+
+.loginFormLinks {
+  display: flex;
+  gap: 1rem;
+  font-size: 0.75rem;
+  color: var(--color-brand-violet);
+}
+
+.loginFormField {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  font-size: 0.875rem;
+  color: var(--color-ink);
+}
+
+.loginFormField label {
+  font-size: 0.75rem;
+  line-height: 1rem;
+  font-weight: 500;
+}
+
+.loginFormInput {
+  background: var(--color-ink);
+}
+
+.loginFormMeta {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 0.75rem;
+  color: var(--color-ink);
+}
+
+.loginFormRemember {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.loginFormCheckbox {
+  width: 1rem;
+  height: 1rem;
+  accent-color: var(--color-brand-lime);
+}
+
+.loginFormLink {
+  color: var(--color-ink);
+  text-decoration: none;
+}
+
+.loginFormDivider {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  font-size: 0.75rem;
+  color: var(--color-muted);
+}
+
+.loginFormDivider::before,
+.loginFormDivider::after {
+  content: "";
+  height: 1px;
+  flex: 1;
+  background: var(--color-ink);
+}
+
+.passwordToggle {
+  position: absolute;
+  right: 0.75rem;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 1.25rem;
+  height: 1.25rem;
+  border: 0;
+  background: transparent;
+  padding: 0;
+  cursor: pointer;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: contain;
+  filter: brightness(0) saturate(100%) invert(54%) sepia(33%) saturate(1022%) hue-rotate(217deg) brightness(100%) contrast(100%);
+}
+
+.passwordToggleHidden {
+  background-image: url("../../assets/images/eye-closed.svg");
+}
+
+.passwordToggleShown {
+  background-image: url("../../assets/images/eye-open.svg");
+}

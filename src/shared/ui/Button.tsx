@@ -1,4 +1,5 @@
 import type { ButtonHTMLAttributes, ReactNode } from 'react';
+import styles from './Button.module.css';
 
 type Variant = 'primary' | 'social';
 
@@ -14,11 +15,10 @@ export function Button({
 	className = '',
 	...rest
 }: ButtonProps) {
-	const base = 'btn-base';
-	const variantClass = variant === 'primary' ? 'btn-primary' : 'btn-social';
+	const variantClass = variant === 'primary' ? styles.btnPrimary : styles.btnSocial;
 
 	return (
-		<button className={`${base} ${variantClass} ${className}`} {...rest}>
+		<button className={`${styles.btnBase} ${variantClass} ${className}`} {...rest}>
 			{icon}
 			{children}
 		</button>
