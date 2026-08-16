@@ -1,0 +1,13 @@
+---
+import AppLayout from '../layouts/AppLayout.astro';
+import { OtpCodeForm } from '../features/auth/OtpCodeForm';
+import styles from '../features/auth/auth-form.module.css';
+---
+
+<AppLayout title="Код подтверждения — TUTU">
+	<main class={styles.loginPage}>
+		<div class={styles.loginPageContent}>
+			<OtpCodeForm client:load />
+		</div>
+	</main>
+</AppLayout>

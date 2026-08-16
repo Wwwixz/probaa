@@ -1,0 +1,13 @@
+---
+import AppLayout from '../layouts/AppLayout.astro';
+import { RegisterForm } from '../features/auth/RegisterForm';
+import styles from '../features/auth/auth-form.module.css';
+---
+
+<AppLayout title="Регистрация — TUTU">
+	<main class={styles.loginPage}>
+		<div class={styles.loginPageContent}>
+			<RegisterForm client:load />
+		</div>
+	</main>
+</AppLayout>

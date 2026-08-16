@@ -14,8 +14,9 @@ export function ForgotPasswordForm() {
 
 	function handleSubmit(event: FormEvent<HTMLFormElement>) {
 		event.preventDefault();
-		// TODO: подключить реальный запрос, когда будет бэкенд/MSW-мок
+		// TODO: подключить реальную отправку кода, когда будет бэкенд/MSW-мок
 		console.log({ email });
+		window.location.href = '/verifyCode';
 	}
 
 	return (

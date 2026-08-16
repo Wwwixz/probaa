@@ -7,37 +7,47 @@ import { Input } from '../../shared/ui/Input';
 import styles from './auth-form.module.css';
 
 /**
- * Форма "Войти через TUTU" — верстка по макету, пока без реальной
- * отправки на бэкенд (заглушка onSubmit).
+ * Форма регистрации — отдельного макета не было, собрана по аналогии
+ * с LoginForm (та же карточка, поля, кнопка), чтобы визуально не
+ * выбивалась из остальных экранов авторизации.
  */
-export function LoginForm() {
+export function RegisterForm() {
 	const [email, setEmail] = useState('');
 	const [password, setPassword] = useState('');
-	const [rememberMe, setRememberMe] = useState(false);
+	const [confirmPassword, setConfirmPassword] = useState('');
 	const [showPassword, setShowPassword] = useState(false);
+	const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+	const [error, setError] = useState<string | null>(null);
 
 	function handleSubmit(event: FormEvent<HTMLFormElement>) {
 		event.preventDefault();
-		// TODO: подключить реальный запрос, когда будет бэкенд/MSW-мок
-		console.log({ email, password, rememberMe });
+
+		if (password !== confirmPassword) {
+			setError('Пароли не совпадают');
+			return;
+		}
+
+		setError(null);
+		// TODO: подключить реальную регистрацию, когда будет бэкенд/MSW-мок
+		console.log({ email, password });
 	}
 
 	return (
 		<form onSubmit={handleSubmit} className={styles.loginForm}>
 			<div className="flex flex-col items-center gap-1">
 				<h1 className={styles.loginFormTitle}>
-					Войти через <span className={styles.loginFormAccent}>TUTU</span>
+					Регистрация в <span className={styles.loginFormAccent}>TUTU</span>
 				</h1>
 				<div className={styles.loginFormLinks}>
-					<a href="/register">Нет аккаунта?</a>
-					<a href="/register">Зарегистрироваться</a>
+					<span>Уже есть аккаунт?</span>
+					<a href="/login">Войти</a>
 				</div>
 			</div>
 
 			<div className={styles.loginFormField}>
-				<label htmlFor="email">Почта</label>
+				<label htmlFor="reg-email">Почта</label>
 				<Input
-					id="email"
+					id="reg-email"
 					type="email"
 					placeholder="Loisbecket@gmail.com"
 					value={email}
@@ -47,10 +57,10 @@ export function LoginForm() {
 			</div>
 
 			<div className={styles.loginFormField}>
-				<label htmlFor="password">Пароль</label>
+				<label htmlFor="reg-password">Пароль</label>
 				<div className="relative">
 					<Input
-						id="password"
+						id="reg-password"
 						type={showPassword ? 'text' : 'password'}
 						placeholder="********"
 						value={password}
@@ -66,23 +76,30 @@ export function LoginForm() {
 				</div>
 			</div>
 
-			<div className={styles.loginFormMeta}>
-				<label className={styles.loginFormRemember}>
-					<input
-						type="checkbox"
-						checked={rememberMe}
-						onChange={(e) => setRememberMe(e.target.checked)}
-						className={styles.loginFormCheckbox}
+			<div className={styles.loginFormField}>
+				<label htmlFor="reg-confirm-password">Повторите пароль</label>
+				<div className="relative">
+					<Input
+						id="reg-confirm-password"
+						type={showConfirmPassword ? 'text' : 'password'}
+						placeholder="********"
+						value={confirmPassword}
+						onChange={(e) => setConfirmPassword(e.target.value)}
+						className={`${styles.loginFormInput} pr-10`}
 					/>
-					Запомнить меня
-				</label>
-				<a href="/forgotPassword" className={styles.loginFormLink}>
-					Забыли пароль ?
-				</a>
+					<button
+						type="button"
+						onClick={() => setShowConfirmPassword((prev) => !prev)}
+						className={`${styles.passwordToggle} ${showConfirmPassword ? styles.passwordToggleShown : styles.passwordToggleHidden}`}
+						aria-label={showConfirmPassword ? 'Скрыть пароль' : 'Показать пароль'}
+					/>
+				</div>
 			</div>
 
+			{error && <p className={styles.formError}>{error}</p>}
+
 			<Button type="submit" variant="primary">
-				Войти
+				Зарегистрироваться
 			</Button>
 
 			<div className={styles.loginFormDivider}>Или</div>

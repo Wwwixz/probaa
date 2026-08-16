@@ -1,6 +1,6 @@
 import { useRef } from 'react';
 import type { ChangeEvent, KeyboardEvent } from 'react';
-import inputStyles from '../../shared/ui/Input.module.css';
+import styles from './auth-form.module.css';
 
 const CODE_LENGTH = 4;
 
@@ -35,7 +35,7 @@ export function OtpCodeInput({ value, onChange }: OtpCodeInputProps) {
 	}
 
 	return (
-		<div className="flex gap-3">
+		<div className={styles.otpRow}>
 			{Array.from({ length: CODE_LENGTH }).map((_, index) => (
 				<input
 					key={index}
@@ -46,7 +46,7 @@ export function OtpCodeInput({ value, onChange }: OtpCodeInputProps) {
 					value={value[index] ?? ''}
 					onChange={(e) => handleChange(index, e)}
 					onKeyDown={(e) => handleKeyDown(index, e)}
-					className={`${inputStyles.inputBase} h-14 w-14 text-center text-lg`}
+					className={styles.otpCell}
 				/>
 			))}
 		</div>
