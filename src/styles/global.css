@@ -25,7 +25,8 @@
 
 html {
   font-family: "Segoe UI", sans-serif;
-  background: #000;
+  background: var(--color-surface);
+  color: var(--color-ink);
 }
 
 body {

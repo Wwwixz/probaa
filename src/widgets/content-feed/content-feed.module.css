@@ -1,0 +1,184 @@
+.categoryCard {
+  position: relative;
+  display: block;
+  width: 168.5px;
+  height: 100px;
+  border-radius: 24px;
+  overflow: hidden;
+  text-decoration: none;
+}
+
+.categoryCardImage {
+  position: absolute;
+  inset: 0;
+  height: 100%;
+  width: 100%;
+  object-fit: cover;
+}
+
+.categoryCardOverlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, var(--color-brand-lime) 0%, var(--color-brand-violet) 100%);
+  opacity: 0.55;
+  mix-blend-mode: hard-light;
+}
+
+.categoryCardTitle {
+  position: relative;
+  z-index: 1;
+  display: block;
+  padding: 12px;
+  font-size: 1rem;
+  font-weight: 700;
+  line-height: 1.2;
+  color: #ffffff;
+}
+
+/* Карточка ленты ("Ghazala beach" и подобные) */
+
+.feedCard {
+  display: block;
+  width: 138px;
+  height: 130px;
+  border-radius: 12px;
+  overflow: hidden;
+  background: var(--color-surface-strong);
+  text-decoration: none;
+  color: inherit;
+}
+
+.feedCardImageWrap {
+  position: relative;
+  height: 78px;
+  width: 100%;
+  background: var(--color-surface);
+}
+
+.feedCardImage {
+  height: 100%;
+  width: 100%;
+  object-fit: cover;
+}
+
+.feedCardRating {
+  position: absolute;
+  top: 6px;
+  right: 6px;
+  border-radius: 999px;
+  background: var(--color-brand-lime);
+  color: #000000;
+  font-size: 10px;
+  font-weight: 600;
+  padding: 2px 6px;
+}
+
+.feedCardBody {
+  padding: 6px 8px;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.feedCardTitle {
+  font-family: "Inter", sans-serif;
+  font-weight: 500;
+  font-size: 12px;
+  line-height: 1;
+  letter-spacing: 0;
+  color: #000000;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.feedCardSubtitle {
+  font-size: 8px;
+  line-height: 1.2;
+  color: #000000;
+}
+
+.feedCardDiscussions {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  margin-top: 2px;
+  font-size: 8px;
+  color: var(--color-brand-violet);
+}
+
+.feedCardAvatars {
+  display: flex;
+}
+
+.feedCardAvatar {
+  width: 12px;
+  height: 12px;
+  border-radius: 999px;
+  background: var(--color-ink-soft);
+  border: 1px solid var(--color-surface-strong);
+  margin-left: -4px;
+}
+
+.feedCardAvatar:first-child {
+  margin-left: 0;
+}
+
+.feedCardMoreCount {
+  font-family: "Inter", sans-serif;
+  font-weight: 400;
+  font-size: 8px;
+  color: var(--color-ink);
+}
+
+/* Заголовок секции ("Самые обсуждаемые темы →") */
+
+.sectionHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  padding: 8px 24px;
+}
+
+.sectionHeaderTitle {
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--color-ink);
+}
+
+.sectionHeaderArrow {
+  color: var(--color-ink);
+  flex-shrink: 0;
+}
+
+/* Обёртки главной страницы */
+
+.homeMain {
+  padding: 0 24px 120px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.homeTitle {
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--color-ink);
+}
+
+.categoryGrid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px;
+}
+
+.feedRow {
+  display: flex;
+  gap: 12px;
+  overflow-x: auto;
+  padding-bottom: 4px;
+  margin: 0 -24px;
+  padding-left: 24px;
+  padding-right: 24px;
+}
