@@ -1,10 +1,5 @@
 @import "tailwindcss";
 
-/*
- * Глобальные CSS-переменные (дизайн-токены) и базовый сброс.
- * Стили конкретных компонентов живут рядом с ними в файлах вида
- * ComponentName.module.css — см. src/shared/ui и src/features.
- */
 
 :root {
   --color-brand-lime: #d0ff1a;

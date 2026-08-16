@@ -48,8 +48,7 @@
   color: var(--color-ink);
 }
 
-/* Фиолетовый акцент — используется и для слова "TUTU" внутри
-   заголовка входа, и для всего заголовка "Забыли пароль?" */
+
 .loginFormAccent {
   color: var(--color-brand-violet);
 }
@@ -149,7 +148,7 @@
 
 .otpSubtitle {
   font-size: 0.8125rem;
-  color: var(--color-muted);
+  color: var(--color-brand-violet);
   text-align: center;
 }
 
