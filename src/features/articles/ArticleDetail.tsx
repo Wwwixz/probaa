@@ -31,7 +31,7 @@ export function ArticleDetail({ article }: ArticleDetailProps) {
 			<div className={styles.darkSection}>
 				<div className={styles.heroWrap}>
 					<img src={heroPlaceholder.src} alt="" className={styles.heroImage} />
-					{article.rating !== undefined && (
+					{article.type === 'hotel' && article.rating !== undefined && (
 						<span className={styles.ratingBadge}>{article.rating.toFixed(1).replace('.', ',')}</span>
 					)}
 				</div>
@@ -40,7 +40,9 @@ export function ArticleDetail({ article }: ArticleDetailProps) {
 					<h1 className={styles.title}>{article.title}</h1>
 					<p className={styles.subtitle}>{article.subtitle}</p>
 
-					<h2 className={styles.sectionLabel}>Описание темы</h2>
+					<h2 className={styles.sectionLabel}>
+						{article.type === 'hotel' ? 'Описание темы' : 'Описание статьи'}
+					</h2>
 					<p className={styles.descriptionBox}>{article.description}</p>
 
 					<h2 className={styles.sectionLabel}>Местоположение на карте</h2>

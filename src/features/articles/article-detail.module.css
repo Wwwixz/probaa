@@ -75,6 +75,9 @@
   font-size: 13px;
   line-height: 1.4;
   margin-bottom: 16px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .mapImage {
