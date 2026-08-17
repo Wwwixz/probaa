@@ -57,7 +57,7 @@ export function HomeFeed() {
 					{DISCUSSED_TOPICS.map((topic) => (
 						<FeedCard
 							key={topic.id}
-							href={`/topics/discussed/${topic.id}`}
+							href="/topics/ghazala-beach"
 							title={topic.title}
 							subtitle={topic.subtitle}
 							rating={topic.rating}
@@ -71,7 +71,7 @@ export function HomeFeed() {
 					{HELPFUL_ARTICLES.map((article) => (
 						<FeedCard
 							key={article.id}
-							href={`/topics/helpful/${article.id}`}
+							href="/topics/ghazala-beach"
 							title={article.title}
 							subtitle={article.subtitle}
 							discussionsCount={article.discussionsCount}

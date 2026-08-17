@@ -1,0 +1,22 @@
+---
+import AppLayout from '../../layouts/AppLayout.astro';
+import { Header } from '../../widgets/header/Header';
+import { BottomNav } from '../../widgets/bottom-nav/BottomNav';
+import { ArticleDetail } from '../../features/articles/ArticleDetail';
+import { MOCK_ARTICLES } from '../../entities/article/mockArticles';
+
+export function getStaticPaths() {
+	return MOCK_ARTICLES.map((article) => ({
+		params: { id: article.id },
+		props: { article },
+	}));
+}
+
+const { article } = Astro.props;
+---
+
+<AppLayout title={`${article.title} — TUTU`}>
+	<Header client:load />
+	<ArticleDetail article={article} client:load />
+	<BottomNav activePath="/" client:load />
+</AppLayout>
