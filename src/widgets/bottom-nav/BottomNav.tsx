@@ -6,11 +6,11 @@ import statsIcon from '../../assets/icons/nav/nav-stats.svg';
 import styles from './BottomNav.module.css';
 
 const NAV_ITEMS = [
-	{ href: '/', icon: homeIcon, label: 'Главная' },
-	{ href: '/profile', icon: profileIcon, label: 'Профиль' },
-	{ href: '/map', icon: mapsIcon, label: 'Карты' },
-	{ href: '/chats', icon: chatsIcon, label: 'Чаты' },
-	{ href: '/stats', icon: statsIcon, label: 'Статистика' },
+	{ href: '/', icon: homeIcon, label: 'Главная', isHome: true },
+	{ href: '/profile', icon: profileIcon, label: 'Профиль', isHome: false },
+	{ href: '/map', icon: mapsIcon, label: 'Карты', isHome: false },
+	{ href: '/chats', icon: chatsIcon, label: 'Чаты', isHome: false },
+	{ href: '/stats', icon: statsIcon, label: 'Статистика', isHome: false },
 ];
 
 interface BottomNavProps {
@@ -35,11 +35,11 @@ export function BottomNav({ activePath }: BottomNavProps) {
 					<a
 						key={item.href}
 						href={item.href}
-						className={`${styles.navItem} ${isActive ? styles.navItemActive : ''}`}
+						className={`${styles.navItem} ${item.isHome ? styles.navItemHome : ''} ${isActive ? styles.navItemActive : ''}`}
 						aria-label={item.label}
 						aria-current={isActive ? 'page' : undefined}
 					>
-						<img src={item.icon.src} alt="" width={44} height={44} />
+						<img src={item.icon.src} alt="" width={item.isHome ? 56 : 44} height={item.isHome ? 56 : 44} />
 						{isActive && <span className={styles.navDot} aria-hidden="true" />}
 					</a>
 				);
