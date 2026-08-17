@@ -1,7 +1,7 @@
-import touristicLaws from '../../assets/images/categories/touristic-laws.jpg';
-import onlineReviews from '../../assets/images/categories/online-reviews.jpg';
-import emergencies from '../../assets/images/categories/emergencies.jpg';
-import ownPath from '../../assets/images/categories/own-path.jpg';
+import touristicLaws from '../../assets/images/categories/touristic-laws.svg';
+import onlineReviews from '../../assets/images/categories/online-reviews.svg';
+import emergencies from '../../assets/images/categories/emergencies.svg';
+import ownPath from '../../assets/images/categories/own-path.svg';
 import { Header } from '../header/Header';
 import { BottomNav } from '../bottom-nav/BottomNav';
 import { CategoryCard } from './CategoryCard';

@@ -9,30 +9,9 @@
 }
 
 .categoryCardImage {
-  position: absolute;
-  inset: 0;
   height: 100%;
   width: 100%;
   object-fit: cover;
-}
-
-.categoryCardOverlay {
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(135deg, var(--color-brand-lime) 0%, var(--color-brand-violet) 100%);
-  opacity: 0.55;
-  mix-blend-mode: hard-light;
-}
-
-.categoryCardTitle {
-  position: relative;
-  z-index: 1;
-  display: block;
-  padding: 12px;
-  font-size: 1rem;
-  font-weight: 700;
-  line-height: 1.2;
-  color: #ffffff;
 }
 
 /* Карточка ленты ("Ghazala beach" и подобные) */
