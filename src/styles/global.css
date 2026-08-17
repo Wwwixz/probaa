@@ -21,10 +21,33 @@
 
 html {
   font-family: "Segoe UI", sans-serif;
-  background: var(--color-surface);
+  background: #d9d9d9;
   color: var(--color-ink);
 }
 
 body {
   margin: 0;
+}
+
+/*
+ * Единая "мобильная колонка" для всего приложения. На широких экранах
+ * (десктоп) контент не растягивается на всю ширину — вместо этого
+ * центрируется в колонке шириной с мобильный экран, а по бокам виден
+ * нейтральный серый фон (html { background }). Экраны авторизации
+ * рисуют свой полноэкранный тёмный фон уже ВНУТРИ этой колонки
+ * (.loginPage), поэтому тоже не растягиваются на весь браузер.
+ */
+.app-shell {
+  position: relative;
+  min-height: 100vh;
+  width: 100%;
+  max-width: 430px;
+  margin: 0 auto;
+  background: var(--color-surface);
+  overflow-x: hidden;
+  /* transform создаёт "containing block" для потомков с
+     position: fixed (например, BottomNav) — без этого fixed-элементы
+     позиционировались бы относительно всего окна браузера, а не
+     этой колонки, и на десктопе навигация уезжала бы в центр экрана. */
+  transform: translateZ(0);
 }

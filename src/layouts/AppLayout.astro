@@ -18,6 +18,8 @@ const { title } = Astro.props;
 		<ClientRouter />
 	</head>
 	<body class="antialiased">
-		<slot />
+		<div class="app-shell">
+			<slot />
+		</div>
 	</body>
 </html>
