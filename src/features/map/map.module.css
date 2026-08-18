@@ -1,0 +1,117 @@
+.mapWrap {
+  position: relative;
+  width: 100%;
+  height: calc(100vh - 76px);
+  overflow: hidden;
+}
+
+.mapImage {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.locationPill {
+  position: absolute;
+  top: 16px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background: rgba(38, 33, 34, 0.85);
+  color: var(--color-brand-orange);
+  font-size: 13px;
+  font-weight: 600;
+  padding: 6px 14px;
+  border-radius: 999px;
+}
+
+.zoomControls {
+  position: absolute;
+  left: 16px;
+  bottom: 140px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.mapControlButton {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border-radius: 999px;
+  border: 0;
+  background: rgba(255, 255, 255, 0.9);
+  color: var(--color-ink);
+  cursor: pointer;
+}
+
+.viewModeSwitcher {
+  position: absolute;
+  right: 16px;
+  top: 50%;
+  transform: translateY(-50%);
+  display: flex;
+  flex-direction: column;
+  background: rgba(38, 33, 34, 0.85);
+  border-radius: 999px;
+  overflow: hidden;
+}
+
+.viewModeButton {
+  border: 0;
+  background: transparent;
+  color: rgba(255, 255, 255, 0.6);
+  font-size: 11px;
+  font-weight: 600;
+  padding: 10px 12px;
+  cursor: pointer;
+}
+
+.viewModeButtonActive {
+  color: #ffffff;
+  background: rgba(255, 255, 255, 0.15);
+}
+
+.locationMarker {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.locationMarkerDot {
+  width: 20px;
+  height: 20px;
+  border-radius: 999px;
+  background: var(--color-brand-lime);
+  border: 3px solid var(--color-ink);
+}
+
+.locationMarkerPulse {
+  position: absolute;
+  width: 20px;
+  height: 20px;
+  border-radius: 999px;
+  background: var(--color-brand-lime);
+  opacity: 0.4;
+  animation: locationPulse 2s ease-out infinite;
+}
+
+@keyframes locationPulse {
+  0% {
+    transform: scale(1);
+    opacity: 0.4;
+  }
+  100% {
+    transform: scale(2.5);
+    opacity: 0;
+  }
+}
