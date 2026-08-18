@@ -1,14 +1,9 @@
-import { Search } from 'lucide-react';
-import avatar1 from '../../assets/images/avatars/avatar-1.jpg';
-import avatar2 from '../../assets/images/avatars/avatar-2.jpg';
-import avatar3 from '../../assets/images/avatars/avatar-3.jpg';
-import avatar4 from '../../assets/images/avatars/avatar-4.jpg';
+import { Search, Volume2 } from 'lucide-react';
+import figmaAvatar from '../../assets/images/avatars/figma-avatar.png';
 import { Header } from '../../widgets/header/Header';
 import { BottomNav } from '../../widgets/bottom-nav/BottomNav';
 import { MOCK_CHATS } from '../../entities/chat/mockChats';
 import styles from './chat.module.css';
-
-const AVATARS = [avatar1, avatar2, avatar3, avatar4];
 
 /**
  * Список чатов. Аватарки — плейсхолдеры (по кругу переиспользуются 4
@@ -24,15 +19,16 @@ export function ChatsListScreen() {
 				<h1 className={styles.listTitle}>Чаты</h1>
 
 				<div className={styles.searchBar}>
-					<input type="text" placeholder="поиск" className={styles.searchInput} />
 					<Search size={16} className={styles.searchIcon} />
+					<input type="text" placeholder="поиск" className={styles.searchInput} />
+					<Volume2 size={16} className={styles.voiceIcon} />
 				</div>
 
 				<div className={styles.chatList}>
-					{MOCK_CHATS.map((chat, index) => (
+					{MOCK_CHATS.map((chat) => (
 						<a key={chat.id} href={`/chats/${chat.id}`} className={styles.chatRow}>
 							<span className={styles.chatAvatarWrap}>
-								<img src={AVATARS[index % AVATARS.length].src} alt="" className={styles.chatAvatar} />
+								<img src={figmaAvatar.src} alt="" className={styles.chatAvatar} />
 								{chat.online && <span className={styles.onlineDot} aria-hidden="true" />}
 							</span>
 							<span className={styles.chatInfo}>

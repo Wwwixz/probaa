@@ -41,7 +41,7 @@ export function BottomNav({ activePath }: BottomNavProps) {
 						aria-label={item.label}
 						aria-current={isActive ? 'page' : undefined}
 					>
-						<img src={item.icon.src} alt="" width={isActive ? 56 : 44} height={isActive ? 56 : 44} />
+						<img src={item.icon.src} alt="" width={44} height={44} />
 						{isActive && <span className={styles.navDot} aria-hidden="true" />}
 					</a>
 				);
