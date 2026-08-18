@@ -6,14 +6,11 @@
   border-radius: 24px;
   overflow: hidden;
   text-decoration: none;
-  transition: transform 0.15s ease;
-}
-
-.categoryCardImage {
-  height: 100%;
-  width: 100%;
-  object-fit: cover;
-  transition: filter 0.2s ease;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  cursor: pointer;
+  transition: transform 0.15s ease, filter 0.2s ease;
 }
 
 /* Блик по диагонали, "спрятанный" за левым верхним углом — выезжает
@@ -43,9 +40,6 @@
 
 .categoryCard:active {
   transform: scale(0.97);
-}
-
-.categoryCard:active .categoryCardImage {
   filter: brightness(1.08);
 }
 

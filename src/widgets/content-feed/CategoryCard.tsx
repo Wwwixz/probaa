@@ -10,14 +10,22 @@ interface CategoryCardProps {
 }
 
 /**
- * Карточка категории на главной. Картинка приходит уже полностью
- * готовой из Figma (фото + градиент + подпись внутри самого SVG) —
- * компонент просто выводит её, ничего сверху не рисует.
+ * Карточка категории на главной — ведёт на другую страницу, поэтому
+ * технически это ссылка (<a>), а не <button>: браузер сам даёт ей
+ * открытие в новой вкладке, показ адреса при наведении и т.п. Внешне
+ * выглядит и ведёт себя как кнопка — просто с правильной семантикой.
+ *
+ * Картинка подключена как CSS background-image (а не <img>), чтобы
+ * было удобно управлять эффектами (блик при наведении и т.д.) без
+ * лишнего слоя разметки.
  */
 export function CategoryCard({ title, image, href }: CategoryCardProps) {
 	return (
-		<a href={href} className={styles.categoryCard} aria-label={title}>
-			<img src={image.src} alt="" aria-hidden="true" className={styles.categoryCardImage} />
-		</a>
+		<a
+			href={href}
+			className={styles.categoryCard}
+			aria-label={title}
+			style={{ backgroundImage: `url(${image.src})` }}
+		/>
 	);
 }
