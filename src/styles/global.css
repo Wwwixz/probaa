@@ -23,10 +23,12 @@ html {
   font-family: "Segoe UI", sans-serif;
   background: #d9d9d9;
   color: var(--color-ink);
+  overscroll-behavior-y: none;
 }
 
 body {
   margin: 0;
+  overscroll-behavior-y: none;
 }
 
 /*
@@ -45,6 +47,7 @@ body {
   margin: 0 auto;
   background: var(--color-surface);
   overflow-x: hidden;
+  overscroll-behavior-y: none;
   /* transform создаёт "containing block" для потомков с
      position: fixed (например, BottomNav) — без этого fixed-элементы
      позиционировались бы относительно всего окна браузера, а не
