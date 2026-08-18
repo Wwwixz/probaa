@@ -1,0 +1,357 @@
+/* Список чатов */
+
+.listPage {
+  padding: 0 20px 120px;
+}
+
+.listTitle {
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--color-ink);
+  margin-bottom: 16px;
+}
+
+.searchBar {
+  position: relative;
+  margin-bottom: 20px;
+}
+
+.searchInput {
+  width: 100%;
+  height: 40px;
+  border-radius: 999px;
+  border: none;
+  background: var(--color-ink);
+  color: #ffffff;
+  padding: 0 40px 0 16px;
+  font-size: 13px;
+}
+
+.searchInput::placeholder {
+  color: rgba(255, 255, 255, 0.5);
+}
+
+.searchIcon {
+  position: absolute;
+  right: 14px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: rgba(255, 255, 255, 0.6);
+  pointer-events: none;
+}
+
+.chatList {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.chatRow {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  text-decoration: none;
+  color: inherit;
+}
+
+.chatAvatarWrap {
+  position: relative;
+  flex-shrink: 0;
+}
+
+.chatAvatar {
+  width: 44px;
+  height: 44px;
+  border-radius: 999px;
+  object-fit: cover;
+}
+
+.onlineDot {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  width: 10px;
+  height: 10px;
+  border-radius: 999px;
+  background: var(--color-brand-lime);
+  border: 2px solid var(--color-surface-strong);
+}
+
+.chatInfo {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+
+.chatName {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--color-ink);
+}
+
+.chatPreview {
+  font-size: 12px;
+  color: var(--color-muted);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Экран диалога */
+
+.detailDarkSection {
+  background: #000000;
+  min-height: 100vh;
+  padding: 8px 20px 140px;
+}
+
+.chatHeaderBar {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background: var(--color-ink);
+  border-radius: 999px;
+  padding: 8px 12px;
+  margin-bottom: 24px;
+}
+
+.chatBackButton {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  border-radius: 999px;
+  border: 0;
+  background: rgba(255, 255, 255, 0.1);
+  color: #ffffff;
+  cursor: pointer;
+  flex-shrink: 0;
+}
+
+.chatHeaderName {
+  flex: 1;
+  text-align: center;
+  font-size: 14px;
+  font-weight: 600;
+  color: #ffffff;
+}
+
+.chatCallButton {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  border-radius: 999px;
+  color: var(--color-brand-violet);
+  flex-shrink: 0;
+}
+
+.chatIntro {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 4px;
+  margin-bottom: 24px;
+}
+
+.chatIntroAvatar {
+  width: 72px;
+  height: 72px;
+  border-radius: 999px;
+  object-fit: cover;
+  margin-bottom: 8px;
+}
+
+.chatIntroName {
+  font-size: 16px;
+  font-weight: 700;
+  color: #ffffff;
+}
+
+.chatIntroRole {
+  font-size: 12px;
+  color: rgba(255, 255, 255, 0.6);
+  margin-bottom: 8px;
+}
+
+.chatIntroHint {
+  font-size: 13px;
+  color: var(--color-brand-violet);
+  max-width: 220px;
+}
+
+.messagesList {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.messageRow {
+  display: flex;
+  align-items: flex-end;
+  justify-content: flex-end;
+  gap: 8px;
+}
+
+.messageBubble {
+  max-width: 70%;
+  background: var(--color-surface-strong);
+  border-radius: var(--radius-md);
+  padding: 10px 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.messageText {
+  font-size: 13px;
+  color: var(--color-ink);
+}
+
+.messageTime {
+  font-size: 10px;
+  color: var(--color-muted);
+  align-self: flex-end;
+}
+
+.messageAvatar {
+  width: 24px;
+  height: 24px;
+  border-radius: 999px;
+  object-fit: cover;
+  flex-shrink: 0;
+}
+
+.chatInputBar {
+  position: fixed;
+  bottom: 16px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 50;
+  width: calc(100% - 32px);
+  max-width: 398px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background: var(--color-ink);
+  border-radius: 999px;
+  padding: 6px 6px 6px 16px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
+}
+
+.chatInput {
+  flex: 1;
+  min-width: 0;
+  background: transparent;
+  border: none;
+  color: #ffffff;
+  font-size: 13px;
+}
+
+.chatInput::placeholder {
+  color: rgba(255, 255, 255, 0.5);
+}
+
+.chatIconButton {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border-radius: 999px;
+  border: 0;
+  background: rgba(255, 255, 255, 0.1);
+  color: #ffffff;
+  flex-shrink: 0;
+  cursor: pointer;
+}
+
+.chatSendButton {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border-radius: 999px;
+  border: 0;
+  background: var(--color-brand-lime);
+  color: #000000;
+  flex-shrink: 0;
+  cursor: pointer;
+}
+
+/* Экран ИИ-агента — цветной блюр-фон вместо чёрного, как на экранах
+   авторизации */
+
+.aiAgentPage {
+  position: relative;
+  min-height: 100vh;
+  overflow: hidden;
+  background-color: #000;
+}
+
+.aiAgentPage::before {
+  content: "";
+  position: absolute;
+  inset: -5%;
+  background-image: url("../../assets/images/background-blob.svg");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  filter: blur(12px) saturate(1.1);
+  transform: scale(1.08);
+  opacity: 0.9;
+  z-index: 0;
+}
+
+.aiAgentContent {
+  position: relative;
+  z-index: 1;
+  padding: 8px 20px 160px;
+}
+
+.aiHeaderBar {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: rgba(0, 0, 0, 0.6);
+  border-radius: 999px;
+  padding: 8px 14px;
+  margin-bottom: 24px;
+}
+
+.aiHeaderIcon {
+  color: #ffffff;
+  flex-shrink: 0;
+}
+
+.quickActionsRow {
+  position: fixed;
+  bottom: 74px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 49;
+  width: calc(100% - 32px);
+  max-width: 398px;
+  display: flex;
+  gap: 8px;
+  overflow-x: auto;
+  padding-bottom: 4px;
+}
+
+.quickActionChip {
+  flex-shrink: 0;
+  white-space: nowrap;
+  border: 0;
+  border-radius: 999px;
+  background: var(--color-brand-orange);
+  color: #ffffff;
+  font-size: 12px;
+  font-weight: 600;
+  padding: 8px 14px;
+  cursor: pointer;
+}

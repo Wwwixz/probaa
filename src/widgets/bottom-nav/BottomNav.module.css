@@ -26,22 +26,18 @@
   line-height: 0;
 }
 
-/* Домик приподнят над панелью отдельным кружком побольше — а не
-   сидит вровень с остальными вкладками. */
-.navItemHome {
+/* Активная вкладка приподнята над панелью отдельным кружком побольше
+   и с зелёной обводкой — какая бы вкладка ни была активна. */
+.navItemElevated {
   margin-top: -26px;
 }
 
-.navItemHome img {
+.navItemElevated img {
   border-radius: 999px;
   background: rgba(38, 33, 34, 0.9);
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.25);
-}
-
-.navItemActive img {
   outline: 2px solid var(--color-brand-lime);
   outline-offset: -2px;
-  border-radius: 999px;
 }
 
 .navDot {

@@ -1,0 +1,18 @@
+---
+import AppLayout from '../../layouts/AppLayout.astro';
+import { ChatDetailScreen } from '../../features/chat/ChatDetailScreen';
+import { MOCK_CHATS } from '../../entities/chat/mockChats';
+
+export function getStaticPaths() {
+	return MOCK_CHATS.map((chat) => ({
+		params: { id: chat.id },
+		props: { chat },
+	}));
+}
+
+const { chat } = Astro.props;
+---
+
+<AppLayout title={`${chat.name} — TUTU`}>
+	<ChatDetailScreen chat={chat} client:load />
+</AppLayout>
