@@ -46,6 +46,10 @@ export function AiAgentScreen({ chat }: AiAgentScreenProps) {
 		console.log('download tickets');
 	}
 
+	function handleMiniGame() {
+		window.location.href = '/mini-game';
+	}
+
 	return (
 		<div className={styles.aiAgentPage}>
 			<div className={styles.aiTopBar}>
@@ -206,7 +210,11 @@ export function AiAgentScreen({ chat }: AiAgentScreenProps) {
 								)}
 
 								{message.content.kind === 'actionButton' && (
-									<button type="button" className={styles.moreFlightsButton}>
+									<button
+										type="button"
+										className={styles.moreFlightsButton}
+										onClick={message.content.label === 'Мини игра' ? handleMiniGame : undefined}
+									>
 										{message.content.label}
 									</button>
 								)}

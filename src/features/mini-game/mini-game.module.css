@@ -1,0 +1,194 @@
+.page {
+    min-height: 100vh;
+    background-color: #a181ff;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: relative;
+    overflow-x: hidden;
+}
+
+.header {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 40px;
+}
+
+.backBtn {
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.2);
+    border: 1px solid rgba(255, 255, 255, 0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #ffffff;
+    cursor: pointer;
+}
+
+.giftBadge {
+    background: #d4ff00;
+    border-radius: 20px;
+    padding: 6px 16px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-weight: 700;
+    color: #000000;
+}
+
+.headerRight {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.iconBtn {
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.2);
+    border: 1px solid rgba(255, 255, 255, 0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #ffffff;
+    cursor: pointer;
+}
+
+.cardsContainer {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    margin-bottom: 40px;
+}
+
+.ticket {
+    width: 100%;
+    height: 140px;
+    border-radius: 24px;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 80px;
+    font-weight: 900;
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+}
+
+.ticket::after {
+    content: "";
+    position: absolute;
+    right: -20px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 40px;
+    height: 40px;
+    background-color: #a181ff;
+    border-radius: 50%;
+    box-shadow: inset 2px 0 5px rgba(0, 0, 0, 0.1);
+}
+
+.ticket::before {
+    content: "";
+    position: absolute;
+    right: -20px;
+    top: 20%;
+    transform: translateY(-50%);
+    width: 20px;
+    height: 20px;
+    background-color: #a181ff;
+    border-radius: 50%;
+}
+
+
+/* Let's simplify the notch to match the image better - it looks like two small circular cutouts on the right edge */
+
+.ticket {
+    mask-image: radial-gradient(circle at 100% 30%, transparent 15px, black 16px), radial-gradient(circle at 100% 70%, transparent 15px, black 16px);
+    mask-composite: intersect;
+    -webkit-mask-image: radial-gradient(circle at 100% 30%, transparent 15px, black 16px), radial-gradient(circle at 100% 70%, transparent 15px, black 16px);
+    -webkit-mask-composite: source-in;
+}
+
+
+/* Actually, simpler way with circles */
+
+.ticket {
+    position: relative;
+    overflow: visible;
+    /* so cutouts are visible */
+}
+
+.cutout {
+    position: absolute;
+    right: -10px;
+    width: 20px;
+    height: 20px;
+    background-color: #a181ff;
+    border-radius: 50%;
+}
+
+.cutoutTop {
+    top: 30%;
+}
+
+.cutoutBottom {
+    top: 70%;
+}
+
+.ticket10 {
+    background: linear-gradient(135deg, #d4ff00 0%, #b8dd00 100%);
+    color: #ffffff;
+}
+
+.ticket15 {
+    background-color: #d4ff00;
+    color: #ff6e1a;
+}
+
+.ticket20 {
+    background-color: #ff6e1a;
+    color: #ffffff;
+}
+
+.footer {
+    margin-top: auto;
+    width: 100%;
+    padding-bottom: 20px;
+}
+
+.spinBtn {
+    width: 100%;
+    height: 64px;
+    background-color: #ff6e1a;
+    border-radius: 32px;
+    border: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    color: #ffffff;
+    font-size: 18px;
+    font-weight: 700;
+    cursor: pointer;
+    box-shadow: 0 10px 30px rgba(255, 110, 26, 0.3);
+}
+
+.spinBadge {
+    background: #d4ff00;
+    border-radius: 16px;
+    padding: 4px 12px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-weight: 700;
+    color: #000000;
+    font-size: 14px;
+}
