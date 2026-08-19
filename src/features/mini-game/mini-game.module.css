@@ -1,227 +1,311 @@
-.page {
-    min-height: 100vh;
-    background-color: #a181ff;
-    padding: 20px;
+.appContainer {
+    width: 100%;
+    max-width: 393px;
+    margin: 0 auto;
+    height: 100vh;
+    background-color: #A181FF;
+    position: relative;
+    overflow: hidden;
     display: flex;
     flex-direction: column;
-    align-items: center;
-    position: relative;
-    overflow-x: hidden;
 }
 
-.header {
-    width: 100%;
+.topBar {
+    padding: 20px;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 40px;
-}
-
-.backBtn {
-    width: 44px;
-    height: 44px;
-    border-radius: 50%;
-    background: rgba(255, 255, 255, 0.2);
-    border: 1px solid rgba(255, 255, 255, 0.5);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: #ffffff;
-    cursor: pointer;
-}
-
-.giftBadge {
-    background: #d4ff00;
-    border-radius: 20px;
-    padding: 6px 16px;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    font-weight: 700;
-    color: #000000;
-}
-
-.headerRight {
-    display: flex;
-    flex-direction: column;
-    gap: 12px;
+    z-index: 10;
 }
 
 .iconBtn {
-    width: 44px;
-    height: 44px;
+    width: 40px;
+    height: 40px;
+    background-color: #262122;
     border-radius: 50%;
-    background: rgba(255, 255, 255, 0.2);
-    border: 1px solid rgba(255, 255, 255, 0.5);
     display: flex;
-    align-items: center;
     justify-content: center;
-    color: #ffffff;
+    align-items: center;
+    color: #FFFFFF;
+    font-size: 18px;
     cursor: pointer;
 }
 
-.cardsContainer {
+.navContainer {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    padding: 0 20px;
+    z-index: 10;
+}
+
+.giftBadge {
+    background-color: #D0FF1A;
+    color: #222222;
+    padding: 8px 16px;
+    border-radius: 20px;
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    box-shadow: 0 4px 10px rgba(208, 255, 26, 0.3);
+    transition: all 0.3s;
+}
+
+.actionBtns {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.actionBtn {
+    width: 45px;
+    height: 45px;
+    background-color: #6234EC;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: #FFFFFF;
+    font-size: 20px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+    cursor: pointer;
+}
+
+.gameArea {
+    flex: 1;
+    position: relative;
+    overflow: hidden;
+    margin-top: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+}
+
+.trackContainer {
+    position: absolute;
     width: 100%;
     display: flex;
     flex-direction: column;
-    gap: 16px;
-    margin-bottom: 40px;
-}
-
-.ticket {
-    width: 100%;
-    height: 140px;
-    border-radius: 24px;
-    position: relative;
-    display: flex;
     align-items: center;
-    justify-content: center;
-    font-size: 80px;
-    font-weight: 900;
-    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
-    overflow: visible;
-    transition: transform 0.25s ease, box-shadow 0.25s ease, filter 0.25s ease;
+    gap: 15px;
 }
 
-.ticket::after {
-    content: "";
+.trackCard {
+    width: 80%;
+    height: 120px;
+    border-radius: 30px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 48px;
+    font-weight: 900;
+    font-style: italic;
+    position: relative;
+    box-shadow: 0 8px 15px rgba(0,0,0,0.1);
+    flex-shrink: 0;
+}
+
+.trackCard::after {
+    content: '';
     position: absolute;
-    right: -20px;
+    bottom: -15px;
+    right: 40px;
+    width: 30px;
+    height: 30px;
+    background: inherit;
+    border-radius: 15px;
+    z-index: -1;
+}
+
+.trackCardEven::after {
+    right: auto;
+    left: 40px;
+}
+
+.card1 {
+    background: linear-gradient(135deg, #D0FF1A 0%, #6234EC 100%);
+    color: #FFFFFF;
+}
+
+.card2 {
+    background-color: #D0FF1A;
+    color: #FF6E1A;
+}
+
+.card3 {
+    background-color: #FF6E1A;
+    color: #FFFFFF;
+}
+
+.navArrows {
+    position: absolute;
     top: 50%;
     transform: translateY(-50%);
-    width: 40px;
-    height: 40px;
-    background-color: #a181ff;
-    border-radius: 50%;
-    box-shadow: inset 2px 0 5px rgba(0, 0, 0, 0.1);
-}
-
-.ticket::before {
-    content: "";
-    position: absolute;
-    right: -20px;
-    top: 20%;
-    transform: translateY(-50%);
-    width: 20px;
-    height: 20px;
-    background-color: #a181ff;
-    border-radius: 50%;
-}
-
-.cutout {
-    position: absolute;
-    right: -10px;
-    width: 20px;
-    height: 20px;
-    background-color: #a181ff;
-    border-radius: 50%;
-}
-
-.cutoutTop {
-    top: 30%;
-}
-
-.cutoutBottom {
-    top: 70%;
-}
-
-.ticket10 {
-    background: linear-gradient(135deg, #d4ff00 0%, #b8dd00 100%);
-    color: #ffffff;
-}
-
-.ticket15 {
-    background-color: #d4ff00;
-    color: #ff6e1a;
-}
-
-.ticket20 {
-    background-color: #ff6e1a;
-    color: #ffffff;
-}
-
-.ticketWiggle {
-    animation: ticketWiggle 0.7s ease-in-out infinite;
-}
-
-.ticketWinner {
-    animation: prizeDrop 0.9s cubic-bezier(0.2, 0.8, 0.2, 1) both;
-    box-shadow: 0 18px 30px rgba(0, 0, 0, 0.18), 0 0 0 4px rgba(255, 255, 255, 0.18);
-    filter: saturate(1.15);
-}
-
-@keyframes ticketWiggle {
-    0%, 100% { transform: translateX(0); }
-    15% { transform: translateX(-5px); }
-    30% { transform: translateX(5px); }
-    45% { transform: translateX(-4px); }
-    60% { transform: translateX(4px); }
-    75% { transform: translateX(-2px); }
-}
-
-@keyframes prizeDrop {
-    0% {
-        transform: translateY(-28px) scale(0.94);
-        filter: brightness(1.08);
-    }
-    35% {
-        transform: translateY(10px) scale(1.02);
-    }
-    55% {
-        transform: translateY(-4px) scale(1);
-    }
-    100% {
-        transform: translateY(0) scale(1);
-    }
-}
-
-.footer {
-    margin-top: auto;
     width: 100%;
-    padding-bottom: 20px;
-}
-
-.spinBtn {
-    width: 100%;
-    height: 64px;
-    background-color: #ff6e1a;
-    border-radius: 32px;
-    border: none;
     display: flex;
+    justify-content: space-between;
+    pointer-events: none;
+    z-index: 5;
+    opacity: 0;
+    transition: opacity 0.3s;
+}
+
+.navArrowsVisible {
+    opacity: 1;
+}
+
+.arrow {
+    width: 0;
+    height: 0;
+    border-top: 25px solid transparent;
+    border-bottom: 25px solid transparent;
+}
+
+.arrowLeft {
+    border-right: 40px solid #D0FF1A;
+}
+
+.arrowRight {
+    border-left: 40px solid #D0FF1A;
+}
+
+.bottomBar {
+    padding: 30px 20px;
+    display: flex;
+    justify-content: space-between;
     align-items: center;
-    justify-content: center;
-    gap: 12px;
-    color: #ffffff;
+    z-index: 10;
+}
+
+.buyBtn {
+    background-color: #FF6E1A;
+    color: #FFFFFF;
+    padding: 15px 30px;
+    border-radius: 30px;
     font-size: 18px;
-    font-weight: 700;
+    font-weight: bold;
+    border: none;
     cursor: pointer;
-    box-shadow: 0 10px 30px rgba(255, 110, 26, 0.3);
-    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    box-shadow: 0 5px 15px rgba(255, 110, 26, 0.4);
+    flex: 1;
+    margin-right: 15px;
+    text-transform: uppercase;
+    transition: transform 0.1s, opacity 0.3s;
 }
 
-.spinBtnSpinning {
-    animation: spinButtonPulse 0.8s ease-in-out infinite;
+.buyBtn:active {
+    transform: scale(0.95);
 }
 
-@keyframes spinButtonPulse {
-    0%, 100% {
-        transform: translateY(0) scale(1);
-        box-shadow: 0 10px 30px rgba(255, 110, 26, 0.3);
-    }
-    50% {
-        transform: translateY(-2px) scale(1.01);
-        box-shadow: 0 16px 36px rgba(255, 110, 26, 0.45);
-    }
+.buyBtnDisabled {
+    opacity: 0.7;
+    pointer-events: none;
 }
 
-.spinBadge {
-    background: #d4ff00;
-    border-radius: 16px;
-    padding: 4px 12px;
+.giftStatus {
+    background-color: #D0FF1A;
+    color: #222222;
+    padding: 15px 25px;
+    border-radius: 30px;
+    font-weight: bold;
+    font-size: 18px;
     display: flex;
     align-items: center;
-    gap: 6px;
-    font-weight: 700;
-    color: #000000;
-    font-size: 14px;
+    gap: 10px;
+    transition: all 0.3s;
+}
+
+.resultScreen {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: #A181FF;
+    background-image: radial-gradient(circle at 50% 50%, #7B5CD6 0%, transparent 80%);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    z-index: 20;
+    padding: 20px;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.5s;
+}
+
+.resultScreenVisible {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+.stars {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+}
+
+.star {
+    position: absolute;
+    color: #D0FF1A;
+    font-size: 30px;
+    animation: twinkle 1s infinite alternate;
+}
+
+@keyframes twinkle {
+    0% { transform: scale(0.8); opacity: 0.5; }
+    100% { transform: scale(1.2); opacity: 1; }
+}
+
+.resultCard {
+    background-color: #FF6E1A;
+    width: 250px;
+    height: 300px;
+    border-radius: 30px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    box-shadow: 0 15px 35px rgba(255, 110, 26, 0.5);
+    margin-bottom: 30px;
+    animation: popIn 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    position: relative;
+}
+
+@keyframes popIn {
+    0% { transform: scale(0); }
+    100% { transform: scale(1); }
+}
+
+.resultDiscount {
+    color: #FFFFFF;
+    font-size: 80px;
+    font-weight: 900;
+    font-style: italic;
+}
+
+.resultText {
+    color: #FFFFFF;
+    font-size: 20px;
+    font-weight: bold;
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.claimBtn {
+    background-color: #D0FF1A;
+    color: #222222;
+    padding: 15px 40px;
+    border-radius: 30px;
+    font-size: 18px;
+    font-weight: bold;
+    border: none;
+    cursor: pointer;
+    box-shadow: 0 5px 15px rgba(208, 255, 26, 0.4);
+    width: 100%;
+    max-width: 300px;
+    margin-top: auto;
+    margin-bottom: 40px;
 }

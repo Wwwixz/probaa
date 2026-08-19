@@ -1,6 +1,11 @@
 import { createGigaChatCompletion, type GigaChatFunctionDefinition } from './gigachat';
 import { tutuMcpClient } from './tutuMcp';
 
+/**
+ * Интерфейс сообщения в истории чата ИИ агента.
+ * Содержит роль отправителя (пользователь или ассистент) и текстовое содержимое.
+ */
+
 export interface AgentChatMessage {
 	role: 'user' | 'assistant';
 	content: string;
@@ -11,6 +16,10 @@ interface AgentChatResult {
 	toolCalls: string[];
 }
 
+/**
+ * Предустановленные ответы-уточнения для типичных неконкретных запросов пользователей.
+ * Позволяет сократить нагрузку на нейросеть (LLM) и быстрее получить нужные данные.
+ */
 const DIRECT_CLARIFICATION_REPLIES: Record<string, string> = {
 	'собери маршрут с пересадками':
 		'Уточните, пожалуйста, откуда, куда и на какую дату собрать маршрут с пересадками. Например: "Москва -> Архыз на 2026-08-23, 1 пассажир".',
@@ -20,6 +29,10 @@ const DIRECT_CLARIFICATION_REPLIES: Record<string, string> = {
 		'Уточните город, даты и сколько гостей едет. Например: "Сочи, 2026-08-23 - 2026-08-25, 2 гостя".'
 };
 
+/**
+ * Основной системный промпт для нейросети (GigaChat).
+ * Содержит инструкции, правила поведения и контекст (агент сервиса TUTU).
+ */
 const BASE_SYSTEM_PROMPT = `Ты тревел-агент сервиса TUTU и помогаешь путешественнику быстро принять решение и перейти к покупке.
 
 Правила работы:
@@ -33,10 +46,15 @@ const BASE_SYSTEM_PROMPT = `Ты тревел-агент сервиса TUTU и 
 - Отвечай по-русски, уверенно, дружелюбно и очень практично.
 - Для демо особенно полезны сценарии: найти самый выгодный билет, подобрать поезд/самолет/автобус, комбинированный маршрут, отель у моря, обмен или инструкция по покупке.`;
 
+/** Преобразует результат вызова инструмента (Mcp Tool) в строковый JSON формат */
 function stringifyToolResult(result: unknown) {
 	return JSON.stringify(result, null, 2);
 }
 
+/**
+ * Парсит аргументы функции, которые вернула нейросеть.
+ * Нейросеть иногда возвращает их в виде строки (JSON), а иногда как объект.
+ */
 function parseFunctionArguments(argumentsValue: Record<string, unknown> | string | undefined) {
 	if (!argumentsValue) {
 		return {};
@@ -53,6 +71,11 @@ function parseFunctionArguments(argumentsValue: Record<string, unknown> | string
 	return argumentsValue;
 }
 
+/**
+ * Проверяет, является ли сообщение от пользователя "малозначимым".
+ * (пустые строки, очень короткие слова до 5 букв типа "да", "нет", или спецсимволы).
+ * Используется для склейки истории контекста.
+ */
 function isLowValueUserMessage(content: string) {
 	const normalized = content.trim().toLowerCase();
 
@@ -71,6 +94,11 @@ function isLowValueUserMessage(content: string) {
 	return false;
 }
 
+/**
+ * Нормализует историю сообщений перед отправкой в нейросеть.
+ * Фильтрует промежуточные малоинформативные ответы и склеивает подряд идущие сообщения
+ * одной и той же роли в одно для экономии токенов.
+ */
 function normalizeHistory(history: AgentChatMessage[]) {
 	const filtered = history.filter((message, index) => {
 		if (message.role !== 'user') {
@@ -97,6 +125,10 @@ function normalizeHistory(history: AgentChatMessage[]) {
 	}, []);
 }
 
+/**
+ * Очищает и нормализует JSON Schema параметров инструмента для совместимости с GigaChat.
+ * Преобразует сложные типы вроде anyOf/oneOf в более простые структуры.
+ */
 function sanitizeSchema(schema: unknown, isRoot = false): Record<string, unknown> {
 	if (!schema || typeof schema !== 'object') {
 		return isRoot ? { type: 'object', properties: {} } : { type: 'string' };
@@ -180,6 +212,10 @@ function sanitizeSchema(schema: unknown, isRoot = false): Record<string, unknown
 	return result;
 }
 
+/**
+ * Преобразует список инструментов, полученных от MCP клиента, в формат определений функций (Function Calling),
+ * который понимает API GigaChat.
+ */
 function normalizeToolsToFunctions(tools: Awaited<ReturnType<typeof tutuMcpClient.listTools>>) {
 	return tools.map<GigaChatFunctionDefinition>((tool) => ({
 		name: tool.name,
@@ -188,6 +224,18 @@ function normalizeToolsToFunctions(tools: Awaited<ReturnType<typeof tutuMcpClien
 	}));
 }
 
+/**
+ * Основная функция обработки чата ИИ-агента с использованием Function Calling.
+ * 
+ * 1. Нормализует историю и проверяет на наличие прямых ответов (хардкод).
+ * 2. Запрашивает список доступных инструментов у Tutu MCP.
+ * 3. Делает запросы к нейросети (до 6 шагов/итераций).
+ * 4. Если нейросеть запрашивает вызов инструмента (function_call) - локально вызывает его и передает результат обратно.
+ * 5. Формирует финальный ответ и возвращает его вместе со списком использованных инструментов.
+ * 
+ * @param history - Текущая история переписки.
+ * @returns Финальный текстовый ответ и массив вызванных инструментов.
+ */
 export async function runTravelAgentChat(history: AgentChatMessage[]): Promise<AgentChatResult> {
 	const preparedHistory = normalizeHistory(history).slice(-8);
 	const lastUserMessage = [...preparedHistory]

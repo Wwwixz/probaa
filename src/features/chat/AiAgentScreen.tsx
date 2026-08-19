@@ -11,6 +11,11 @@ interface AiAgentScreenProps {
 	chat: Chat;
 }
 
+/**
+ * Словарь быстрых команд для ИИ-агента.
+ * При нажатии на кнопку-подсказку (Quick Action) пользователю в чат подставляется
+ * расширенная версия промпта для улучшения качества ответа нейросети.
+ */
 const QUICK_ACTION_PROMPTS: Record<string, string> = {
 	'Мои билеты': 'Покажи, как можно помочь с уже купленными билетами через Tutu.',
 	'Перенести рейс': 'Объясни, как проверить варианты переноса или обмена авиабилета через Tutu.',
@@ -26,12 +31,21 @@ const QUICK_ACTION_PROMPTS: Record<string, string> = {
 		'Подбери отель у моря в Сочи на 2 ночи на ближайшие выходные для 2 гостей с бесплатной отменой.'
 };
 
+/**
+ * Компонент экрана чата с ИИ-агентом.
+ * Реализует интерфейс мессенджера, поддерживает рендеринг различных типов контента:
+ * текст, карточки билетов, кнопки выбора, и индикатор набора текста.
+ */
 export function AiAgentScreen({ chat }: AiAgentScreenProps) {
+	// Состояние локальной истории сообщений
 	const [messages, setMessages] = useState<ChatMessage[]>(chat.messages);
+	// Состояние текущего набираемого текста
 	const [draft, setDraft] = useState('');
 	const [isSubmitting, setIsSubmitting] = useState(false);
 	const [error, setError] = useState<string | null>(null);
 	const [isTyping, setIsTyping] = useState(false);
+	
+	// Ссылка на конец списка сообщений для автоскролла
 	const messagesEndRef = useRef<HTMLDivElement>(null);
 
 	const scrollToBottom = () => {
@@ -42,6 +56,10 @@ export function AiAgentScreen({ chat }: AiAgentScreenProps) {
 		scrollToBottom();
 	}, [messages, isTyping]);
 
+	/**
+	 * Отправляет сообщение пользователя на сервер и обрабатывает ответ ИИ.
+	 * @param text - Текст сообщения пользователя
+	 */
 	async function submitMessage(text: string) {
 		const trimmed = text.trim();
 		if (!trimmed || isSubmitting) return;
@@ -54,13 +72,15 @@ export function AiAgentScreen({ chat }: AiAgentScreenProps) {
 		};
 		const nextMessages = [...messages, userMessage];
 
+		// Оптимистично добавляем сообщение пользователя в UI
 		setMessages(nextMessages);
 		setDraft('');
 		setError(null);
 		setIsSubmitting(true);
-		setIsTyping(true);
+		setIsTyping(true); // Включаем анимацию "ИИ печатает..."
 
 		try {
+			// Выполняем сетевой запрос к нашему внутреннему API (/api/ai-agent/chat)
 			const response = await sendAiAgentMessage(
 				nextMessages
 					.filter((m) => m.content.kind === 'text')
@@ -71,6 +91,8 @@ export function AiAgentScreen({ chat }: AiAgentScreenProps) {
 			);
 
 			setIsTyping(false);
+			
+			// Добавляем ответ ИИ в чат
 			setMessages((prev) => [
 				...prev,
 				{
@@ -96,11 +118,13 @@ export function AiAgentScreen({ chat }: AiAgentScreenProps) {
 		}
 	}
 
+	/** Обработчик отправки формы из инпута */
 	async function handleSend(event: FormEvent) {
 		event.preventDefault();
 		await submitMessage(draft);
 	}
 
+	/** Обработчик нажатия на кнопку быстрых подсказок под чатом */
 	async function handleQuickAction(action: string) {
 		await submitMessage(QUICK_ACTION_PROMPTS[action] ?? action);
 	}
@@ -146,6 +170,7 @@ export function AiAgentScreen({ chat }: AiAgentScreenProps) {
 
 				<div className={styles.messagesList}>
 					{messages.map((message) => {
+						// Определяем тип сообщения для корректной стилизации фона
 						const isButtonMessage =
 							message.content.kind === 'moreFlightsButton' ||
 							message.content.kind === 'choiceButtons' ||
@@ -313,6 +338,8 @@ export function AiAgentScreen({ chat }: AiAgentScreenProps) {
 							</div>
 						);
 					})}
+					
+					{/* Индикатор печати ИИ-агента */}
 					{isTyping && (
 						<div className={styles.messageRow + ' ' + styles.messageRowThem}>
 							<img src={avatarPlaceholder.src} alt="" className={styles.messageAvatar} />

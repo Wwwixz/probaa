@@ -22,18 +22,22 @@ const DEFAULT_CENTER: [number, number] = [37.6173, 55.7558];
  * реальной карты — ничего не падает, просто карта не интерактивна.
  */
 export function MapScreen() {
+	// Ссылки на DOM-элемент контейнера карты и инстансы карты/маркера 2ГИС
 	const containerRef = useRef<HTMLDivElement>(null);
 	const mapRef = useRef<any>(null);
 	const markerRef = useRef<any>(null);
 
+	// Состояния для управления масштабом, режимом отображения и статусом загрузки карты
 	const [zoom, setZoom] = useState(14);
 	const [viewMode, setViewMode] = useState<ViewMode>('3D');
 	const [mapReady, setMapReady] = useState(false);
 	const [mapFailed, setMapFailed] = useState(false);
 
+	// Получаем API ключ 2ГИС из переменных окружения
 	const apiKey = import.meta.env.PUBLIC_2GIS_API_KEY as string | undefined;
 
 	useEffect(() => {
+		// Если ключа нет или контейнер еще не отрендерился - отмечаем ошибку и выходим
 		if (!apiKey || !containerRef.current) {
 			setMapFailed(true);
 			return;
@@ -41,25 +45,29 @@ export function MapScreen() {
 
 		let cancelled = false;
 
+		// Динамически импортируем SDK 2ГИС только на клиенте
 		import('@2gis/mapgl')
 			.then(({ load }) => load())
 			.then((mapglAPI) => {
 				if (cancelled || !containerRef.current) return;
 
+				// Инициализируем карту
 				const map = new mapglAPI.Map(containerRef.current, {
 					center: DEFAULT_CENTER,
 					zoom,
-					pitch: 45,
+					pitch: 45, // Для 3D режима изначально задаем наклон камеры
 					key: apiKey,
 				});
 
+				// Создаем дефолтный маркер в центре карты
 				const marker = new mapglAPI.Marker(map, {
 					coordinates: DEFAULT_CENTER,
 				});
 
+				// Сохраняем ссылки для доступа к API карты из других функций
 				mapRef.current = map;
 				markerRef.current = marker;
-				setMapReady(true);
+				setMapReady(true); // Скрываем плейсхолдер и показываем карту
 			})
 			.catch((error) => {
 				console.error('Не удалось загрузить 2ГИС MapGL', error);
@@ -73,8 +81,9 @@ export function MapScreen() {
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [apiKey]);
 
+	/** Обработчик изменения масштаба карты (+ / -) */
 	function handleZoomChange(next: number) {
-		const clamped = Math.max(1, Math.min(20, next));
+		const clamped = Math.max(1, Math.min(20, next)); // Ограничиваем зум от 1 до 20
 		setZoom(clamped);
 		mapRef.current?.setZoom(clamped);
 	}
