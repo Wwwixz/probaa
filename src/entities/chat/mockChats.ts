@@ -66,6 +66,7 @@ export const MOCK_CHATS: Chat[] = [
 		role: 'Ваш гид по турам',
 		preview: 'В чате нечего нет',
 		online: true,
+		quickActions: ['Где мой отель?', 'Заказать экскурсию', 'Погода в Египте', 'Нужна помощь'],
 		messages: [
 			{
 				id: '1',

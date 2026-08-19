@@ -1,9 +1,29 @@
+import { useState } from 'react';
 import { ChevronLeft, Gift, Package, HelpCircle } from 'lucide-react';
 import styles from './mini-game.module.css';
 
+const PRIZES = [10, 15, 20];
+
 export function MiniGameScreen() {
+  const [isSpinning, setIsSpinning] = useState(false);
+  const [selectedPrize, setSelectedPrize] = useState<number | null>(null);
+
   const handleBack = () => {
     window.history.back();
+  };
+
+  const handleSpin = () => {
+    if (isSpinning) return;
+
+    const nextPrize = PRIZES[Math.floor(Math.random() * PRIZES.length)];
+
+    setSelectedPrize(null);
+    setIsSpinning(true);
+
+    window.setTimeout(() => {
+      setSelectedPrize(nextPrize);
+      setIsSpinning(false);
+    }, 1200);
   };
 
   return (
@@ -29,25 +49,27 @@ export function MiniGameScreen() {
       </div>
 
       <div className={styles.cardsContainer}>
-        <div className={`${styles.ticket} ${styles.ticket10}`}>
-          10%
-          <div className={`${styles.cutout} ${styles.cutoutTop}`}></div>
-          <div className={`${styles.cutout} ${styles.cutoutBottom}`}></div>
-        </div>
-        <div className={`${styles.ticket} ${styles.ticket15}`}>
-          15%
-          <div className={`${styles.cutout} ${styles.cutoutTop}`}></div>
-          <div className={`${styles.cutout} ${styles.cutoutBottom}`}></div>
-        </div>
-        <div className={`${styles.ticket} ${styles.ticket20}`}>
-          20%
-          <div className={`${styles.cutout} ${styles.cutoutTop}`}></div>
-          <div className={`${styles.cutout} ${styles.cutoutBottom}`}></div>
-        </div>
+        {[10, 15, 20].map((value) => (
+          <div
+            key={value}
+            className={[
+              styles.ticket,
+              value === 10 ? styles.ticket10 : '',
+              value === 15 ? styles.ticket15 : '',
+              value === 20 ? styles.ticket20 : '',
+              selectedPrize === value ? styles.ticketWinner : '',
+              isSpinning && selectedPrize === null ? styles.ticketWiggle : '',
+            ].join(' ')}
+          >
+            {value}%
+            <div className={`${styles.cutout} ${styles.cutoutTop}`}></div>
+            <div className={`${styles.cutout} ${styles.cutoutBottom}`}></div>
+          </div>
+        ))}
       </div>
 
       <div className={styles.footer}>
-        <button className={styles.spinBtn}>
+        <button className={`${styles.spinBtn} ${isSpinning ? styles.spinBtnSpinning : ''}`} onClick={handleSpin}>
           <span>Крутить</span>
           <div className={styles.spinBadge}>
             <span>1</span>

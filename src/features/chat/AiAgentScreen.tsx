@@ -1,22 +1,16 @@
-import { useState } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import type { FormEvent } from 'react';
 import { ArrowLeft, Mic, Paperclip, Send, User, Monitor, Search, Plus, Volume2 } from 'lucide-react';
 import avatarPlaceholder from '../../assets/images/avatars/avatar-1.jpg';
 import myAvatar from '../../assets/images/avatars/avatar-2.jpg';
-<<<<<<< HEAD
 import { sendAiAgentMessage } from '../../shared/api/ai-agent';
-import { Header } from '../../widgets/header/Header';
-import type { Chat } from '../../entities/chat/mockChats';
-=======
 import type { Chat, ChatMessage } from '../../entities/chat/mockChats';
->>>>>>> 69445228b168996a014f6d52ecbd17bb9dcc113f
 import styles from './chat.module.css';
 
 interface AiAgentScreenProps {
 	chat: Chat;
 }
 
-<<<<<<< HEAD
 const QUICK_ACTION_PROMPTS: Record<string, string> = {
 	'Мои билеты': 'Покажи, как можно помочь с уже купленными билетами через Tutu.',
 	'Перенести рейс': 'Объясни, как проверить варианты переноса или обмена авиабилета через Tutu.',
@@ -32,73 +26,68 @@ const QUICK_ACTION_PROMPTS: Record<string, string> = {
 		'Подбери отель у моря в Сочи на 2 ночи на ближайшие выходные для 2 гостей с бесплатной отменой.'
 };
 
-/**
- * Экран ИИ-агента — похож на обычный диалог (ChatDetailScreen), но с
- * особой верхней панелью (доп. иконки), цветным блюр-фоном (как на
- * экранах авторизации) и рядом quick actions над полем ввода.
- *
- * TODO: quick actions пока просто console.log — подключить реальные
- * tool calls, когда определится контракт с MCP/бэкендом (см.
- * docs/ARCHITECTURE.md).
- */
-=======
->>>>>>> 69445228b168996a014f6d52ecbd17bb9dcc113f
 export function AiAgentScreen({ chat }: AiAgentScreenProps) {
 	const [messages, setMessages] = useState<ChatMessage[]>(chat.messages);
 	const [draft, setDraft] = useState('');
 	const [isSubmitting, setIsSubmitting] = useState(false);
 	const [error, setError] = useState<string | null>(null);
+	const [isTyping, setIsTyping] = useState(false);
+	const messagesEndRef = useRef<HTMLDivElement>(null);
+
+	const scrollToBottom = () => {
+		messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+	};
+
+	useEffect(() => {
+		scrollToBottom();
+	}, [messages, isTyping]);
 
 	async function submitMessage(text: string) {
 		const trimmed = text.trim();
 		if (!trimmed || isSubmitting) return;
 
-<<<<<<< HEAD
-		const userMessage = {
+		const userMessage: ChatMessage = {
 			id: String(Date.now()),
-			author: 'me' as const,
-			text: trimmed,
-			time: 'сейчас',
+			author: 'me',
+			content: { kind: 'text', text: trimmed },
+			time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
 		};
 		const nextMessages = [...messages, userMessage];
 
 		setMessages(nextMessages);
-=======
-		setMessages((prev) => [
-			...prev,
-			{
-				id: String(prev.length + 1),
-				author: 'me',
-				content: { kind: 'text', text: draft.trim() },
-				time: 'сейчас',
-			},
-		]);
->>>>>>> 69445228b168996a014f6d52ecbd17bb9dcc113f
 		setDraft('');
 		setError(null);
 		setIsSubmitting(true);
+		setIsTyping(true);
 
 		try {
 			const response = await sendAiAgentMessage(
-				nextMessages.map((message) => ({
-					role: message.author === 'me' ? 'user' : 'assistant',
-					content: message.text,
-				}))
+				nextMessages
+					.filter((m) => m.content.kind === 'text')
+					.map((message) => ({
+						role: message.author === 'me' ? 'user' : 'assistant',
+						content: (message.content as { kind: 'text'; text: string }).text,
+					}))
 			);
 
+			setIsTyping(false);
 			setMessages((prev) => [
 				...prev,
 				{
 					id: String(Date.now() + 1),
-					author: 'them' as const,
-					text:
-						response.toolCalls.length > 0
-							? `${response.reply}\n\nИнструменты Tutu MCP: ${response.toolCalls.join(', ')}`
-							: response.reply,
-					time: 'сейчас',
+					author: 'them',
+					content: {
+						kind: 'text',
+						text:
+							response.toolCalls.length > 0
+								? `${response.reply}\n\nИнструменты Tutu MCP: ${response.toolCalls.join(', ')}`
+								: response.reply,
+					},
+					time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
 				},
 			]);
 		} catch (submitError) {
+			setIsTyping(false);
 			setError(
 				submitError instanceof Error ? submitError.message : 'Не удалось получить ответ от ИИ-агента.'
 			);
@@ -107,7 +96,6 @@ export function AiAgentScreen({ chat }: AiAgentScreenProps) {
 		}
 	}
 
-<<<<<<< HEAD
 	async function handleSend(event: FormEvent) {
 		event.preventDefault();
 		await submitMessage(draft);
@@ -115,10 +103,6 @@ export function AiAgentScreen({ chat }: AiAgentScreenProps) {
 
 	async function handleQuickAction(action: string) {
 		await submitMessage(QUICK_ACTION_PROMPTS[action] ?? action);
-=======
-	function handleQuickAction(action: string) {
-		console.log('quick action:', action);
->>>>>>> 69445228b168996a014f6d52ecbd17bb9dcc113f
 	}
 
 	function handleMoreFlights() {
@@ -160,55 +144,6 @@ export function AiAgentScreen({ chat }: AiAgentScreenProps) {
 					<span className={styles.chatIntroHint}>Начните чат и вам помогут с вопросами</span>
 				</div>
 
-<<<<<<< HEAD
-					<div className={styles.chatIntro}>
-						<img src={avatarPlaceholder.src} alt="" className={styles.chatIntroAvatar} />
-						<span className={styles.chatIntroName}>{chat.name}</span>
-						{chat.role && <span className={styles.chatIntroRole}>{chat.role}</span>}
-						<span className={styles.chatIntroHint}>
-							Нахожу реальные варианты через Tutu MCP и стараюсь сразу вести к оформлению.
-						</span>
-					</div>
-
-					<div className={styles.messagesList}>
-						{messages.map((message) => (
-							<div
-								key={message.id}
-								className={`${styles.messageRow} ${
-									message.author === 'me' ? styles.messageRowMine : styles.messageRowTheirs
-								}`}
-							>
-								{message.author === 'them' && (
-									<img src={avatarPlaceholder.src} alt="" className={styles.messageAvatar} />
-								)}
-								<div
-									className={`${styles.messageBubble} ${
-										message.author === 'me' ? styles.messageBubbleMine : styles.messageBubbleTheirs
-									}`}
-								>
-									<span className={styles.messageText}>{message.text}</span>
-									<span className={styles.messageTime}>{message.time}</span>
-								</div>
-								{message.author === 'me' && (
-									<img src={myAvatar.src} alt="" className={styles.messageAvatar} />
-								)}
-							</div>
-						))}
-						{isSubmitting && (
-							<div className={`${styles.messageRow} ${styles.messageRowTheirs}`}>
-								<img src={avatarPlaceholder.src} alt="" className={styles.messageAvatar} />
-								<div className={`${styles.messageBubble} ${styles.messageBubbleTheirs}`}>
-									<span className={styles.messageText}>Ищу варианты через Tutu MCP...</span>
-								</div>
-							</div>
-						)}
-						{error && (
-							<div className={styles.agentError}>
-								{error}
-							</div>
-						)}
-					</div>
-=======
 				<div className={styles.messagesList}>
 					{messages.map((message) => {
 						const isButtonMessage =
@@ -379,7 +314,18 @@ export function AiAgentScreen({ chat }: AiAgentScreenProps) {
 							</div>
 						);
 					})}
->>>>>>> 69445228b168996a014f6d52ecbd17bb9dcc113f
+					{isTyping && (
+						<div className={styles.messageRow + ' ' + styles.messageRowThem}>
+							<img src={avatarPlaceholder.src} alt="" className={styles.messageAvatar} />
+							<div className={styles.typingIndicator}>
+								<div className={styles.typingDot} />
+								<div className={styles.typingDot} />
+								<div className={styles.typingDot} />
+							</div>
+						</div>
+					)}
+					{error && <div className={styles.agentError}>{error}</div>}
+					<div ref={messagesEndRef} />
 				</div>
 			</div>
 
@@ -399,27 +345,6 @@ export function AiAgentScreen({ chat }: AiAgentScreenProps) {
 				</div>
 			)}
 
-<<<<<<< HEAD
-			<form onSubmit={handleSend} className={styles.chatInputBar}>
-				<input
-					type="text"
-					value={draft}
-					onChange={(e) => setDraft(e.target.value)}
-					placeholder="Например: найди поезд Москва - Казань на завтра"
-					className={styles.chatInput}
-				/>
-				<button type="button" className={styles.chatIconButton} aria-label="Голосовое сообщение">
-					<Mic size={16} />
-				</button>
-				<button type="button" className={styles.chatIconButton} aria-label="Прикрепить файл">
-					<Paperclip size={16} />
-				</button>
-				<button type="submit" className={styles.chatSendButton} aria-label="Отправить" disabled={isSubmitting}>
-					<Send size={16} />
-				</button>
-			</form>
-		</>
-=======
 			<div className={styles.chatInputBarContainer}>
 				<form onSubmit={handleSend} className={styles.chatInputBar}>
 					<div className={styles.chatInputWrapper}>
@@ -427,8 +352,9 @@ export function AiAgentScreen({ chat }: AiAgentScreenProps) {
 							type="text"
 							value={draft}
 							onChange={(e) => setDraft(e.target.value)}
-							placeholder="Напишите сообщение...."
+							placeholder="Например: найди поезд Москва - Казань на завтра"
 							className={styles.chatInput}
+							disabled={isSubmitting}
 						/>
 					</div>
 					<div className={styles.chatButtonsGroup}>
@@ -438,13 +364,17 @@ export function AiAgentScreen({ chat }: AiAgentScreenProps) {
 						<button type="button" className={styles.chatIconButton} aria-label="Прикрепить файл">
 							<Paperclip size={20} />
 						</button>
-						<button type="submit" className={styles.chatSendButton} aria-label="Отправить">
+						<button
+							type="submit"
+							className={styles.chatSendButton}
+							aria-label="Отправить"
+							disabled={isSubmitting}
+						>
 							<Send size={20} />
 						</button>
 					</div>
 				</form>
 			</div>
 		</div>
->>>>>>> 69445228b168996a014f6d52ecbd17bb9dcc113f
 	);
 }

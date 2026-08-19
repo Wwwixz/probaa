@@ -200,71 +200,132 @@
     display: flex;
     flex-direction: column;
     gap: 12px;
+    padding-bottom: 20px;
 }
 
 .messageRow {
-<<<<<<< HEAD
-  display: flex;
-  align-items: flex-end;
-  gap: 8px;
-=======
     display: flex;
     align-items: flex-end;
-    justify-content: flex-end;
     gap: 8px;
->>>>>>> 69445228b168996a014f6d52ecbd17bb9dcc113f
+    animation: fadeIn 0.3s ease-out;
 }
 
 .messageRowMine {
-  justify-content: flex-end;
+    justify-content: flex-end;
 }
 
 .messageRowTheirs {
-  justify-content: flex-start;
+    justify-content: flex-start;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }
 
 .messageBubble {
-<<<<<<< HEAD
-  max-width: 70%;
-  border-radius: var(--radius-md);
-  padding: 10px 14px;
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
-=======
-    max-width: 70%;
+    max-width: 75%;
     background: var(--color-surface-strong);
-    border-radius: var(--radius-md);
+    border-radius: 18px 18px 18px 4px;
     padding: 10px 14px;
     display: flex;
     flex-direction: column;
-    gap: 4px;
->>>>>>> 69445228b168996a014f6d52ecbd17bb9dcc113f
+    gap: 2px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
 }
 
 .messageBubbleMine {
-  background: var(--color-surface-strong);
+    background: var(--color-surface-strong);
 }
 
 .messageBubbleTheirs {
-  background: rgba(255, 255, 255, 0.92);
+    background: rgba(255, 255, 255, 0.92);
+}
+
+.messageBubbleMe {
+    background: var(--color-brand-lime);
+    border-radius: 18px 18px 4px 18px;
+    align-self: flex-end;
 }
 
 .messageText {
-<<<<<<< HEAD
-  font-size: 13px;
-  color: var(--color-ink);
-  white-space: pre-wrap;
-=======
-    font-size: 13px;
+    font-size: 14px;
+    line-height: 1.4;
     color: var(--color-ink);
->>>>>>> 69445228b168996a014f6d52ecbd17bb9dcc113f
+    white-space: pre-wrap;
+}
+
+.messageTextMe {
+    color: #000000;
+}
+
+.messageFooter {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 4px;
+    margin-top: 2px;
 }
 
 .messageTime {
     font-size: 10px;
     color: var(--color-muted);
-    align-self: flex-end;
+}
+
+.messageTimeMe {
+    color: rgba(0, 0, 0, 0.5);
+}
+
+.statusIcon {
+    display: flex;
+    color: rgba(0, 0, 0, 0.5);
+}
+
+
+/* Typing Indicator */
+
+.typingIndicator {
+    display: flex;
+    gap: 4px;
+    padding: 12px 16px;
+    background: var(--color-ink);
+    border-radius: 18px 18px 18px 4px;
+    width: fit-content;
+    margin-bottom: 12px;
+    animation: fadeIn 0.3s ease-out;
+}
+
+.typingDot {
+    width: 6px;
+    height: 6px;
+    background: rgba(255, 255, 255, 0.5);
+    border-radius: 50%;
+    animation: typing 1.4s infinite ease-in-out;
+}
+
+.typingDot:nth-child(2) {
+    animation-delay: 0.2s;
+}
+
+.typingDot:nth-child(3) {
+    animation-delay: 0.4s;
+}
+
+@keyframes typing {
+    0%,
+    60%,
+    100% {
+        transform: translateY(0);
+    }
+    30% {
+        transform: translateY(-4px);
+    }
 }
 
 .messageAvatar {
@@ -363,57 +424,57 @@
 }
 
 .aiTopBar {
-  position: fixed;
-  top: 10px;
-  left: 50%;
-  transform: translateX(-50%);
-  z-index: 100;
-  width: calc(100% - 32px);
-  max-width: 398px;
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  background: rgba(0, 0, 0, 0.7);
-  backdrop-filter: blur(10px);
-  border-radius: 999px;
-  padding: 8px 16px;
-  border: 1px solid rgba(255, 255, 255, 0.1);
+    position: fixed;
+    top: 10px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 100;
+    width: calc(100% - 32px);
+    max-width: 398px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    background: rgba(0, 0, 0, 0.7);
+    backdrop-filter: blur(10px);
+    border-radius: 999px;
+    padding: 8px 16px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
 }
 
 .aiTopBarBtn {
-  background: rgba(255, 255, 255, 0.1);
-  border: none;
-  border-radius: 50%;
-  width: 32px;
-  height: 32px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: #ffffff;
-  cursor: pointer;
+    background: rgba(255, 255, 255, 0.1);
+    border: none;
+    border-radius: 50%;
+    width: 32px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #ffffff;
+    cursor: pointer;
 }
 
 .aiTopBarIcon {
-  color: #ffffff;
-  opacity: 0.8;
+    color: #ffffff;
+    opacity: 0.8;
 }
 
 .aiTopBarTitle {
-  flex: 1;
-  text-align: center;
-  color: #ffffff;
-  font-weight: 600;
-  font-size: 15px;
+    flex: 1;
+    text-align: center;
+    color: #ffffff;
+    font-weight: 600;
+    font-size: 15px;
 }
 
 .aiIntroSection {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  text-align: center;
-  gap: 4px;
-  margin-top: 40px;
-  margin-bottom: 32px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: 4px;
+    margin-top: 40px;
+    margin-bottom: 32px;
 }
 
 .aiHeaderAvatar {
@@ -786,25 +847,24 @@
     cursor: pointer;
 }
 
-<<<<<<< HEAD
 .quickActionChip:disabled,
 .chatSendButton:disabled {
-  opacity: 0.6;
-  cursor: not-allowed;
+    opacity: 0.6;
+    cursor: not-allowed;
 }
 
 .agentError {
-  align-self: center;
-  max-width: 320px;
-  border-radius: 16px;
-  background: rgba(229, 72, 77, 0.16);
-  color: #ffd3d5;
-  font-size: 12px;
-  line-height: 1.4;
-  padding: 10px 14px;
-  text-align: center;
+    align-self: center;
+    max-width: 320px;
+    border-radius: 16px;
+    background: rgba(229, 72, 77, 0.16);
+    color: #ffd3d5;
+    font-size: 12px;
+    line-height: 1.4;
+    padding: 10px 14px;
+    text-align: center;
 }
-=======
+
 .chatInputBarContainer {
     position: fixed;
     bottom: 20px;
@@ -876,4 +936,3 @@
     border: none;
     cursor: pointer;
 }
->>>>>>> 69445228b168996a014f6d52ecbd17bb9dcc113f
