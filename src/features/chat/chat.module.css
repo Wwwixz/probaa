@@ -2027,3 +2027,130 @@
     font-weight: 500;
     text-align: right;
 }
+
+.ticketDetailOverlay {
+    position: fixed;
+    inset: 0;
+    z-index: 90;
+    overflow: auto;
+    background: #151515;
+}
+
+.ticketsOverlay {
+    position: fixed;
+    inset: 0;
+    z-index: 80;
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+}
+
+.ticketsOverlayBackdrop {
+    position: absolute;
+    inset: 0;
+    border: 0;
+    background: rgba(18, 16, 20, 0.45);
+    cursor: pointer;
+}
+
+.ticketsSheet {
+    position: relative;
+    z-index: 1;
+    width: 100%;
+    max-width: 520px;
+    max-height: 78vh;
+    overflow: auto;
+    background: #ffffff;
+    border-radius: 28px 28px 0 0;
+    padding: 18px 18px 28px;
+    box-shadow: 0 -18px 40px rgba(0, 0, 0, 0.18);
+}
+
+.ticketsSheetHead {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 14px;
+}
+
+.ticketsSheetHead h2 {
+    margin: 0;
+    font-size: 22px;
+    font-weight: 800;
+    letter-spacing: -0.03em;
+}
+
+.ticketsClose {
+    width: 36px;
+    height: 36px;
+    border: 0;
+    border-radius: 50%;
+    background: #262122;
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+}
+
+.ticketsEmpty {
+    margin: 8px 0 0;
+    color: rgba(38, 33, 34, 0.6);
+    font-size: 14px;
+    line-height: 1.4;
+}
+
+.ticketsList {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.myTicketCard {
+    display: block;
+    width: 100%;
+    border: 0;
+    text-align: left;
+    border-radius: 18px;
+    padding: 14px 16px;
+    background: #262122;
+    color: #fff;
+    cursor: pointer;
+    font: inherit;
+}
+
+.myTicketTop {
+    display: flex;
+    justify-content: space-between;
+    font-size: 13px;
+    font-weight: 700;
+    color: #d0ff1a;
+}
+
+.myTicketRoute {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: 8px;
+    font-size: 22px;
+    letter-spacing: -0.04em;
+}
+
+.myTicketDash {
+    font-size: 12px;
+    color: #a181ff;
+}
+
+.myTicketCities {
+    margin: 6px 0 10px;
+    font-size: 13px;
+    color: rgba(255, 255, 255, 0.7);
+}
+
+.myTicketMeta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px 12px;
+    font-size: 12px;
+    color: #a181ff;
+}

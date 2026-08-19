@@ -14,6 +14,10 @@ import samolIcon from '../../assets/images/tickets/samol.png';
 import buletIcon from '../../assets/images/tickets/bulet.png';
 import { sendAiAgentMessage, type AiAgentOfferCard } from '../../shared/api/ai-agent';
 import type { Chat, ChatMessage } from '../../entities/chat/mockChats';
+import { createTicketDataFromOffer, type TicketData } from '../tickets/ticketCodec';
+import { loadMyTickets, saveMyTicket } from '../tickets/myTickets';
+import { TicketDetailsCard } from '../tickets/TicketDetailsCard';
+import { Header } from '../../widgets/header/Header';
 import styles from './chat.module.css';
 
 interface AiAgentScreenProps {
@@ -265,6 +269,9 @@ export function AiAgentScreen({ chat }: AiAgentScreenProps) {
 
 	const [historyOpen, setHistoryOpen] = useState(false);
 	const [historyQuery, setHistoryQuery] = useState('');
+	const [ticketsOpen, setTicketsOpen] = useState(false);
+	const [myTickets, setMyTickets] = useState<TicketData[]>([]);
+	const [selectedTicket, setSelectedTicket] = useState<TicketData | null>(null);
 	const messagesEndRef = useRef<HTMLDivElement>(null);
 
 	const activeChat = chats.find((c) => c.id === activeChatId) ?? chats[0] ?? null;
@@ -284,6 +291,10 @@ export function AiAgentScreen({ chat }: AiAgentScreenProps) {
 	useEffect(() => {
 		saveChatsToStorage(chats);
 	}, [chats]);
+
+	useEffect(() => {
+		setMyTickets(loadMyTickets());
+	}, []);
 
 	useEffect(() => {
 		if (activeChatId) saveActiveChatId(activeChatId);
@@ -400,6 +411,11 @@ export function AiAgentScreen({ chat }: AiAgentScreenProps) {
 	}
 
 	async function handleQuickAction(action: string) {
+		if (action === 'Мои билеты') {
+			setMyTickets(loadMyTickets());
+			setTicketsOpen(true);
+			return;
+		}
 		await submitMessage(QUICK_ACTION_PROMPTS[action] ?? action);
 	}
 
@@ -595,6 +611,9 @@ export function AiAgentScreen({ chat }: AiAgentScreenProps) {
 			setIsProcessingPayment(false);
 			setDailyTicketUnlocked(true);
 			setLastPaidOffer(offerSnapshot);
+			const purchased = createTicketDataFromOffer(offerSnapshot);
+			saveMyTicket(purchased);
+			setMyTickets(loadMyTickets());
 
 			const nowBase = Date.now();
 			const successMsg: AgentMessage = {
@@ -839,7 +858,7 @@ export function AiAgentScreen({ chat }: AiAgentScreenProps) {
 				</div>
 			</div>
 
-			{chat.quickActions && showIntro && (
+			{chat.quickActions && (
 				<div className={styles.quickActionsRow}>
 					{chat.quickActions.map((action) => (
 						<button
@@ -1148,6 +1167,66 @@ export function AiAgentScreen({ chat }: AiAgentScreenProps) {
 								</div>
 							</div>
 						</div>
+					</div>
+				</div>
+			)}
+			{selectedTicket && (
+				<div className={styles.ticketDetailOverlay}>
+					<Header />
+					<TicketDetailsCard
+						ticket={selectedTicket}
+						onBack={() => {
+							setSelectedTicket(null);
+							setTicketsOpen(true);
+						}}
+					/>
+				</div>
+			)}
+			{ticketsOpen && (
+				<div className={styles.ticketsOverlay} role="dialog" aria-modal="true" aria-labelledby="my-tickets-title">
+					<button type="button" className={styles.ticketsOverlayBackdrop} onClick={() => setTicketsOpen(false)} aria-label="Закрыть" />
+					<div className={styles.ticketsSheet}>
+						<div className={styles.ticketsSheetHead}>
+							<h2 id="my-tickets-title">Мои билеты</h2>
+							<button type="button" className={styles.ticketsClose} onClick={() => setTicketsOpen(false)} aria-label="Закрыть">
+								<X size={18} />
+							</button>
+						</div>
+						{myTickets.length === 0 ? (
+							<p className={styles.ticketsEmpty}>Пока нет купленных билетов. Оформите заказ в чате — он появится здесь.</p>
+						) : (
+							<div className={styles.ticketsList}>
+								{myTickets.map((ticket) => (
+									<button
+										type="button"
+										key={ticket.barcodeValue}
+										className={styles.myTicketCard}
+										onClick={() => {
+											setSelectedTicket(ticket);
+											setTicketsOpen(false);
+										}}
+									>
+										<div className={styles.myTicketTop}>
+											<span>{ticket.departureTime}</span>
+											<span>{ticket.arrivalTime}</span>
+										</div>
+										<div className={styles.myTicketRoute}>
+											<strong>{ticket.fromCode}</strong>
+											<span className={styles.myTicketDash}>—— ✈ ——</span>
+											<strong>{ticket.toCode}</strong>
+										</div>
+										<p className={styles.myTicketCities}>
+											{ticket.fromCity} → {ticket.toCity}
+										</p>
+										<div className={styles.myTicketMeta}>
+											<span>PNR {ticket.pnr}</span>
+											<span>Место {ticket.seatNumber}</span>
+											<span>{ticket.price}</span>
+										</div>
+									</button>
+								))}
+							</div>
+						)}
 					</div>
 				</div>
 			)}

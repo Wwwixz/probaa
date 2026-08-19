@@ -158,6 +158,7 @@ export const AI_AGENT_CHAT: Chat = {
 	preview: 'Подберу билеты, отель и дам ссылку на оформление',
 	online: true,
 	quickActions: [
+		'Мои билеты',
 		'Найди поезд Москва -> Питер на завтра',
 		'Самый дешёвый авиабилет в Сочи',
 		'Собери маршрут с пересадками',
@@ -177,5 +178,6 @@ export const AI_AGENT_CHAT: Chat = {
 };
 
 export function getChatById(id: string): Chat | undefined {
+	if (id === 'ai-agent') return AI_AGENT_CHAT;
 	return MOCK_CHATS.find((chat) => chat.id === id);
 }
