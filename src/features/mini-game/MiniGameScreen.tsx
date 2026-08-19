@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { ChevronLeft, Gift, HelpCircle, Settings, Search, Camera, Bell, Mail } from 'lucide-react';
 import styles from './mini-game.module.css';
 
-const DISCOUNTS = ['1%', '5%', '10%', '15%', '20%', '25%', '30%'];
+const DISCOUNTS = ['10%', '15%', '20%'];
 const CARD_CLASSES = ['card1', 'card2', 'card3'];
 
 export function MiniGameScreen() {
@@ -27,8 +27,8 @@ export function MiniGameScreen() {
             const cardClass = CARD_CLASSES[i % CARD_CLASSES.length];
             
             let content = discount;
-            if (i === 0) content = '1%/5%';
-            if (i === 1) content = '1%/5%';
+            if (i === 0) content = '10%';
+            if (i === 1) content = '15%';
             if (i === 2) content = '20%';
 
             newTracks.push({
@@ -162,9 +162,9 @@ export function MiniGameScreen() {
                     </div>
                 )}
                 
-                <p className={styles.resultText} style={{ fontSize: '16px', marginTop: '-10px' }}>Ваша выигрышная скидка</p>
+                <p className={styles.resultText} style={{ fontSize: '16px', marginTop: '10px' }}>Вы выиграли скидку на покупку ТИТР</p>
                 
-                <button className={styles.claimBtn} onClick={handleClaim}>Забрать скидку</button>
+                <button className={styles.claimBtn} onClick={handleClaim}>Круто!</button>
             </div>
         </div>
     );
