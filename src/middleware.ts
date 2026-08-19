@@ -6,6 +6,7 @@ import { getSessionCookieName, getUserBySessionToken } from './lib/server/auth';
  * Пользователь может зайти на эти страницы, даже если у него нет активной сессии.
  */
 const PUBLIC_ROUTES = new Set(['/login', '/register', '/forgotPassword', '/verifyCode']);
+const DEV_PREVIEW_ROUTES = new Set(['/settings', '/profile', '/mini-game']);
 
 /**
  * Проверяет, является ли путь запросом к статичным файлам Astro (ассеты, скрипты, картинки).
@@ -34,7 +35,7 @@ export const onRequest = defineMiddleware(async (context, next) => {
 	// Получаем данные пользователя по токену.
 	const user = await getUserBySessionToken(token);
 	// Проверяем, относится ли текущий маршрут к списку публичных.
-	const isPublicRoute = PUBLIC_ROUTES.has(pathname);
+	const isPublicRoute = PUBLIC_ROUTES.has(pathname) || (import.meta.env.DEV && DEV_PREVIEW_ROUTES.has(pathname));
 
 	// Если пользователь не авторизован и маршрут не публичный — перенаправляем на страницу входа.
 	if (!user && !isPublicRoute) {
