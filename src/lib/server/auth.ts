@@ -179,7 +179,8 @@ export async function getUserBySessionToken(token: string | undefined) {
 
 		return result.rows[0] ? mapUser(result.rows[0]) : null;
 	} catch (error) {
-		console.error('Database query failed in getUserBySessionToken:', error.message);
+		const message = error instanceof Error ? error.message : String(error);
+		console.error('Database query failed in getUserBySessionToken:', message);
 		return null;
 	}
 }

@@ -35,10 +35,11 @@ export const onRequest = defineMiddleware(async (context, next) => {
 	// Получаем данные пользователя по токену.
 	const user = await getUserBySessionToken(token);
 	// Проверяем, относится ли текущий маршрут к списку публичных.
-	const isPublicRoute = PUBLIC_ROUTES.has(pathname) || (import.meta.env.DEV && DEV_PREVIEW_ROUTES.has(pathname));
+	const isPublicRoute = PUBLIC_ROUTES.has(pathname);
+	const isDevPreview = import.meta.env.DEV && DEV_PREVIEW_ROUTES.has(pathname);
 
 	// Если пользователь не авторизован и маршрут не публичный — перенаправляем на страницу входа.
-	if (!user && !isPublicRoute) {
+	if (!user && !isPublicRoute && !isDevPreview) {
 		return context.redirect('/login');
 	}
 
