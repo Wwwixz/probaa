@@ -1,165 +1,204 @@
-import { useState, useEffect } from 'react';
-import { Gift } from 'lucide-react';
+import { useMemo, useState } from 'react';
+import { ChevronLeft, Gift, Package, HelpCircle } from 'lucide-react';
+import { Header } from '../../widgets/header/Header';
 import styles from './mini-game.module.css';
 
-const DISCOUNTS = ['10%', '15%', '20%'];
-const CARD_CLASSES = ['card1', 'card2', 'card3'];
+const PRIZES = [10, 15, 20] as const;
+type Prize = (typeof PRIZES)[number];
+type Phase = 'idle' | 'spinning' | 'result';
+
+const ITEM_HEIGHT = 118;
+const ITEM_GAP = 12;
+const STRIDE = ITEM_HEIGHT + ITEM_GAP;
+const VIEWPORT_HEIGHT = 430;
+const LOOPS = 14;
+
+function ticketClass(value: Prize) {
+	if (value === 10) return styles.ticket10;
+	if (value === 15) return styles.ticket15;
+	return styles.ticket20;
+}
+
+function Ticket({ value }: { value: Prize }) {
+	return (
+		<div className={`${styles.ticket} ${ticketClass(value)}`}>
+			<span>{value}%</span>
+		</div>
+	);
+}
 
 export function MiniGameScreen() {
-    const [gifts, setGifts] = useState(1);
-    const [isPlaying, setIsPlaying] = useState(false);
-    const [showResult, setShowResult] = useState(false);
-    const [wonDiscount, setWonDiscount] = useState('20%');
-    const [offsetY, setOffsetY] = useState(20);
-    const [useTransition, setUseTransition] = useState(false);
-    
-    // Предварительно сгенерированные треки
-    const [tracks, setTracks] = useState<{ id: number, text: string, className: string }[]>([]);
+	const [phase, setPhase] = useState<Phase>('idle');
+	const [balance, setBalance] = useState(1);
+	const [prize, setPrize] = useState<Prize>(20);
+	const [offset, setOffset] = useState(0);
+	const [helpOpen, setHelpOpen] = useState(false);
 
-    useEffect(() => {
-        initTracks();
-    }, []);
+	const reel = useMemo(
+		() => Array.from({ length: LOOPS * PRIZES.length }, (_, index) => PRIZES[index % PRIZES.length]),
+		[],
+	);
 
-    const initTracks = () => {
-        const newTracks = [];
-        for (let i = 0; i < 30; i++) {
-            const discount = DISCOUNTS[Math.floor(Math.random() * DISCOUNTS.length)];
-            const cardClass = CARD_CLASSES[i % CARD_CLASSES.length];
-            
-            let content = discount;
-            if (i === 0) content = '10%';
-            if (i === 1) content = '15%';
-            if (i === 2) content = '20%';
+	const centerPad = (VIEWPORT_HEIGHT - ITEM_HEIGHT) / 2;
 
-            newTracks.push({
-                id: i,
-                text: content,
-                className: cardClass
-            });
-        }
-        setTracks(newTracks);
-        setUseTransition(false);
-        setOffsetY(20);
-    };
+	function handleBack() {
+		if (phase === 'result') {
+			setPhase('idle');
+			setOffset(0);
+			return;
+		}
+		window.history.back();
+	}
 
-    const handleBack = () => {
-        window.history.back();
-    };
+	function handleSpin() {
+		if (phase === 'spinning' || balance < 1) return;
 
-    const startGame = () => {
-        if (gifts <= 0 || isPlaying) return;
+		const nextPrize = PRIZES[Math.floor(Math.random() * PRIZES.length)];
+		const searchStart = reel.length - 8;
+		let landIndex = -1;
+		for (let i = reel.length - 1; i >= searchStart; i -= 1) {
+			if (reel[i] === nextPrize) {
+				landIndex = i;
+				break;
+			}
+		}
 
-        setGifts(0);
-        setIsPlaying(true);
-        setUseTransition(true);
+		setBalance((value) => value - 1);
+		setPrize(nextPrize);
+		setPhase('spinning');
+		setOffset(0);
 
-        const targetIndex = 20 + Math.floor(Math.random() * 5);
-        const targetCard = tracks[targetIndex];
-        
-        // Оценочная высота игровой зоны
-        const containerHeight = window.innerHeight > 0 ? window.innerHeight : 852;
-        const offset = - (targetIndex * 150) + (containerHeight / 2) - 65;
-        
-        setOffsetY(offset);
+		window.requestAnimationFrame(() => {
+			setOffset(landIndex * STRIDE);
+		});
 
-        setTimeout(() => {
-            const finalDiscount = targetCard.text;
-            
-            setWonDiscount(finalDiscount);
-            setShowResult(true);
-        }, 3200);
-    };
+		window.setTimeout(() => {
+			setPhase('result');
+		}, 2800);
+	}
 
-    const handleClaim = () => {
-        setShowResult(false);
-        // Do NOT re-enable gifts to prevent spinning again
-        
-        initTracks();
-        
-        // Маленькая задержка для включения транзишена
-        setTimeout(() => {
-            setUseTransition(true);
-        }, 50);
-    };
+	return (
+		<div className={`${styles.page} ${phase === 'result' ? styles.pageResult : ''}`}>
+			{phase === 'result' && <div className={styles.waves} aria-hidden="true" />}
 
-    return (
-        <div className={styles.appContainer}>
-            {/* Навигационная панель (Фиолетовый фон) */}
-            <div className={styles.navContainer}>
-                <div className={styles.backBtn} onClick={handleBack}>‹</div>
-                <div className={styles.giftBadge}>
-                    <span>{gifts}</span> 🎁
-                </div>
-                <div className={styles.actionBtns}>
-                    <div className={styles.actionBtn}>✉</div>
-                    <div className={styles.actionBtn}>?</div>
-                </div>
-            </div>
+			{phase !== 'result' && (
+				<div className={styles.topBar}>
+					<Header />
+				</div>
+			)}
 
-            {/* Игровая зона */}
-            <div className={styles.gameArea}>
-                <div className={`${styles.navArrows} ${isPlaying ? styles.navArrowsVisible : ''}`}>
-                    <div className={`${styles.arrow} ${styles.arrowLeft}`}></div>
-                    <div className={`${styles.arrow} ${styles.arrowRight}`}></div>
-                </div>
-                
-                <div 
-                    className={styles.trackContainer} 
-                    style={{ 
-                        transform: `translateY(${offsetY}px)`,
-                        transition: useTransition ? 'transform 3s cubic-bezier(0.1, 0.7, 0.1, 1)' : 'none'
-                    }}
-                >
-                    {tracks.map((track, index) => (
-                        <div 
-                            key={track.id} 
-                            className={`${styles.trackCard} ${styles[track.className]} ${index % 2 !== 0 ? styles.trackCardEven : styles.trackCardOdd}`}
-                        >
-                            {track.text}
-                        </div>
-                    ))}
-                </div>
-            </div>
+			{phase === 'result' ? (
+				<section className={styles.result}>
+					<div className={styles.burstWrap}>
+						<div className={styles.burst} aria-hidden="true" />
+						<div className={`${styles.ticket} ${styles.ticket20} ${styles.resultTicket}`}>
+							<span>{prize}%</span>
+						</div>
+					</div>
 
-            <div className={styles.bottomBar}>
-                <button 
-                    className={`${styles.buyBtn} ${isPlaying ? styles.buyBtnDisabled : ''}`} 
-                    onClick={startGame}
-                    disabled={isPlaying || gifts === 0}
-                >
-                    Купи ТИТР
-                </button>
-                <div className={styles.giftStatus}>
-                    <span>{gifts}</span> 🎁
-                </div>
-            </div>
+					<p className={styles.resultTitle}>
+						Поздравляем! Вы выиграли {prize}% скидку на покупку следующих билетов
+					</p>
+					<p className={styles.resultHint}>Вы можете применить её в любое время до 31.12.2026</p>
 
-            {/* Экран отображения результатов игры */}
-            <div className={`${styles.resultScreen} ${showResult ? styles.resultScreenVisible : ''}`}>
-                <div className={styles.resultBg}></div>
-                
-                <div className={styles.resultNav}>
-                    <div className={styles.backBtn} onClick={handleClaim}>‹</div>
-                </div>
-                
-                <div className={styles.resultContent} style={{ flex: 1, justifyContent: 'center', marginTop: '-50px' }}>
-                    <div className={styles.starburst}></div>
-                    <div className={styles.resultCard}>
-                        <div className={styles.resultDiscount}>{wonDiscount}</div>
-                    </div>
-                    
-                    <p className={styles.resultText} style={{ marginTop: '10px' }}>
-                        Поздравляем! Вы выиграли {wonDiscount} скидку на покупку следующих билетов
-                    </p>
-                    <p className={styles.resultText} style={{ fontSize: '14px', opacity: 0.8 }}>
-                        Вы можете применить её в любое время до 31.12.2026
-                    </p>
-                    
-                    <button className={styles.claimBtn} onClick={handleClaim} style={{ justifyContent: 'center' }}>
-                        Забрать скидку
-                    </button>
-                </div>
-            </div>
-        </div>
-    );
+					<button
+						type="button"
+						className={`${styles.spinBtn} ${balance < 1 ? styles.spinBtnDisabled : ''}`}
+						onClick={() => {
+							setPhase('idle');
+							setOffset(0);
+							if (balance >= 1) {
+								window.setTimeout(handleSpin, 50);
+							}
+						}}
+					>
+						<span>Крутить ещё раз</span>
+						<div className={styles.spinBadge}>
+							<span>{balance}</span>
+							<Gift size={16} strokeWidth={2.2} />
+						</div>
+					</button>
+				</section>
+			) : (
+				<section className={styles.sheet}>
+					<div className={styles.gameHeader}>
+						<button type="button" className={styles.backBtn} aria-label="Назад" onClick={handleBack}>
+							<ChevronLeft size={24} />
+						</button>
+
+						<div className={styles.giftBadge}>
+							<span>{balance}</span>
+							<Gift size={18} strokeWidth={2.2} />
+						</div>
+
+						<div className={styles.headerRight}>
+							<button type="button" className={styles.iconBtn} aria-label="Инвентарь">
+								<Package size={18} />
+							</button>
+							<button type="button" className={styles.iconBtn} aria-label="Помощь" onClick={() => setHelpOpen(true)}>
+								<HelpCircle size={18} />
+							</button>
+						</div>
+					</div>
+
+					<div className={`${styles.stage} ${phase === 'spinning' ? styles.stageSpinning : ''}`}>
+						{phase === 'spinning' && (
+							<>
+								<div className={`${styles.pointer} ${styles.pointerLeft}`} aria-hidden="true" />
+								<div className={`${styles.pointer} ${styles.pointerRight}`} aria-hidden="true" />
+							</>
+						)}
+
+						{phase === 'idle' ? (
+							<div className={styles.idleStack}>
+								{PRIZES.map((value) => (
+									<Ticket key={value} value={value} />
+								))}
+							</div>
+						) : (
+							<div className={styles.viewport} style={{ height: VIEWPORT_HEIGHT }}>
+								<div
+									className={styles.reel}
+									style={{
+										transform: `translateY(${centerPad - offset}px)`,
+									}}
+								>
+									{reel.map((value, index) => (
+										<Ticket key={`${value}-${index}`} value={value} />
+									))}
+								</div>
+							</div>
+						)}
+					</div>
+
+					<div className={styles.footer}>
+						<button
+							type="button"
+							className={`${styles.spinBtn} ${phase === 'spinning' ? styles.spinBtnBusy : ''} ${balance < 1 ? styles.spinBtnDisabled : ''}`}
+							onClick={handleSpin}
+							disabled={phase === 'spinning' || balance < 1}
+						>
+							<span>Крутить</span>
+							<div className={styles.spinBadge}>
+								<span>{Math.max(balance, 0)}</span>
+								<Gift size={16} strokeWidth={2.2} />
+							</div>
+						</button>
+					</div>
+				</section>
+			)}
+
+			{helpOpen && (
+				<div className={styles.overlay} role="dialog" aria-modal="true" aria-labelledby="help-title">
+					<div className={styles.modal}>
+						<h2 id="help-title">Как играть</h2>
+						<p>Нажмите «Крутить», чтобы потратить 1 подарок и выиграть скидку 10%, 15% или 20%.</p>
+						<button type="button" onClick={() => setHelpOpen(false)}>
+							Понятно
+						</button>
+					</div>
+				</div>
+			)}
+		</div>
+	);
 }
