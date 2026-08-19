@@ -170,7 +170,46 @@ export function createTicketDataFromOffer(offer: AiAgentOfferCard): TicketData {
 export function decodeTicketBarcode(value: string): TicketData | null {
 	try {
 		const parsed = parseCompactBarcode(value.trim());
-		if (!parsed) return null;
+		
+		// If the barcode is not in our format, generate demo data for any QR code
+		if (!parsed) {
+			// Generate demo ticket data for any scanned QR code
+			const pnr = generatePNR();
+			const seatNumber = generateSeatNumber();
+			const eTicketNumber = '643' + Math.floor(Math.random() * 1_000_000_000_000).toString().padStart(13, '0');
+			const flightNumber = generateFlightNumber({ kind: 'rail' } as any);
+			
+			// Demo route: Moscow to St Petersburg
+			const fromCode = 'MOW';
+			const toCode = 'LED';
+			const fromAirport = mapAirport(fromCode);
+			const toAirport = mapAirport(toCode);
+			
+			// Demo times
+			const departureTime = '18:15';
+			const arrivalTime = '19:40';
+			const duration = '1 ч 25 мин';
+			
+			return {
+				barcodeValue: value,
+				pnr,
+				eTicketNumber,
+				seatNumber,
+				flightNumber,
+				
+				fromCode,
+				fromCity: fromAirport?.city ?? 'Москва',
+				toCode,
+				toCity: toAirport?.city ?? 'Санкт-Петербург',
+				departureTime,
+				arrivalTime,
+				duration,
+				
+				title: 'Эконом',
+				price: '16 829 ₽',
+				kind: 'rail',
+			};
+		}
 
 		const fromAirport = mapAirport(parsed.fromCode);
 		const toAirport = mapAirport(parsed.toCode);
