@@ -1,85 +1,78 @@
 .appContainer {
-    width: 100%;
-    max-width: 393px;
+    width: 393px;
+    height: 852px;
     margin: 0 auto;
-    height: 100vh;
     background-color: #A181FF;
     position: relative;
     overflow: hidden;
+    border-radius: 40px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.5);
     display: flex;
     flex-direction: column;
 }
 
-.topBar {
-    padding: 20px;
+/* Top Nav Area */
+.navContainer {
     display: flex;
     justify-content: space-between;
-    align-items: center;
+    align-items: flex-start;
+    padding: 30px 20px 0;
     z-index: 10;
 }
 
-.iconBtn {
-    width: 40px;
-    height: 40px;
-    background-color: #262122;
+.backBtn {
+    width: 45px;
+    height: 45px;
+    background-color: #6E44FF;
     border-radius: 50%;
     display: flex;
     justify-content: center;
     align-items: center;
     color: #FFFFFF;
-    font-size: 18px;
+    font-size: 24px;
     cursor: pointer;
-}
-
-.navContainer {
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-start;
-    padding: 0 20px;
-    z-index: 10;
 }
 
 .giftBadge {
     background-color: #D0FF1A;
     color: #222222;
-    padding: 8px 16px;
-    border-radius: 20px;
-    font-weight: bold;
+    padding: 10px 25px;
+    border-radius: 30px;
+    font-weight: 900;
+    font-size: 18px;
     display: flex;
     align-items: center;
-    gap: 5px;
-    box-shadow: 0 4px 10px rgba(208, 255, 26, 0.3);
-    transition: all 0.3s;
+    gap: 8px;
+    box-shadow: 0 4px 15px rgba(208, 255, 26, 0.4);
 }
 
 .actionBtns {
     display: flex;
     flex-direction: column;
-    gap: 10px;
+    gap: 15px;
 }
 
 .actionBtn {
     width: 45px;
     height: 45px;
-    background-color: #6234EC;
+    background-color: #6E44FF;
     border-radius: 50%;
     display: flex;
     justify-content: center;
     align-items: center;
     color: #FFFFFF;
     font-size: 20px;
-    box-shadow: 0 4px 10px rgba(0,0,0,0.2);
     cursor: pointer;
 }
 
+/* Game Area */
 .gameArea {
     flex: 1;
     position: relative;
     overflow: hidden;
-    margin-top: 20px;
     display: flex;
     justify-content: center;
-    align-items: flex-start;
+    margin-top: 20px;
 }
 
 .trackContainer {
@@ -88,43 +81,46 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 15px;
+    gap: 20px;
+    transition: transform 3s cubic-bezier(0.1, 0.7, 0.1, 1);
 }
 
 .trackCard {
-    width: 80%;
-    height: 120px;
-    border-radius: 30px;
+    width: 85%;
+    height: 130px;
+    border-radius: 25px;
     display: flex;
     justify-content: center;
     align-items: center;
-    font-size: 48px;
+    font-size: 60px;
     font-weight: 900;
     font-style: italic;
     position: relative;
-    box-shadow: 0 8px 15px rgba(0,0,0,0.1);
-    flex-shrink: 0;
+    box-shadow: 0 10px 20px rgba(0,0,0,0.1);
 }
 
+/* Tails */
 .trackCard::after {
     content: '';
     position: absolute;
-    bottom: -15px;
-    right: 40px;
-    width: 30px;
-    height: 30px;
+    bottom: -10px;
+    width: 25px;
+    height: 25px;
     background: inherit;
-    border-radius: 15px;
+    border-radius: 50%;
     z-index: -1;
 }
 
 .trackCardEven::after {
-    right: auto;
     left: 40px;
 }
 
+.trackCardOdd::after {
+    right: 40px;
+}
+
 .card1 {
-    background: linear-gradient(135deg, #D0FF1A 0%, #6234EC 100%);
+    background: linear-gradient(135deg, #D0FF1A 0%, #6E44FF 100%);
     color: #FFFFFF;
 }
 
@@ -143,59 +139,58 @@
     top: 50%;
     transform: translateY(-50%);
     width: 100%;
-    display: flex;
+    display: none;
     justify-content: space-between;
     pointer-events: none;
     z-index: 5;
-    opacity: 0;
-    transition: opacity 0.3s;
 }
 
 .navArrowsVisible {
-    opacity: 1;
+    display: flex;
 }
 
 .arrow {
     width: 0;
     height: 0;
-    border-top: 25px solid transparent;
-    border-bottom: 25px solid transparent;
+    border-top: 30px solid transparent;
+    border-bottom: 30px solid transparent;
+    filter: drop-shadow(0 4px 6px rgba(0,0,0,0.3));
 }
 
 .arrowLeft {
-    border-right: 40px solid #D0FF1A;
+    border-right: 45px solid #FF6E1A;
+    margin-left: -5px;
 }
 
 .arrowRight {
-    border-left: 40px solid #D0FF1A;
+    border-left: 45px solid #FF6E1A;
+    margin-right: -5px;
 }
 
+/* Bottom Bar */
 .bottomBar {
-    padding: 30px 20px;
+    padding: 20px;
     display: flex;
     justify-content: space-between;
     align-items: center;
     z-index: 10;
+    padding-bottom: 40px;
 }
 
 .buyBtn {
     background-color: #FF6E1A;
     color: #FFFFFF;
-    padding: 15px 30px;
-    border-radius: 30px;
-    font-size: 18px;
-    font-weight: bold;
+    padding: 20px;
+    border-radius: 35px;
+    font-size: 20px;
+    font-weight: 900;
     border: none;
     cursor: pointer;
-    box-shadow: 0 5px 15px rgba(255, 110, 26, 0.4);
     flex: 1;
     margin-right: 15px;
     text-transform: uppercase;
-    transition: transform 0.1s, opacity 0.3s;
-}
-
-.buyBtn:active {
-    transform: scale(0.95);
+    box-shadow: 0 8px 20px rgba(255, 110, 26, 0.4);
+    transition: opacity 0.3s;
 }
 
 .buyBtnDisabled {
@@ -206,106 +201,151 @@
 .giftStatus {
     background-color: #D0FF1A;
     color: #222222;
-    padding: 15px 25px;
+    padding: 20px 25px;
     border-radius: 30px;
-    font-weight: bold;
+    font-weight: 900;
     font-size: 18px;
     display: flex;
     align-items: center;
     gap: 10px;
-    transition: all 0.3s;
 }
 
+/* Result Screen */
 .resultScreen {
     position: absolute;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
-    background-color: #A181FF;
-    background-image: radial-gradient(circle at 50% 50%, #7B5CD6 0%, transparent 80%);
-    display: flex;
+    background-color: #9A7BFF;
+    display: none;
     flex-direction: column;
     justify-content: center;
     align-items: center;
     z-index: 20;
     padding: 20px;
-    opacity: 0;
-    pointer-events: none;
-    transition: opacity 0.5s;
 }
 
 .resultScreenVisible {
-    opacity: 1;
-    pointer-events: auto;
+    display: flex;
 }
 
-.stars {
+/* Squiggly lines background */
+.resultBg {
     position: absolute;
+    top: 0;
+    left: 0;
     width: 100%;
     height: 100%;
+    z-index: 1;
+    opacity: 0.3;
     pointer-events: none;
+    background-image: url('data:image/svg+xml;utf8,<svg viewBox="0 0 400 800" xmlns="http://www.w3.org/2000/svg"><path d="M0 100 Q 100 50, 200 150 T 400 100 M 0 300 Q 100 250, 200 350 T 400 300 M 0 500 Q 100 450, 200 550 T 400 500 M 0 700 Q 100 650, 200 750 T 400 700" fill="none" stroke="black" stroke-width="2"/></svg>');
+    background-size: cover;
 }
 
-.star {
+.resultContent {
+    z-index: 2;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+}
+
+/* Starburst */
+.starburst {
     position: absolute;
-    color: #D0FF1A;
-    font-size: 30px;
-    animation: twinkle 1s infinite alternate;
+    top: 20%;
+    width: 300px;
+    height: 300px;
+    background-color: #D0FF1A;
+    clip-path: polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%);
+    z-index: 2;
+    animation: spin 20s linear infinite;
 }
 
-@keyframes twinkle {
-    0% { transform: scale(0.8); opacity: 0.5; }
-    100% { transform: scale(1.2); opacity: 1; }
+@keyframes spin {
+    100% { transform: rotate(360deg); }
 }
 
+/* Ticket Card */
 .resultCard {
     background-color: #FF6E1A;
-    width: 250px;
-    height: 300px;
-    border-radius: 30px;
+    width: 220px;
+    height: 140px;
+    border-radius: 20px;
     display: flex;
     justify-content: center;
     align-items: center;
-    flex-direction: column;
     box-shadow: 0 15px 35px rgba(255, 110, 26, 0.5);
-    margin-bottom: 30px;
-    animation: popIn 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
     position: relative;
+    z-index: 3;
+    margin-top: 100px;
+    margin-bottom: 40px;
+    /* Cutouts for ticket shape */
+    mask-image: radial-gradient(circle at 0% 50%, transparent 15px, black 16px), radial-gradient(circle at 100% 50%, transparent 15px, black 16px);
+    mask-size: 51% 100%;
+    mask-repeat: no-repeat;
+    mask-position: left center, right center;
+    -webkit-mask-image: radial-gradient(circle at 0% 50%, transparent 15px, black 16px), radial-gradient(circle at 100% 50%, transparent 15px, black 16px);
+    -webkit-mask-size: 51% 100%;
+    -webkit-mask-repeat: no-repeat;
+    -webkit-mask-position: left center, right center;
 }
 
-@keyframes popIn {
-    0% { transform: scale(0); }
-    100% { transform: scale(1); }
+.resultCard::after {
+    /* The dashed line */
+    content: '';
+    position: absolute;
+    right: 35px;
+    top: 10%;
+    height: 80%;
+    width: 2px;
+    border-left: 3px dashed rgba(255,255,255,0.5);
 }
 
 .resultDiscount {
     color: #FFFFFF;
-    font-size: 80px;
+    font-size: 70px;
     font-weight: 900;
     font-style: italic;
+    z-index: 4;
+    margin-right: 20px;
 }
 
 .resultText {
     color: #FFFFFF;
-    font-size: 20px;
+    font-size: 18px;
     font-weight: bold;
     text-align: center;
     margin-bottom: 20px;
+    max-width: 280px;
+    line-height: 1.4;
+    z-index: 3;
 }
 
 .claimBtn {
-    background-color: #D0FF1A;
-    color: #222222;
-    padding: 15px 40px;
-    border-radius: 30px;
+    background-color: #FF6E1A;
+    color: #FFFFFF;
+    padding: 18px 30px;
+    border-radius: 35px;
     font-size: 18px;
-    font-weight: bold;
+    font-weight: 900;
     border: none;
     cursor: pointer;
-    box-shadow: 0 5px 15px rgba(208, 255, 26, 0.4);
-    width: 100%;
-    max-width: 300px;
-    margin-top: auto;
-    margin-bottom: 40px;
+    box-shadow: 0 5px 15px rgba(255, 110, 26, 0.4);
+    width: 80%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    z-index: 3;
+    margin-top: 20px;
+}
+
+.claimBtn .giftBadge {
+    background-color: #D0FF1A;
+    padding: 5px 15px;
+    font-size: 16px;
+    box-shadow: none;
+    color: #222222;
 }

@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { ChevronLeft, Gift, HelpCircle, Settings, Search, Camera, Bell, Mail } from 'lucide-react';
+import { Gift } from 'lucide-react';
 import styles from './mini-game.module.css';
 
 const DISCOUNTS = ['10%', '15%', '20%'];
@@ -56,16 +56,14 @@ export function MiniGameScreen() {
         const targetIndex = 20 + Math.floor(Math.random() * 5);
         const targetCard = tracks[targetIndex];
         
-        // Оценочная высота игровой зоны (в браузере мобильном около 600px)
-        const containerHeight = window.innerHeight * 0.6; 
-        const offset = - (targetIndex * 135) + (containerHeight / 2) - 60;
+        // Оценочная высота игровой зоны
+        const containerHeight = window.innerHeight > 0 ? window.innerHeight : 852;
+        const offset = - (targetIndex * 150) + (containerHeight / 2) - 65;
         
         setOffsetY(offset);
 
         setTimeout(() => {
-            const finalDiscount = targetCard.text.includes('/') 
-                ? targetCard.text.split('/')[1] 
-                : targetCard.text;
+            const finalDiscount = targetCard.text;
             
             setWonDiscount(finalDiscount);
             setShowResult(true);
@@ -73,36 +71,29 @@ export function MiniGameScreen() {
     };
 
     const handleClaim = () => {
-        alert('Скидка успешно добавлена!');
-        
         setShowResult(false);
         setIsPlaying(false);
         setGifts(1);
         
         initTracks();
+        
+        // Маленькая задержка для включения транзишена
+        setTimeout(() => {
+            setUseTransition(true);
+        }, 50);
     };
 
     return (
         <div className={styles.appContainer}>
-            {/* Верхушка */}
-            <div className={styles.topBar}>
-                <div className={styles.iconBtn}><Settings size={20} /></div>
-                <div className={styles.iconBtn}><Search size={20} /></div>
-                <div className={styles.iconBtn}><Camera size={20} /></div>
-                <div className={styles.iconBtn}><Bell size={20} /></div>
-            </div>
-
+            {/* Навигационная панель (Фиолетовый фон) */}
             <div className={styles.navContainer}>
-                <div className={styles.iconBtn} style={{ backgroundColor: '#6234EC' }} onClick={handleBack}>
-                    <ChevronLeft size={24} />
-                </div>
+                <div className={styles.backBtn} onClick={handleBack}>‹</div>
                 <div className={styles.giftBadge}>
-                    <span>{gifts}</span>
-                    <Gift size={18} fill="currentColor" />
+                    <span>{gifts}</span> 🎁
                 </div>
                 <div className={styles.actionBtns}>
-                    <div className={styles.actionBtn}><Mail size={20} /></div>
-                    <div className={styles.actionBtn}><HelpCircle size={20} /></div>
+                    <div className={styles.actionBtn}>✉</div>
+                    <div className={styles.actionBtn}>?</div>
                 </div>
             </div>
 
@@ -123,7 +114,7 @@ export function MiniGameScreen() {
                     {tracks.map((track, index) => (
                         <div 
                             key={track.id} 
-                            className={`${styles.trackCard} ${styles[track.className]} ${index % 2 !== 0 ? styles.trackCardEven : ''}`}
+                            className={`${styles.trackCard} ${styles[track.className]} ${index % 2 !== 0 ? styles.trackCardEven : styles.trackCardOdd}`}
                         >
                             {track.text}
                         </div>
@@ -140,31 +131,34 @@ export function MiniGameScreen() {
                     Купи ТИТР
                 </button>
                 <div className={styles.giftStatus}>
-                    <span>{gifts}</span>
-                    <Gift size={18} fill="currentColor" />
+                    <span>{gifts}</span> 🎁
                 </div>
             </div>
 
-            {/* Экран выигрыша */}
+            {/* Экран отображения результатов игры */}
             <div className={`${styles.resultScreen} ${showResult ? styles.resultScreenVisible : ''}`}>
-                <div className={styles.stars}>
-                    <div className={styles.star} style={{ top: '20%', left: '15%' }}>★</div>
-                    <div className={styles.star} style={{ top: '15%', right: '20%', animationDelay: '0.3s' }}>★</div>
-                    <div className={styles.star} style={{ top: '60%', left: '10%', animationDelay: '0.6s' }}>★</div>
-                    <div className={styles.star} style={{ top: '70%', right: '15%', animationDelay: '0.9s' }}>★</div>
-                </div>
+                <div className={styles.resultBg}></div>
                 
-                <h2 className={styles.resultText}>Поздравляем!</h2>
-                
-                {showResult && (
+                <div className={styles.resultContent}>
+                    <div className={styles.starburst}></div>
                     <div className={styles.resultCard}>
                         <div className={styles.resultDiscount}>{wonDiscount}</div>
                     </div>
-                )}
-                
-                <p className={styles.resultText} style={{ fontSize: '16px', marginTop: '10px' }}>Вы выиграли скидку на покупку ТИТР</p>
-                
-                <button className={styles.claimBtn} onClick={handleClaim}>Круто!</button>
+                    
+                    <p className={styles.resultText} style={{ marginTop: '10px' }}>
+                        Поздравляем! Вы выиграли {wonDiscount} скидку на покупку следующих билетов
+                    </p>
+                    <p className={styles.resultText} style={{ fontSize: '14px', opacity: 0.8 }}>
+                        Вы можете применить её в любое время до 31.12.2026
+                    </p>
+                    
+                    <button className={styles.claimBtn} onClick={handleClaim}>
+                        Крутить ещё раз
+                        <div className={styles.giftBadge} style={{ backgroundColor: '#D0FF1A', padding: '5px 15px', fontSize: '16px', color: '#222222', boxShadow: 'none' }}>
+                            0 🎁
+                        </div>
+                    </button>
+                </div>
             </div>
         </div>
     );
