@@ -7,7 +7,7 @@ import styles from './BottomNav.module.css';
 
 const NAV_ITEMS = [
 	{ href: '/', icon: homeIcon, label: 'Главная' },
-	{ href: '/profile', icon: profileIcon, label: 'Профиль' },
+	{ href: '/ai-agent', icon: profileIcon, label: 'Агент' },
 	{ href: '/map', icon: mapsIcon, label: 'Карты' },
 	{ href: '/chats', icon: chatsIcon, label: 'Чаты' },
 	{ href: '/stats', icon: statsIcon, label: 'Статистика' },

@@ -145,6 +145,14 @@ export function MapScreen() {
 					))}
 				</div>
 
+				<div className={styles.askAgentContainer}>
+					<a href="/ai-agent" className={styles.askAgentButton}>
+						Спросить у агента
+					</a>
+					<div className={styles.askAgentConnector} />
+					<div className={styles.askAgentIndicator} />
+				</div>
+
 				{!mapReady && (
 					<div className={styles.locationMarker} aria-hidden="true">
 						<span className={styles.locationMarkerPulse} />

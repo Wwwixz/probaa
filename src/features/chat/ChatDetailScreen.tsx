@@ -4,7 +4,7 @@ import { ArrowLeft, Phone, Mic, Paperclip, Send } from 'lucide-react';
 import avatarPlaceholder from '../../assets/images/avatars/avatar-3.jpg';
 import myAvatar from '../../assets/images/avatars/avatar-2.jpg';
 import { Header } from '../../widgets/header/Header';
-import type { Chat } from '../../entities/chat/mockChats';
+import type { Chat, ChatMessage } from '../../entities/chat/mockChats';
 import styles from './chat.module.css';
 
 interface ChatDetailScreenProps {
@@ -21,7 +21,7 @@ interface ChatDetailScreenProps {
  * docs/ARCHITECTURE.md, раздел про чат).
  */
 export function ChatDetailScreen({ chat }: ChatDetailScreenProps) {
-	const [messages, setMessages] = useState(chat.messages);
+	const [messages, setMessages] = useState<ChatMessage[]>(chat.messages);
 	const [draft, setDraft] = useState('');
 
 	function handleSend(event: FormEvent) {
@@ -33,7 +33,7 @@ export function ChatDetailScreen({ chat }: ChatDetailScreenProps) {
 			{
 				id: String(prev.length + 1),
 				author: 'me',
-				text: draft.trim(),
+				content: { kind: 'text', text: draft.trim() },
 				time: 'сейчас',
 			},
 		]);
@@ -69,11 +69,37 @@ export function ChatDetailScreen({ chat }: ChatDetailScreenProps) {
 
 				<div className={styles.messagesList}>
 					{messages.map((message) => (
-						<div key={message.id} className={styles.messageRow}>
-							<div className={styles.messageBubble}>
-								<span className={styles.messageText}>{message.text}</span>
-								<span className={styles.messageTime}>{message.time}</span>
-							</div>
+						<div
+							key={message.id}
+							className={`${styles.messageRow} ${
+								message.author === 'me' ? styles.messageRowMe : styles.messageRowThem
+							}`}
+						>
+							{message.author === 'them' && (
+								<img src={avatarPlaceholder.src} alt="" className={styles.messageAvatar} />
+							)}
+							{message.content.kind === 'text' && (
+								<div
+									className={`${styles.messageBubble} ${
+										message.author === 'me' ? styles.messageBubbleMe : styles.messageBubbleThem
+									}`}
+								>
+									<span
+										className={`${styles.messageText} ${
+											message.author === 'me' ? styles.messageTextMe : styles.messageTextThem
+										}`}
+									>
+										{message.content.text}
+									</span>
+									<span
+										className={`${styles.messageTime} ${
+											message.author === 'me' ? styles.messageTimeMe : styles.messageTimeThem
+										}`}
+									>
+										{message.time}
+									</span>
+								</div>
+							)}
 							{message.author === 'me' && (
 								<img src={myAvatar.src} alt="" className={styles.messageAvatar} />
 							)}

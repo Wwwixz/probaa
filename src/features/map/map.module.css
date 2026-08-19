@@ -1,140 +1,194 @@
 .mapWrap {
-  position: relative;
-  width: 100%;
-  height: calc(100vh - 76px);
-  overflow: hidden;
+    position: relative;
+    width: 100%;
+    height: calc(100vh - 56px);
+    overflow: hidden;
 }
 
 .mapContainer {
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
 }
 
 .mapImage {
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  display: block;
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
 }
 
 .mapKeyWarning {
-  position: absolute;
-  bottom: 16px;
-  left: 50%;
-  transform: translateX(-50%);
-  z-index: 5;
-  background: rgba(0, 0, 0, 0.8);
-  color: #fff;
-  font-size: 11px;
-  padding: 6px 12px;
-  border-radius: 999px;
-  white-space: nowrap;
+    position: absolute;
+    bottom: 16px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 5;
+    background: rgba(0, 0, 0, 0.8);
+    color: #fff;
+    font-size: 11px;
+    padding: 6px 12px;
+    border-radius: 999px;
+    white-space: nowrap;
 }
 
 .locationPill {
-  position: absolute;
-  top: 16px;
-  left: 50%;
-  transform: translateX(-50%);
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  background: rgba(38, 33, 34, 0.85);
-  color: var(--color-brand-orange);
-  font-size: 13px;
-  font-weight: 600;
-  padding: 6px 14px;
-  border-radius: 999px;
+    position: absolute;
+    top: 16px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    background: rgba(38, 33, 34, 0.85);
+    color: var(--color-brand-orange);
+    font-size: 13px;
+    font-weight: 600;
+    padding: 6px 14px;
+    border-radius: 999px;
 }
 
 .zoomControls {
-  position: absolute;
-  left: 16px;
-  bottom: 140px;
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
+    position: absolute;
+    left: 16px;
+    bottom: 380px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
 }
 
 .mapControlButton {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 36px;
-  height: 36px;
-  border-radius: 999px;
-  border: 0;
-  background: rgba(255, 255, 255, 0.9);
-  color: var(--color-ink);
-  cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 36px;
+    height: 36px;
+    border-radius: 999px;
+    border: 0;
+    background: rgba(255, 255, 255, 0.9);
+    color: var(--color-ink);
+    cursor: pointer;
 }
 
 .viewModeSwitcher {
-  position: absolute;
-  right: 16px;
-  top: 50%;
-  transform: translateY(-50%);
-  display: flex;
-  flex-direction: column;
-  background: rgba(38, 33, 34, 0.85);
-  border-radius: 999px;
-  overflow: hidden;
+    position: absolute;
+    right: 16px;
+    top: 50%;
+    transform: translateY(-50%);
+    display: flex;
+    flex-direction: column;
+    background: rgba(38, 33, 34, 0.85);
+    border-radius: 999px;
+    overflow: hidden;
 }
 
 .viewModeButton {
-  border: 0;
-  background: transparent;
-  color: rgba(255, 255, 255, 0.6);
-  font-size: 11px;
-  font-weight: 600;
-  padding: 10px 12px;
-  cursor: pointer;
+    border: 0;
+    background: transparent;
+    color: rgba(255, 255, 255, 0.6);
+    font-size: 11px;
+    font-weight: 600;
+    padding: 10px 12px;
+    cursor: pointer;
 }
 
 .viewModeButtonActive {
-  color: #ffffff;
-  background: rgba(255, 255, 255, 0.15);
+    color: #ffffff;
+    background: rgba(255, 255, 255, 0.15);
 }
 
 .locationMarker {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  display: flex;
-  align-items: center;
-  justify-content: center;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .locationMarkerDot {
-  width: 20px;
-  height: 20px;
-  border-radius: 999px;
-  background: var(--color-brand-lime);
-  border: 3px solid var(--color-ink);
+    width: 20px;
+    height: 20px;
+    border-radius: 999px;
+    background: var(--color-brand-lime);
+    border: 3px solid var(--color-ink);
 }
 
 .locationMarkerPulse {
-  position: absolute;
-  width: 20px;
-  height: 20px;
-  border-radius: 999px;
-  background: var(--color-brand-lime);
-  opacity: 0.4;
-  animation: locationPulse 2s ease-out infinite;
+    position: absolute;
+    width: 20px;
+    height: 20px;
+    border-radius: 999px;
+    background: var(--color-brand-lime);
+    opacity: 0.4;
+    animation: locationPulse 2s ease-out infinite;
+}
+
+.askAgentContainer {
+    position: absolute;
+    bottom: 105px;
+    left: 47%;
+    transform: translateX(-50%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    z-index: 20;
+}
+
+.askAgentButton {
+    background: #ffffff;
+    color: #7C7CF5;
+    font-size: 13px;
+    font-weight: 500;
+    padding: 8px 16px;
+    border-radius: 12px;
+    border: 0;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.12);
+    cursor: pointer;
+    white-space: nowrap;
+    position: relative;
+    text-decoration: none;
+}
+
+.askAgentButton::after {
+    content: "";
+    position: absolute;
+    bottom: -6px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 0;
+    height: 0;
+    border-left: 6px solid transparent;
+    border-right: 6px solid transparent;
+    border-top: 6px solid #ffffff;
+}
+
+.askAgentConnector {
+    width: 1px;
+    height: 16px;
+    border-left: 1px dashed rgba(124, 124, 245, 0.5);
+    margin: 0;
+}
+
+.askAgentIndicator {
+    width: 12px;
+    height: 6px;
+    background: #7C7CF5;
+    border-radius: 2px;
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
 }
 
 @keyframes locationPulse {
-  0% {
-    transform: scale(1);
-    opacity: 0.4;
-  }
-  100% {
-    transform: scale(2.5);
-    opacity: 0;
-  }
+    0% {
+        transform: scale(1);
+        opacity: 0.4;
+    }
+    100% {
+        transform: scale(2.5);
+        opacity: 0;
+    }
 }
