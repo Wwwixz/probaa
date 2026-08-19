@@ -102,8 +102,19 @@ class MemoryDb {
 				fields: [],
 			};
 		}
+		if (/UPDATE\s+users/i.test(text) && /password_hash/i.test(text)) {
+			const nextHash = String(params[0] ?? '');
+			const userId = Number(params[1]);
+			const user = inMemoryState.users.get(userId);
+			if (user) {
+				user.password_hash = nextHash;
+				inMemoryState.users.set(userId, user);
+				return { rows: [], rowCount: 1, command: 'UPDATE', oid: 0, fields: [] };
+			}
+			return { rows: [], rowCount: 0, command: 'UPDATE', oid: 0, fields: [] };
+		}
 		// SELECT users by email
-		if (/SELECT.*FROM users.*WHERE email/i.test(text)) {
+		if (/SELECT[\s\S]*FROM\s+users[\s\S]*WHERE\s+email/i.test(text)) {
 			const email = String(params[0] ?? '').trim().toLowerCase();
 			const id = inMemoryState.emailToId.get(email);
 			const rows: R[] = [];
@@ -136,7 +147,7 @@ class MemoryDb {
 			return { rows: [], rowCount: 1, command: 'INSERT', oid: 0, fields: [] };
 		}
 		// SELECT sessions by token_hash + expires
-		if (/SELECT.*FROM sessions/i.test(text) && /token_hash/i.test(text)) {
+		if (/SELECT[\s\S]*FROM\s+sessions/i.test(text) && /token_hash/i.test(text)) {
 			const tokenHash = String(params[0] ?? '');
 			const sid = inMemoryState.tokenToId.get(tokenHash);
 			const rows: R[] = [];
@@ -186,6 +197,11 @@ async function tryCreatePool() {
 	}
 }
 
+function isPgConnectionError(error: unknown) {
+	const code = (error as { code?: string }).code;
+	return code === 'ECONNREFUSED' || code === 'ENOTFOUND' || code === 'ETIMEDOUT' || code === '57P01';
+}
+
 export const db = new Proxy(fallbackDb as unknown as Pool, {
 	get(_target, prop, _receiver) {
 		if (prop === 'query') {
@@ -194,6 +210,9 @@ export const db = new Proxy(fallbackDb as unknown as Pool, {
 					try {
 						return await (pgPool.query as MemoryDb['query'])(...args);
 					} catch (pgError) {
+						if (!isPgConnectionError(pgError)) {
+							throw pgError;
+						}
 						console.warn('[db] Ошибка Postgres, fallback in-memory:', (pgError as Error).message);
 					}
 				}
@@ -225,8 +244,23 @@ async function runSchema() {
 					created_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
 				);
 			`);
+			await pgPool.query(`ALTER TABLE users ADD COLUMN IF NOT EXISTS password_hash TEXT;`);
+			await pgPool.query(`ALTER TABLE users ADD COLUMN IF NOT EXISTS display_name TEXT;`);
 			await pgPool.query(`CREATE INDEX IF NOT EXISTS sessions_user_id_idx ON sessions(user_id);`);
 			await pgPool.query(`CREATE INDEX IF NOT EXISTS sessions_expires_at_idx ON sessions(expires_at);`);
+
+			const seedEmail = 'test@tutu.ru';
+			const existing = await pgPool.query('SELECT id FROM users WHERE email = $1 LIMIT 1', [seedEmail]);
+			if (existing.rowCount === 0) {
+				const passwordHash = await hash('Test1234', 10);
+				await pgPool.query(
+					`
+						INSERT INTO users (email, password_hash, display_name)
+						VALUES ($1, $2, $3)
+					`,
+					[seedEmail, passwordHash, 'Linkirek24'],
+				);
+			}
 		} catch (error) {
 			console.error('[db] Ошибка инициализации схемы Postgres:', (error as Error).message);
 		}

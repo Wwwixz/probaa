@@ -90,23 +90,37 @@ export function TicketScanner({
 
 	return (
 		<div className={styles.scannerPage}>
+			<div className={styles.scannerHead}>
+				<p className={styles.scannerKicker}>Камера</p>
+				<h1 className={styles.scannerTitle}>Сканер билета</h1>
+			</div>
+
 			<div className={styles.scannerVideoWrap}>
 				<video ref={videoRef} className={styles.scannerVideo} muted playsInline />
 				<div className={styles.scannerOverlay} />
-				<div className={styles.scannerFrame} />
-				<div className={styles.scannerFrameInner} />
+				<div className={styles.scannerFrame} aria-hidden="true">
+					<span className={styles.scannerCorner} />
+					<span className={`${styles.scannerCorner} ${styles.scannerCornerTr}`} />
+					<span className={`${styles.scannerCorner} ${styles.scannerCornerBl}`} />
+					<span className={`${styles.scannerCorner} ${styles.scannerCornerBr}`} />
+					<span className={styles.scannerLaser} />
+				</div>
+				<div className={`${styles.scannerStatus} ${isScanning ? styles.scannerStatusLive : ''}`}>
+					<span className={styles.scannerStatusDot} />
+					{isScanning ? 'Ищу штрихкод' : 'Камера не активна'}
+				</div>
 			</div>
 
 			<div className={styles.scannerControls}>
 				{error && <div className={styles.scannerError}>{error}</div>}
 
 				<button type="button" className={styles.scannerButtonSecondary} onClick={onUseDemoTicket} disabled={!demoOffer}>
-					<ScanLine size={16} />
-					<span style={{ marginLeft: 8 }}>Показать билет из чата (демо)</span>
+					<ScanLine size={18} />
+					Показать билет из чата
 				</button>
 
 				<p className={styles.ticketScanHint}>
-					{isScanning ? 'Сканирую штрихкод…' : 'Наведи камеру на штрихкод. (Демо-вариант — кнопка ниже)'}
+					Наведи штрихкод в рамку. Для демо можно открыть билет из чата с агентом.
 				</p>
 			</div>
 		</div>

@@ -209,18 +209,40 @@
 }
 
 .ticketScanHint {
-	margin-top: 10px;
-	font-size: 12px;
-	color: rgba(255, 255, 255, 0.65);
+	margin: 2px 0 0;
+	font-size: 13px;
+	line-height: 1.4;
+	color: rgba(255, 255, 255, 0.58);
+	text-align: center;
 }
 
 .scannerPage {
 	min-height: calc(100vh - 56px);
-	background: #151515;
+	background: radial-gradient(circle at 50% 0%, #2a2240 0%, #121212 42%);
 	color: #ffffff;
-	padding: 16px;
-	padding-bottom: 120px;
+	padding: 8px 16px 120px;
 	box-sizing: border-box;
+}
+
+.scannerHead {
+	max-width: 420px;
+	margin: 0 auto 14px;
+}
+
+.scannerKicker {
+	margin: 0 0 2px;
+	font-size: 12px;
+	font-weight: 650;
+	letter-spacing: 0.08em;
+	text-transform: uppercase;
+	color: #a181ff;
+}
+
+.scannerTitle {
+	margin: 0;
+	font-size: 26px;
+	font-weight: 800;
+	letter-spacing: -0.04em;
 }
 
 .scannerVideoWrap {
@@ -228,23 +250,27 @@
 	width: 100%;
 	max-width: 420px;
 	margin: 0 auto;
-	background: rgba(255, 255, 255, 0.04);
-	border-radius: 24px;
+	background: #1a1a1a;
+	border-radius: 28px;
 	overflow: hidden;
-	border: 1px solid rgba(255, 255, 255, 0.08);
+	border: 1px solid rgba(161, 129, 255, 0.22);
+	box-shadow: 0 18px 40px rgba(0, 0, 0, 0.35);
 }
 
 .scannerVideo {
 	width: 100%;
-	height: 260px;
+	height: min(52vh, 420px);
+	min-height: 280px;
 	object-fit: cover;
 	display: block;
+	background: #111;
 }
 
 .scannerOverlay {
 	position: absolute;
 	inset: 0;
-	background: linear-gradient(to bottom, rgba(0, 0, 0, 0.0), rgba(0, 0, 0, 0.4));
+	background:
+		linear-gradient(180deg, rgba(18, 18, 18, 0.45) 0%, transparent 22%, transparent 78%, rgba(18, 18, 18, 0.55) 100%);
 	pointer-events: none;
 }
 
@@ -253,61 +279,156 @@
 	left: 50%;
 	top: 50%;
 	transform: translate(-50%, -50%);
-	width: 70%;
-	height: 46%;
-	border-radius: 18px;
-	border: 2px solid rgba(124, 124, 245, 0.9);
-	box-shadow: 0 0 0 9999px rgba(0, 0, 0, 0.35);
+	width: 78%;
+	height: 38%;
 	pointer-events: none;
 }
 
-.scannerFrameInner {
+.scannerCorner {
 	position: absolute;
-	left: 50%;
-	top: 50%;
-	transform: translate(-50%, -50%);
-	width: 70%;
-	height: 46%;
-	border-radius: 18px;
-	box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.2);
-	pointer-events: none;
+	top: 0;
+	left: 0;
+	width: 28px;
+	height: 28px;
+	border-top: 3px solid #d0ff1a;
+	border-left: 3px solid #d0ff1a;
+	border-radius: 10px 0 0 0;
+	box-shadow: 0 0 12px rgba(208, 255, 26, 0.35);
+}
+
+.scannerCornerTr {
+	left: auto;
+	right: 0;
+	border-left: 0;
+	border-right: 3px solid #d0ff1a;
+	border-radius: 0 10px 0 0;
+}
+
+.scannerCornerBl {
+	top: auto;
+	bottom: 0;
+	border-top: 0;
+	border-bottom: 3px solid #d0ff1a;
+	border-radius: 0 0 0 10px;
+}
+
+.scannerCornerBr {
+	top: auto;
+	left: auto;
+	right: 0;
+	bottom: 0;
+	border-top: 0;
+	border-left: 0;
+	border-right: 3px solid #d0ff1a;
+	border-bottom: 3px solid #d0ff1a;
+	border-radius: 0 0 10px 0;
+}
+
+.scannerLaser {
+	position: absolute;
+	left: 8%;
+	right: 8%;
+	height: 2px;
+	background: linear-gradient(90deg, transparent, #d0ff1a, transparent);
+	box-shadow: 0 0 12px rgba(208, 255, 26, 0.8);
+	animation: scannerSweep 1.8s ease-in-out infinite;
+}
+
+@keyframes scannerSweep {
+	0%, 100% { top: 12%; opacity: 0.35; }
+	50% { top: 82%; opacity: 1; }
+}
+
+.scannerStatus {
+	position: absolute;
+	left: 14px;
+	bottom: 14px;
+	display: inline-flex;
+	align-items: center;
+	gap: 8px;
+	padding: 7px 12px;
+	border-radius: 999px;
+	background: rgba(18, 18, 18, 0.72);
+	backdrop-filter: blur(8px);
+	font-size: 12px;
+	font-weight: 650;
+	color: rgba(255, 255, 255, 0.8);
+}
+
+.scannerStatusLive {
+	color: #d0ff1a;
+}
+
+.scannerStatusDot {
+	width: 8px;
+	height: 8px;
+	border-radius: 50%;
+	background: #6b6b6b;
+}
+
+.scannerStatusLive .scannerStatusDot {
+	background: #d0ff1a;
+	box-shadow: 0 0 8px rgba(208, 255, 26, 0.8);
+	animation: scannerPulse 1.2s ease-in-out infinite;
+}
+
+@keyframes scannerPulse {
+	0%, 100% { opacity: 1; }
+	50% { opacity: 0.35; }
 }
 
 .scannerControls {
 	max-width: 420px;
-	margin: 12px auto 0;
+	margin: 18px auto 0;
 	display: flex;
 	flex-direction: column;
-	gap: 10px;
+	gap: 12px;
 }
 
 .scannerButton {
 	border: 0;
-	border-radius: 18px;
-	padding: 12px 14px;
-	background: rgba(124, 124, 245, 0.22);
+	border-radius: 999px;
+	padding: 14px 16px;
+	background: #a181ff;
 	color: #ffffff;
 	font-weight: 700;
 	cursor: pointer;
 }
 
 .scannerButtonSecondary {
-	border: 1px solid rgba(255, 255, 255, 0.12);
-	border-radius: 18px;
-	padding: 12px 14px;
-	background: rgba(255, 255, 255, 0.06);
-	color: rgba(255, 255, 255, 0.86);
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	gap: 10px;
+	border: 0;
+	border-radius: 999px;
+	padding: 14px 16px;
+	background: #262122;
+	color: #ffffff;
+	font-size: 15px;
 	font-weight: 700;
+	font-family: inherit;
 	cursor: pointer;
+	box-shadow: 0 10px 24px rgba(0, 0, 0, 0.25);
+}
+
+.scannerButtonSecondary:disabled {
+	opacity: 0.45;
+	cursor: default;
+}
+
+.scannerButtonSecondary:not(:disabled):active {
+	transform: scale(0.98);
 }
 
 .scannerError {
-	color: rgba(255, 255, 255, 0.9);
-	background: rgba(255, 0, 0, 0.15);
-	border: 1px solid rgba(255, 0, 0, 0.3);
-	padding: 12px;
+	color: #ffd7d7;
+	background: rgba(229, 72, 77, 0.18);
+	border: 1px solid rgba(229, 72, 77, 0.35);
+	padding: 12px 14px;
 	border-radius: 16px;
 	font-size: 13px;
+	text-align: center;
 }
 
 .scannerInput {
@@ -318,5 +439,9 @@
 	color: #ffffff;
 	padding: 12px;
 	font-size: 14px;
+}
+
+.scannerFrameInner {
+	display: none;
 }
 

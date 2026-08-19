@@ -131,9 +131,39 @@ export async function authenticateUser(email: string, password: string) {
 		throw new AuthError('Неверный email или пароль.', 401);
 	}
 
-	const passwordMatches = await compare(normalized.password, user.password_hash);
+	const hashValue = typeof user.password_hash === 'string' ? user.password_hash.trim() : '';
+	const isBcryptHash = /^\$2[aby]\$\d{2}\$/.test(hashValue);
+	let passwordMatches = false;
+	if (isBcryptHash) {
+		try {
+			passwordMatches = await compare(normalized.password, hashValue);
+		} catch {
+			passwordMatches = false;
+		}
+	} else {
+		passwordMatches = Boolean(hashValue) && normalized.password === hashValue;
+	}
+
 	if (!passwordMatches) {
 		throw new AuthError('Неверный email или пароль.', 401);
+	}
+
+	// Мягкая миграция: если пароль был сохранён в legacy/plain формате,
+	// сразу перехешируем его после успешной аутентификации.
+	if (!isBcryptHash) {
+		try {
+			const nextHash = await hash(normalized.password, 10);
+			await db.query(
+				`
+					UPDATE users
+					SET password_hash = $1
+					WHERE id = $2
+				`,
+				[nextHash, Number(user.id)]
+			);
+		} catch {
+			// Не блокируем вход, если не удалось обновить hash.
+		}
 	}
 
 	return mapUser(user);

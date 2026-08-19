@@ -6,7 +6,7 @@ import { getSessionCookieName, getUserBySessionToken } from './lib/server/auth';
  * Пользователь может зайти на эти страницы, даже если у него нет активной сессии.
  */
 const PUBLIC_ROUTES = new Set(['/login', '/register', '/forgotPassword', '/verifyCode']);
-const DEV_PREVIEW_ROUTES = new Set(['/settings', '/profile', '/mini-game']);
+const DEV_PREVIEW_ROUTES = new Set(['/settings', '/profile', '/mini-game', '/camera']);
 
 /**
  * Проверяет, является ли путь запросом к статичным файлам Astro (ассеты, скрипты, картинки).

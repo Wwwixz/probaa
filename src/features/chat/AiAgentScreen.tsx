@@ -20,7 +20,6 @@ interface AiAgentScreenProps {
 	chat: Chat;
 }
 
-<<<<<<< HEAD
 type AgentMessage = ChatMessage & {
 	offerCards?: AiAgentOfferCard[];
 	paymentActionsCard?: {
@@ -207,13 +206,6 @@ function renderMessageText(text: string) {
 	);
 }
 
-=======
-/**
- * Словарь быстрых команд для ИИ-агента.
- * При нажатии на кнопку-подсказку (Quick Action) пользователю в чат подставляется
- * расширенная версия промпта для улучшения качества ответа нейросети.
- */
->>>>>>> c525188107d867a3231c78d40a7e8dfdd2249777
 const QUICK_ACTION_PROMPTS: Record<string, string> = {
 	'Мои билеты': 'Покажи, как можно помочь с уже купленными билетами через Tutu.',
 	'Перенести рейс': 'Объясни, как проверить варианты переноса или обмена авиабилета через Tutu.',
@@ -229,13 +221,7 @@ const QUICK_ACTION_PROMPTS: Record<string, string> = {
 		'Подбери отель у моря в Сочи на 2 ночи на ближайшие выходные для 2 гостей с бесплатной отменой.'
 };
 
-/**
- * Компонент экрана чата с ИИ-агентом.
- * Реализует интерфейс мессенджера, поддерживает рендеринг различных типов контента:
- * текст, карточки билетов, кнопки выбора, и индикатор набора текста.
- */
 export function AiAgentScreen({ chat }: AiAgentScreenProps) {
-<<<<<<< HEAD
 	const [chats, setChats] = useState<AgentChat[]>(() => {
 		const fromStorage = loadChatsFromStorage();
 		if (fromStorage.length > 0) return fromStorage;
@@ -257,16 +243,10 @@ export function AiAgentScreen({ chat }: AiAgentScreenProps) {
 		return '';
 	});
 
-=======
-	// Состояние локальной истории сообщений
-	const [messages, setMessages] = useState<ChatMessage[]>(chat.messages);
-	// Состояние текущего набираемого текста
->>>>>>> c525188107d867a3231c78d40a7e8dfdd2249777
 	const [draft, setDraft] = useState('');
 	const [isSubmitting, setIsSubmitting] = useState(false);
 	const [error, setError] = useState<string | null>(null);
 	const [isTyping, setIsTyping] = useState(false);
-<<<<<<< HEAD
 	const [selectedOffer, setSelectedOffer] = useState<AiAgentOfferCard | null>(null);
 	const [paymentForm, setPaymentForm] = useState<PaymentFormState>({
 		cardNumber: '',
@@ -285,10 +265,6 @@ export function AiAgentScreen({ chat }: AiAgentScreenProps) {
 
 	const [historyOpen, setHistoryOpen] = useState(false);
 	const [historyQuery, setHistoryQuery] = useState('');
-=======
-	
-	// Ссылка на конец списка сообщений для автоскролла
->>>>>>> c525188107d867a3231c78d40a7e8dfdd2249777
 	const messagesEndRef = useRef<HTMLDivElement>(null);
 
 	const activeChat = chats.find((c) => c.id === activeChatId) ?? chats[0] ?? null;
@@ -356,10 +332,6 @@ export function AiAgentScreen({ chat }: AiAgentScreenProps) {
 		groupedChats[key].push(c);
 	}
 
-	/**
-	 * Отправляет сообщение пользователя на сервер и обрабатывает ответ ИИ.
-	 * @param text - Текст сообщения пользователя
-	 */
 	async function submitMessage(text: string) {
 		const trimmed = text.trim();
 		if (!trimmed || isSubmitting) return;
@@ -374,24 +346,18 @@ export function AiAgentScreen({ chat }: AiAgentScreenProps) {
 		const isFirstMessage = messages.length === 0;
 		const nextMessages = [...messages, userMessage];
 
-<<<<<<< HEAD
 		updateActiveChat((prev) => ({
 			...prev,
 			title: isFirstMessage ? defaultChatTitle(trimmed) : prev.title,
 			messages: nextMessages,
 		}));
 
-=======
-		// Оптимистично добавляем сообщение пользователя в UI
-		setMessages(nextMessages);
->>>>>>> c525188107d867a3231c78d40a7e8dfdd2249777
 		setDraft('');
 		setError(null);
 		setIsSubmitting(true);
-		setIsTyping(true); // Включаем анимацию "ИИ печатает..."
+		setIsTyping(true);
 
 		try {
-			// Выполняем сетевой запрос к нашему внутреннему API (/api/ai-agent/chat)
 			const response = await sendAiAgentMessage(
 				nextMessages
 					.filter((m) => m.content.kind === 'text')
@@ -402,7 +368,6 @@ export function AiAgentScreen({ chat }: AiAgentScreenProps) {
 			);
 
 			setIsTyping(false);
-<<<<<<< HEAD
 
 			const agentReply: AgentMessage = {
 				id: String(Date.now() + 1),
@@ -410,23 +375,6 @@ export function AiAgentScreen({ chat }: AiAgentScreenProps) {
 				content: {
 					kind: 'text',
 					text: cleanAiText(response.reply),
-=======
-			
-			// Добавляем ответ ИИ в чат
-			setMessages((prev) => [
-				...prev,
-				{
-					id: String(Date.now() + 1),
-					author: 'them',
-					content: {
-						kind: 'text',
-						text:
-							response.toolCalls.length > 0
-								? `${response.reply}\n\nИнструменты Tutu MCP: ${response.toolCalls.join(', ')}`
-								: response.reply,
-					},
-					time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
->>>>>>> c525188107d867a3231c78d40a7e8dfdd2249777
 				},
 				time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
 				offerCards: response.offerCards,
@@ -446,13 +394,11 @@ export function AiAgentScreen({ chat }: AiAgentScreenProps) {
 		}
 	}
 
-	/** Обработчик отправки формы из инпута */
 	async function handleSend(event: FormEvent) {
 		event.preventDefault();
 		await submitMessage(draft);
 	}
 
-	/** Обработчик нажатия на кнопку быстрых подсказок под чатом */
 	async function handleQuickAction(action: string) {
 		await submitMessage(QUICK_ACTION_PROMPTS[action] ?? action);
 	}
@@ -739,19 +685,8 @@ export function AiAgentScreen({ chat }: AiAgentScreenProps) {
 				)}
 
 				<div className={styles.messagesList}>
-<<<<<<< HEAD
 					{messages.map((message) =>
 						message.content.kind === 'text' ? (
-=======
-					{messages.map((message) => {
-						// Определяем тип сообщения для корректной стилизации фона
-						const isButtonMessage =
-							message.content.kind === 'moreFlightsButton' ||
-							message.content.kind === 'choiceButtons' ||
-							message.content.kind === 'actionButton';
-
-						return (
->>>>>>> c525188107d867a3231c78d40a7e8dfdd2249777
 							<div
 								key={message.id}
 								className={`${styles.messageRow} ${
@@ -868,15 +803,8 @@ export function AiAgentScreen({ chat }: AiAgentScreenProps) {
 									)}
 								</div>
 							</div>
-<<<<<<< HEAD
 						) : null
 					)}
-=======
-						);
-					})}
-					
-					{/* Индикатор печати ИИ-агента */}
->>>>>>> c525188107d867a3231c78d40a7e8dfdd2249777
 					{isTyping && (
 						<div className={styles.messageRow + ' ' + styles.messageRowThem}>
 							<img src={avatarPlaceholder.src} alt="" className={styles.messageAvatar} />
