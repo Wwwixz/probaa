@@ -3,20 +3,32 @@ import AppLayout from '../../layouts/AppLayout.astro';
 import { Header } from '../../widgets/header/Header';
 import { BottomNav } from '../../widgets/bottom-nav/BottomNav';
 import { ArticleDetail } from '../../features/articles/ArticleDetail';
-import { MOCK_ARTICLES } from '../../entities/article/mockArticles';
+import { getArticleById } from '../../entities/article/mockArticles';
 
-export function getStaticPaths() {
-	return MOCK_ARTICLES.map((article) => ({
-		params: { id: article.id },
-		props: { article },
-	}));
+const articleId = Astro.params.id ?? '';
+const article = getArticleById(articleId);
+
+if (!article) {
+	Astro.response.status = 404;
 }
-
-const { article } = Astro.props;
 ---
 
-<AppLayout title={`${article.title} — TUTU`}>
+<AppLayout title={article ? `${article.title} — TUTU` : 'Тема не найдена — TUTU'}>
 	<Header client:load />
-	<ArticleDetail article={article} client:load />
-	<BottomNav activePath="/" client:load />
+	{
+		article ? (
+			<>
+				<ArticleDetail article={article} client:load />
+				<BottomNav activePath="/" client:load />
+			</>
+		) : (
+			<main class="mx-auto flex min-h-[60vh] max-w-xl flex-col items-center justify-center gap-4 px-6 text-center">
+				<h1 class="text-2xl font-bold">Тема не найдена</h1>
+				<p class="text-sm text-neutral-500">Проверьте ссылку или вернитесь на главную страницу.</p>
+				<a href="/" class="rounded-full bg-black px-5 py-3 text-sm font-medium text-white">
+					На главную
+				</a>
+			</main>
+		)
+	}
 </AppLayout>

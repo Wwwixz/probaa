@@ -204,13 +204,19 @@
 .messageRow {
   display: flex;
   align-items: flex-end;
-  justify-content: flex-end;
   gap: 8px;
+}
+
+.messageRowMine {
+  justify-content: flex-end;
+}
+
+.messageRowTheirs {
+  justify-content: flex-start;
 }
 
 .messageBubble {
   max-width: 70%;
-  background: var(--color-surface-strong);
   border-radius: var(--radius-md);
   padding: 10px 14px;
   display: flex;
@@ -218,9 +224,18 @@
   gap: 4px;
 }
 
+.messageBubbleMine {
+  background: var(--color-surface-strong);
+}
+
+.messageBubbleTheirs {
+  background: rgba(255, 255, 255, 0.92);
+}
+
 .messageText {
   font-size: 13px;
   color: var(--color-ink);
+  white-space: pre-wrap;
 }
 
 .messageTime {
@@ -365,4 +380,22 @@
   font-weight: 600;
   padding: 8px 14px;
   cursor: pointer;
+}
+
+.quickActionChip:disabled,
+.chatSendButton:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.agentError {
+  align-self: center;
+  max-width: 320px;
+  border-radius: 16px;
+  background: rgba(229, 72, 77, 0.16);
+  color: #ffd3d5;
+  font-size: 12px;
+  line-height: 1.4;
+  padding: 10px 14px;
+  text-align: center;
 }

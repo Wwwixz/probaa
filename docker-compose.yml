@@ -1,0 +1,16 @@
+services:
+  postgres:
+    image: postgres:16-alpine
+    container_name: tutu-postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: tutu_auth
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: qwe126asa
+    ports:
+      - "5433:5432"
+    volumes:
+      - tutu-postgres-data:/var/lib/postgresql/data
+
+volumes:
+  tutu-postgres-data:

@@ -7,6 +7,7 @@ import { BottomNav } from '../bottom-nav/BottomNav';
 import { CategoryCard } from './CategoryCard';
 import { FeedCard } from './FeedCard';
 import { SectionHeader } from './SectionHeader';
+import { MOCK_ARTICLES } from '../../entities/article/mockArticles';
 import styles from './content-feed.module.css';
 
 const CATEGORIES = [
@@ -16,22 +17,13 @@ const CATEGORIES = [
 	{ title: 'Свой путь', image: ownPath, href: '/topics/own-path' },
 ];
 
-/**
- * Временные тестовые данные ленты — замените на реальные хуки
- * (entities/article, entities/hotel) через shared/api, когда появятся
- * бэкенд/моки.
- */
-const DISCUSSED_TOPICS = [
-	{ id: 1, title: 'Ghazala beach', subtitle: 'Шарм-эль-шейх', rating: 3.9, discussionsCount: 15 },
-	{ id: 2, title: 'Ghazala beach', subtitle: 'Шарм-эль-шейх', rating: 3.9, discussionsCount: 15 },
-	{ id: 3, title: 'Ghazala beach', subtitle: 'Шарм-эль-шейх', rating: 3.9, discussionsCount: 15 },
-];
+const DISCUSSED_TOPICS = MOCK_ARTICLES.filter((article) => article.type === 'hotel')
+	.sort((a, b) => b.discussionsCount - a.discussionsCount)
+	.slice(0, 3);
 
-const HELPFUL_ARTICLES = [
-	{ id: 1, title: 'Ghazala beach', subtitle: 'Шарм-эль-шейх', discussionsCount: 15 },
-	{ id: 2, title: 'Ghazala beach', subtitle: 'Шарм-эль-шейх', discussionsCount: 15 },
-	{ id: 3, title: 'Ghazala beach', subtitle: 'Шарм-эль-шейх', discussionsCount: 15 },
-];
+const HELPFUL_ARTICLES = MOCK_ARTICLES.filter((article) => article.type === 'article')
+	.sort((a, b) => b.discussionsCount - a.discussionsCount)
+	.slice(0, 3);
 
 export function HomeFeed() {
 	return (
@@ -57,11 +49,13 @@ export function HomeFeed() {
 					{DISCUSSED_TOPICS.map((topic) => (
 						<FeedCard
 							key={topic.id}
-							href="/topics/ghazala-beach"
+							href={`/topics/${topic.id}`}
+							image={{ src: topic.coverImage }}
 							title={topic.title}
 							subtitle={topic.subtitle}
 							rating={topic.rating}
 							discussionsCount={topic.discussionsCount}
+							variant={topic.type}
 						/>
 					))}
 				</div>
@@ -71,10 +65,12 @@ export function HomeFeed() {
 					{HELPFUL_ARTICLES.map((article) => (
 						<FeedCard
 							key={article.id}
-							href="/topics/ghazala-beach"
+							href={`/topics/${article.id}`}
+							image={{ src: article.coverImage }}
 							title={article.title}
 							subtitle={article.subtitle}
 							discussionsCount={article.discussionsCount}
+							variant={article.type}
 						/>
 					))}
 				</div>

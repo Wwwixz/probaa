@@ -55,20 +55,22 @@
 
 .feedCard {
   display: block;
-  width: 138px;
-  height: 130px;
-  border-radius: 12px;
+  width: 152px;
+  min-width: 152px;
+  height: 156px;
+  border-radius: 18px;
   overflow: hidden;
   background: var(--color-surface-strong);
   text-decoration: none;
   color: inherit;
+  box-shadow: 0 12px 32px rgba(16, 24, 40, 0.12);
 }
 
 .feedCardImageWrap {
   position: relative;
-  height: 78px;
+  height: 92px;
   width: 100%;
-  background: var(--color-placeholder);
+  background: linear-gradient(135deg, #ebe6ff 0%, #f7f4ff 100%);
 }
 
 .feedCardImage {
@@ -77,49 +79,98 @@
   object-fit: cover;
 }
 
+.feedCardImageFallback {
+  position: relative;
+  display: flex;
+  align-items: flex-start;
+  justify-content: flex-start;
+  height: 100%;
+  width: 100%;
+  overflow: hidden;
+  padding: 10px;
+}
+
+.feedCardImageFallbackHotel {
+  background:
+    radial-gradient(circle at top right, rgba(215, 255, 82, 0.9), transparent 34%),
+    linear-gradient(135deg, #20113a 0%, #5b2ea6 60%, #845ef7 100%);
+}
+
+.feedCardImageFallbackArticle {
+  background:
+    radial-gradient(circle at top right, rgba(255, 164, 91, 0.85), transparent 32%),
+    linear-gradient(135deg, #13151f 0%, #27324a 58%, #4b638a 100%);
+}
+
+.feedCardEyebrow {
+  position: relative;
+  z-index: 1;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.18);
+  color: #ffffff;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  padding: 5px 8px;
+  backdrop-filter: blur(8px);
+}
+
+.feedCardBackdropWord {
+  position: absolute;
+  right: 8px;
+  bottom: 4px;
+  color: rgba(255, 255, 255, 0.16);
+  font-size: 30px;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  pointer-events: none;
+}
+
 .feedCardRating {
   position: absolute;
-  top: 6px;
-  right: 6px;
+  top: 8px;
+  right: 8px;
   border-radius: 999px;
   background: var(--color-brand-lime);
   color: #000000;
-  font-size: 10px;
-  font-weight: 600;
-  padding: 2px 6px;
+  font-size: 11px;
+  font-weight: 700;
+  padding: 4px 8px;
 }
 
 .feedCardBody {
-  padding: 6px 8px;
+  padding: 10px 10px 12px;
   display: flex;
   flex-direction: column;
-  gap: 2px;
+  gap: 4px;
 }
 
 .feedCardTitle {
   font-family: "Inter", sans-serif;
-  font-weight: 500;
-  font-size: 12px;
-  line-height: 1;
-  letter-spacing: 0;
+  font-weight: 700;
+  font-size: 13px;
+  line-height: 1.15;
+  letter-spacing: -0.01em;
   color: #000000;
-  white-space: nowrap;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
   overflow: hidden;
-  text-overflow: ellipsis;
 }
 
 .feedCardSubtitle {
-  font-size: 8px;
-  line-height: 1.2;
-  color: #000000;
+  font-size: 10px;
+  line-height: 1.3;
+  color: rgba(0, 0, 0, 0.6);
 }
 
 .feedCardDiscussions {
   display: flex;
   align-items: center;
   gap: 4px;
-  margin-top: 2px;
-  font-size: 8px;
+  margin-top: auto;
+  font-size: 9px;
   color: var(--color-brand-violet);
 }
 
@@ -131,8 +182,8 @@
   width: 12px;
   height: 12px;
   border-radius: 999px;
-  background: var(--color-ink-soft);
-  border: 1px solid var(--color-surface-strong);
+  background: linear-gradient(135deg, #d9d0ff 0%, #f6f3ff 100%);
+  border: 1px solid #ffffff;
   margin-left: -4px;
 }
 
@@ -142,8 +193,8 @@
 
 .feedCardMoreCount {
   font-family: "Inter", sans-serif;
-  font-weight: 400;
-  font-size: 8px;
+  font-weight: 600;
+  font-size: 9px;
   color: var(--color-ink);
 }
 

@@ -1,5 +1,4 @@
 import { ArrowLeft } from 'lucide-react';
-import heroPlaceholder from '../../assets/images/articles/hero-placeholder.jpg';
 import mapPlaceholder from '../../assets/images/articles/map-placeholder.jpg';
 import type { Article } from '../../entities/article/mockArticles';
 import styles from './article-detail.module.css';
@@ -30,7 +29,7 @@ export function ArticleDetail({ article }: ArticleDetailProps) {
 
 			<div className={styles.darkSection}>
 				<div className={styles.heroWrap}>
-					<img src={heroPlaceholder.src} alt="" className={styles.heroImage} />
+					<img src={article.coverImage} alt={article.title} className={styles.heroImage} />
 					{article.type === 'hotel' && article.rating !== undefined && (
 						<span className={styles.ratingBadge}>{article.rating.toFixed(1).replace('.', ',')}</span>
 					)}

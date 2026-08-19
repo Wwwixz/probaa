@@ -1,18 +1,28 @@
 ---
 import AppLayout from '../../layouts/AppLayout.astro';
 import { ChatDetailScreen } from '../../features/chat/ChatDetailScreen';
-import { MOCK_CHATS } from '../../entities/chat/mockChats';
+import { getChatById } from '../../entities/chat/mockChats';
 
-export function getStaticPaths() {
-	return MOCK_CHATS.map((chat) => ({
-		params: { id: chat.id },
-		props: { chat },
-	}));
+const chatId = Astro.params.id ?? '';
+const chat = getChatById(chatId);
+
+if (!chat) {
+	Astro.response.status = 404;
 }
-
-const { chat } = Astro.props;
 ---
 
-<AppLayout title={`${chat.name} — TUTU`}>
-	<ChatDetailScreen chat={chat} client:load />
+<AppLayout title={chat ? `${chat.name} — TUTU` : 'Чат не найден — TUTU'}>
+	{
+		chat ? (
+			<ChatDetailScreen chat={chat} client:load />
+		) : (
+			<main class="mx-auto flex min-h-[60vh] max-w-xl flex-col items-center justify-center gap-4 px-6 text-center">
+				<h1 class="text-2xl font-bold">Чат не найден</h1>
+				<p class="text-sm text-neutral-500">Такого чата сейчас нет или ссылка устарела.</p>
+				<a href="/chats" class="rounded-full bg-black px-5 py-3 text-sm font-medium text-white">
+					К списку чатов
+				</a>
+			</main>
+		)
+	}
 </AppLayout>

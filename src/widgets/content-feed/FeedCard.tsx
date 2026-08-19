@@ -7,6 +7,7 @@ interface FeedCardProps {
 	title: string;
 	subtitle: string;
 	discussionsCount: number;
+	variant?: 'hotel' | 'article';
 	/** Пока просто N серых кружков-плейсхолдеров — заменим на реальные
 	 *  аватарки, когда будут данные/API. */
 	avatarsCount?: number;
@@ -23,12 +24,28 @@ export function FeedCard({
 	title,
 	subtitle,
 	discussionsCount,
+	variant = 'article',
 	avatarsCount = 3,
 }: FeedCardProps) {
+	const fallbackLabel = variant === 'hotel' ? 'Тема' : 'Статья';
+	const fallbackAccent = variant === 'hotel' ? 'TRAVEL' : 'GUIDE';
+
 	return (
 		<a href={href} className={styles.feedCard}>
 			<div className={styles.feedCardImageWrap}>
-				{image && <img src={image.src} alt="" className={styles.feedCardImage} />}
+				{image ? (
+					<img src={image.src} alt="" className={styles.feedCardImage} />
+				) : (
+					<div
+						className={`${styles.feedCardImageFallback} ${
+							variant === 'hotel' ? styles.feedCardImageFallbackHotel : styles.feedCardImageFallbackArticle
+						}`}
+						aria-hidden="true"
+					>
+						<span className={styles.feedCardEyebrow}>{fallbackLabel}</span>
+						<span className={styles.feedCardBackdropWord}>{fallbackAccent}</span>
+					</div>
+				)}
 				{rating !== undefined && (
 					<span className={styles.feedCardRating}>{rating.toFixed(1).replace('.', ',')}</span>
 				)}

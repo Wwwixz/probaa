@@ -2,24 +2,35 @@ import { useState } from 'react';
 import type { FormEvent } from 'react';
 import vkLogo from '../../assets/images/vk-logo.svg';
 import odnoklassnikiLogo from '../../assets/images/odnoklassniki-logo.svg';
+import { login } from '../../shared/api/auth';
 import { Button } from '../../shared/ui/Button';
 import { Input } from '../../shared/ui/Input';
 import styles from './auth-form.module.css';
 
 /**
- * Форма "Войти через TUTU" — верстка по макету, пока без реальной
- * отправки на бэкенд (заглушка onSubmit).
+ * Форма входа через TUTU, подключенная к реальному auth API.
  */
 export function LoginForm() {
 	const [email, setEmail] = useState('');
 	const [password, setPassword] = useState('');
 	const [rememberMe, setRememberMe] = useState(false);
 	const [showPassword, setShowPassword] = useState(false);
+	const [error, setError] = useState<string | null>(null);
+	const [isSubmitting, setIsSubmitting] = useState(false);
 
-	function handleSubmit(event: FormEvent<HTMLFormElement>) {
+	async function handleSubmit(event: FormEvent<HTMLFormElement>) {
 		event.preventDefault();
-		// TODO: подключить реальный запрос, когда будет бэкенд/MSW-мок
-		console.log({ email, password, rememberMe });
+
+		try {
+			setIsSubmitting(true);
+			setError(null);
+			await login({ email, password });
+			window.location.href = '/';
+		} catch (submitError) {
+			setError(submitError instanceof Error ? submitError.message : 'Не удалось войти.');
+		} finally {
+			setIsSubmitting(false);
+		}
 	}
 
 	return (
@@ -42,6 +53,8 @@ export function LoginForm() {
 					placeholder="Loisbecket@gmail.com"
 					value={email}
 					onChange={(e) => setEmail(e.target.value)}
+					required
+					autoComplete="email"
 					className={styles.loginFormInput}
 				/>
 			</div>
@@ -55,6 +68,9 @@ export function LoginForm() {
 						placeholder="********"
 						value={password}
 						onChange={(e) => setPassword(e.target.value)}
+						required
+						minLength={8}
+						autoComplete="current-password"
 						className={`${styles.loginFormInput} pr-10`}
 					/>
 					<button
@@ -81,8 +97,10 @@ export function LoginForm() {
 				</a>
 			</div>
 
-			<Button type="submit" variant="primary">
-				Войти
+			{error && <p className={styles.formError}>{error}</p>}
+
+			<Button type="submit" variant="primary" disabled={isSubmitting}>
+				{isSubmitting ? 'Входим...' : 'Войти'}
 			</Button>
 
 			<div className={styles.loginFormDivider}>Или</div>
