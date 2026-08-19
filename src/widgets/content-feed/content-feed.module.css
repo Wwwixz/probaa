@@ -215,7 +215,8 @@
   align-items: center;
   justify-content: space-between;
   width: 100%;
-  padding: 8px 24px;
+  padding: 8px 0;
+  box-sizing: border-box;
 }
 
 .sectionHeaderTitle {
@@ -232,10 +233,14 @@
 /* Обёртки главной страницы */
 
 .homeMain {
+  width: 100%;
+  max-width: 1024px;
+  margin: 0 auto;
   padding: 0 24px 120px;
   display: flex;
   flex-direction: column;
   gap: 16px;
+  box-sizing: border-box;
 }
 
 .homeTitle {
@@ -260,6 +265,13 @@
     height: 150px;
     border-radius: 28px;
     background-size: cover;
+  }
+
+  .feedRow {
+    margin: 0;
+    padding-left: 0;
+    padding-right: 0;
+    gap: 16px;
   }
 }
 

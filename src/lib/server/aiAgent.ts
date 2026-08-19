@@ -9,6 +9,24 @@ export interface AgentChatMessage {
 interface AgentChatResult {
 	reply: string;
 	toolCalls: string[];
+	offerCards: AgentOfferCard[];
+}
+
+interface AgentOfferCard {
+	id: string;
+	kind: 'rail';
+	title: string;
+	subtitle: string;
+	fromCode: string;
+	fromCity: string;
+	toCode: string;
+	toCity: string;
+	departureTime: string;
+	arrivalTime: string;
+	duration: string;
+	price: string;
+	rating?: string;
+	checkoutUrl: string;
 }
 
 const DIRECT_CLARIFICATION_REPLIES: Record<string, string> = {
@@ -51,6 +69,108 @@ function parseFunctionArguments(argumentsValue: Record<string, unknown> | string
 	}
 
 	return argumentsValue;
+}
+
+function formatTime(iso: string | undefined) {
+	if (!iso) return '--:--';
+	return new Date(iso).toLocaleTimeString('ru-RU', {
+		hour: '2-digit',
+		minute: '2-digit'
+	});
+}
+
+function formatDuration(totalMinutes: number | undefined) {
+	if (!totalMinutes) return '';
+	const hours = Math.floor(totalMinutes / 60);
+	const minutes = totalMinutes % 60;
+	return minutes === 0 ? `${hours} ч` : `${hours} ч ${minutes} мин`;
+}
+
+function formatPrice(amount: number | undefined, currency = 'RUB') {
+	if (!amount) return '';
+	return new Intl.NumberFormat('ru-RU', {
+		style: 'currency',
+		currency,
+		maximumFractionDigits: 0
+	}).format(amount);
+}
+
+function getLocationCode(city: string | undefined) {
+	const normalized = city?.toLowerCase() || '';
+
+	if (normalized.includes('моск')) return 'MOW';
+	if (normalized.includes('санкт') || normalized.includes('петер')) return 'LED';
+	if (normalized.includes('сочи')) return 'AER';
+	if (normalized.includes('шарм')) return 'SSH';
+
+	return (city || '---')
+		.replace(/[^A-Za-zА-Яа-яЁё]/g, '')
+		.slice(0, 3)
+		.toUpperCase();
+}
+
+function extractToolPayload(toolResult: unknown) {
+	if (!toolResult || typeof toolResult !== 'object') {
+		return null;
+	}
+
+	const content = (toolResult as { content?: Array<{ text?: string }> }).content;
+	const text = content?.[0]?.text;
+
+	if (!text) {
+		return null;
+	}
+
+	try {
+		return JSON.parse(text) as Record<string, unknown>;
+	} catch {
+		return null;
+	}
+}
+
+function buildOfferCards(toolName: string, payload: Record<string, unknown> | null): AgentOfferCard[] {
+	if (!payload || !Array.isArray(payload.offers)) {
+		return [];
+	}
+
+	if (toolName !== 'search_rail' && toolName !== 'search_etrain') {
+		return [];
+	}
+
+	return payload.offers.slice(0, 3).flatMap((offer) => {
+		if (!offer || typeof offer !== 'object') {
+			return [];
+		}
+
+		const typedOffer = offer as Record<string, any>;
+		const firstSegment = typedOffer.legs?.[0]?.segments?.[0];
+		const vehicleName =
+			toolName === 'search_etrain'
+				? firstSegment?.vehicle_meta?.name || 'Электричка'
+				: firstSegment?.vehicle_meta?.name || 'Поезд';
+		const trainNumber = firstSegment?.voyage_no || typedOffer.details_ref?.title || '';
+		const routeFrom = payload.meta?.from?.name || firstSegment?.from || 'Отправление';
+		const routeTo = payload.meta?.to?.name || firstSegment?.to || 'Прибытие';
+
+		return [
+			{
+				id: typedOffer.offer_id || `${trainNumber}-${typedOffer.departure_at}`,
+				kind: 'rail' as const,
+				title: `${vehicleName} ${trainNumber}`.trim(),
+				subtitle: `${firstSegment?.from || routeFrom} -> ${firstSegment?.to || routeTo}`,
+				fromCode: getLocationCode(routeFrom),
+				fromCity: routeFrom,
+				toCode: getLocationCode(routeTo),
+				toCity: routeTo,
+				departureTime: formatTime(typedOffer.departure_at),
+				arrivalTime: formatTime(typedOffer.arrival_at),
+				duration: formatDuration(typedOffer.duration_min),
+				price: formatPrice(typedOffer.price?.amount, typedOffer.price?.currency),
+				rating: typedOffer.review_summary?.label,
+				checkoutUrl: typedOffer.checkout_url
+			}
+		];
+	});
 }
 
 function isLowValueUserMessage(content: string) {
@@ -199,7 +319,8 @@ export async function runTravelAgentChat(history: AgentChatMessage[]): Promise<A
 	if (lastUserMessage && DIRECT_CLARIFICATION_REPLIES[lastUserMessage]) {
 		return {
 			reply: DIRECT_CLARIFICATION_REPLIES[lastUserMessage],
-			toolCalls: []
+			toolCalls: [],
+			offerCards: []
 		};
 	}
 
@@ -208,6 +329,7 @@ export async function runTravelAgentChat(history: AgentChatMessage[]): Promise<A
 	const functions = normalizeToolsToFunctions(tools);
 	const toolCalls: string[] = [];
 	const seenToolCalls = new Set<string>();
+	let offerCards: AgentOfferCard[] = [];
 	const messages: Array<{
 		role: 'system' | 'user' | 'assistant' | 'function';
 		content: string;
@@ -243,7 +365,8 @@ export async function runTravelAgentChat(history: AgentChatMessage[]): Promise<A
 			reply:
 				finalMessage?.content?.trim() ||
 				'Я нашёл результаты, но не смог корректно собрать финальный ответ. Попробуйте уточнить запрос.',
-			toolCalls
+			toolCalls,
+			offerCards
 		};
 	}
 
@@ -268,6 +391,12 @@ export async function runTravelAgentChat(history: AgentChatMessage[]): Promise<A
 
 			seenToolCalls.add(signature);
 			const toolResult = await tutuMcpClient.callTool(assistantMessage.function_call.name, args);
+			const toolPayload = extractToolPayload(toolResult);
+			const extractedCards = buildOfferCards(assistantMessage.function_call.name, toolPayload);
+
+			if (extractedCards.length > 0) {
+				offerCards = extractedCards;
+			}
 
 			toolCalls.push(assistantMessage.function_call.name);
 			messages.push({
@@ -288,7 +417,8 @@ export async function runTravelAgentChat(history: AgentChatMessage[]): Promise<A
 			reply:
 				assistantMessage.content?.trim() ||
 				'Не удалось сформировать ответ. Попробуйте уточнить маршрут, даты или тип транспорта.',
-			toolCalls
+			toolCalls,
+			offerCards
 		};
 	}
 

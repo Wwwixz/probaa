@@ -403,24 +403,41 @@
     min-height: 100vh;
     overflow-x: hidden;
     background-color: #ffffff;
+    display: flex;
+    justify-content: center;
 }
 
 .aiAgentPage::before {
     content: "";
-    position: absolute;
+    position: fixed;
     inset: 0;
     background: radial-gradient(circle at 0% 20%, #d4ff00 0%, transparent 40%), radial-gradient(circle at 100% 50%, #a181ff 0%, transparent 50%), radial-gradient(circle at 20% 80%, #d4ff00 0%, transparent 40%);
     filter: blur(80px);
     opacity: 0.6;
     z-index: 0;
+    pointer-events: none;
+}
+
+.aiAgentInner {
+    position: relative;
+    z-index: 1;
+    width: 100%;
+    max-width: 520px;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
 }
 
 .aiAgentContent {
     position: relative;
     z-index: 1;
+    width: 100%;
+    max-width: 520px;
+    margin: 0 auto;
     padding: 20px 20px 180px;
     display: flex;
     flex-direction: column;
+    box-sizing: border-box;
 }
 
 .aiTopBar {
@@ -430,15 +447,16 @@
     transform: translateX(-50%);
     z-index: 100;
     width: calc(100% - 32px);
-    max-width: 398px;
+    max-width: 488px;
     display: flex;
     align-items: center;
     gap: 12px;
-    background: rgba(0, 0, 0, 0.7);
-    backdrop-filter: blur(10px);
+    background: rgba(0, 0, 0, 0.72);
+    backdrop-filter: blur(12px);
     border-radius: 999px;
     padding: 8px 16px;
     border: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.12);
 }
 
 .aiTopBarBtn {
@@ -513,7 +531,7 @@
 .messagesList {
     display: flex;
     flex-direction: column;
-    gap: 16px;
+    gap: 12px;
 }
 
 .messageRow {
@@ -530,67 +548,270 @@
 
 .messageRowMe {
     flex-direction: row-reverse;
+    justify-content: flex-end;
 }
 
 .messageRowThem {
     flex-direction: row;
+    justify-content: flex-start;
 }
 
 .messageBubble {
-    max-width: 80%;
-    padding: 12px 16px;
+    max-width: 78%;
+    padding: 9px 12px 7px;
     position: relative;
     display: flex;
     flex-direction: column;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.08);
+    word-wrap: break-word;
+    overflow-wrap: break-word;
 }
 
 .messageBubbleMe {
-    background: #ffffff;
-    border: 1px solid #a181ff;
-    border-radius: 20px 20px 4px 20px;
+    background: #d4ff00;
+    border: none;
+    border-radius: 14px 14px 3px 14px;
 }
 
 .messageBubbleThem {
-    background: #262626;
-    border-radius: 20px 20px 20px 4px;
-    color: #ffffff;
+    background: #ffffff;
+    border-radius: 14px 14px 14px 3px;
+    color: #0f0f0f;
+    border: 1px solid rgba(0, 0, 0, 0.06);
 }
 
 .messageText {
-    font-size: 16px;
-    line-height: 1.4;
+    font-size: 15px;
+    line-height: 1.38;
+    white-space: pre-wrap;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
 }
 
 .messageTextMe {
-    color: #000000;
+    color: #0b0b0b;
 }
 
 .messageTextThem {
-    color: #ffffff;
+    color: #121212;
+}
+
+.messageLink {
+    display: inline-block;
+    margin-top: 2px;
+    margin-bottom: 2px;
+    padding: 4px 10px;
+    background: rgba(161, 129, 255, 0.14);
+    color: #5b2ea6;
+    text-decoration: none;
+    border-radius: 10px;
+    font-size: 13px;
+    font-weight: 600;
+    transition: all 0.15s ease;
+}
+
+.messageLink:hover {
+    background: rgba(161, 129, 255, 0.28);
+    text-decoration: none;
 }
 
 .messageTime {
     font-size: 10px;
-    margin-top: 4px;
+    line-height: 1;
+    margin-top: 3px;
+    margin-right: -2px;
     align-self: flex-end;
-    opacity: 0.6;
+    opacity: 0.5;
+    font-weight: 500;
+    white-space: nowrap;
 }
 
 .messageTimeMe {
-    color: #000000;
+    color: rgba(0, 0, 0, 0.55);
 }
 
 .messageTimeThem {
-    color: #ffffff;
+    color: rgba(0, 0, 0, 0.45);
 }
 
 .messageAvatar {
-    width: 36px;
-    height: 36px;
+    width: 32px;
+    height: 32px;
     border-radius: 50%;
     object-fit: cover;
     flex-shrink: 0;
-    margin-bottom: 4px;
+    margin-bottom: 2px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.messageGroup {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    max-width: min(82vw, 340px);
+}
+
+.offerCardsList {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.offerCard {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    gap: 10px;
+    text-decoration: none;
+    color: inherit;
+    background: #2a2326;
+    border: none;
+    border-radius: 16px;
+    width: 248px;
+    height: 144px;
+    padding: 10px 10px 8px;
+    box-shadow: 0 14px 26px rgba(31, 24, 28, 0.22);
+    text-align: left;
+    cursor: pointer;
+    overflow: hidden;
+}
+
+.offerCardTimes {
+    display: flex;
+    justify-content: space-between;
+    gap: 12px;
+    font-size: 16px;
+    font-weight: 700;
+    color: #ffffff;
+}
+
+.offerCardRoute {
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+    align-items: center;
+    gap: 10px;
+}
+
+.offerCardPoint {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    min-width: 54px;
+}
+
+.offerCardPointRight {
+    align-items: flex-end;
+    text-align: right;
+}
+
+.offerCardCode {
+    font-size: 24px;
+    font-weight: 800;
+    color: #ffffff;
+    letter-spacing: -0.03em;
+}
+
+.offerCardCityRow {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.offerCardCity {
+    font-size: 11px;
+    line-height: 1.2;
+    color: rgba(255, 255, 255, 0.84);
+    max-width: 56px;
+}
+
+.offerCardFlag {
+    width: 17px;
+    height: 12px;
+    border-radius: 2px;
+    object-fit: cover;
+    flex-shrink: 0;
+}
+
+.offerCardLine {
+    position: relative;
+    flex: 0 0 86px;
+    width: 86px;
+    min-width: 86px;
+    height: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.offerCardPlaneArt {
+    height: 19px;
+    width: auto;
+    max-width: 100%;
+    display: block;
+    object-fit: contain;
+}
+
+.offerCardFooter {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    margin-top: auto;
+    padding-top: 6px;
+    border-top: 1px dashed rgba(255, 255, 255, 0.28);
+}
+
+.offerCardChip {
+    border: 1px solid rgba(255, 255, 255, 0.82);
+    border-radius: 999px;
+    color: #ffffff;
+    font-size: 12px;
+    line-height: 1;
+    padding: 8px 12px;
+}
+
+.offerCardDirection {
+    font-size: 12px;
+    color: rgba(255, 255, 255, 0.86);
+}
+
+.rewardCard {
+    margin-left: 44px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    max-width: min(82vw, 340px);
+    border-radius: 24px;
+    background: linear-gradient(135deg, #151515 0%, #2a2240 100%);
+    color: #ffffff;
+    padding: 16px;
+    box-shadow: 0 18px 36px rgba(21, 21, 21, 0.18);
+}
+
+.rewardHeader {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 14px;
+    font-weight: 700;
+}
+
+.rewardText {
+    margin: 0;
+    font-size: 13px;
+    line-height: 1.45;
+    color: rgba(255, 255, 255, 0.78);
+}
+
+.rewardButton {
+    border: none;
+    border-radius: 16px;
+    background: #d4ff00;
+    color: #151515;
+    font-size: 13px;
+    font-weight: 800;
+    padding: 12px 14px;
+    cursor: pointer;
 }
 
 
@@ -818,16 +1039,18 @@
 
 .quickActionsRow {
     position: fixed;
-    bottom: 80px;
-    left: 0;
-    right: 0;
+    bottom: 88px;
+    left: 50%;
+    transform: translateX(-50%);
     z-index: 49;
     display: flex;
     justify-content: flex-start;
     gap: 8px;
     overflow-x: auto;
-    padding: 0 20px 8px;
+    padding: 0 0 8px;
     scrollbar-width: none;
+    width: calc(100% - 40px);
+    max-width: 488px;
 }
 
 .quickActionsRow::-webkit-scrollbar {
@@ -844,6 +1067,12 @@
     font-size: 14px;
     font-weight: 500;
     cursor: pointer;
+    box-shadow: 0 4px 12px rgba(255, 110, 26, 0.2);
+    transition: transform 0.1s ease;
+}
+
+.quickActionChip:hover:not(:disabled) {
+    transform: translateY(-1px);
 }
 
 .quickActionChip:disabled,
@@ -864,48 +1093,229 @@
     text-align: center;
 }
 
+.paymentOverlay {
+    position: fixed;
+    inset: 0;
+    z-index: 140;
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+    background: rgba(15, 15, 15, 0.34);
+    backdrop-filter: blur(12px);
+    padding: 20px;
+}
+
+.paymentModal {
+    width: min(100%, 420px);
+    border-radius: 28px;
+    background: #ffffff;
+    padding: 18px;
+    box-shadow: 0 24px 48px rgba(17, 24, 39, 0.22);
+}
+
+.paymentHeader {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 16px;
+    margin-bottom: 16px;
+}
+
+.paymentEyebrow {
+    display: inline-flex;
+    margin-bottom: 6px;
+    border-radius: 999px;
+    background: rgba(161, 129, 255, 0.12);
+    color: #5b2ea6;
+    font-size: 11px;
+    font-weight: 700;
+    padding: 5px 8px;
+}
+
+.paymentTitle {
+    margin: 0;
+    font-size: 20px;
+    font-weight: 800;
+    color: #171717;
+}
+
+.paymentClose {
+    border: none;
+    border-radius: 999px;
+    background: #111111;
+    color: #ffffff;
+    width: 36px;
+    height: 36px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+}
+
+.paymentSummary {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    border-radius: 20px;
+    background: linear-gradient(135deg, #18181b 0%, #30214b 100%);
+    color: #ffffff;
+    padding: 16px;
+    margin-bottom: 16px;
+}
+
+.paymentSummaryTitle {
+    display: block;
+    font-size: 16px;
+    font-weight: 700;
+}
+
+.paymentSummarySubtitle {
+    display: block;
+    margin-top: 4px;
+    font-size: 12px;
+    color: rgba(255, 255, 255, 0.72);
+}
+
+.paymentSummaryMeta {
+    display: flex;
+    justify-content: space-between;
+    gap: 12px;
+    font-size: 13px;
+    font-weight: 600;
+}
+
+.paymentForm {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.paymentField {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    font-size: 12px;
+    font-weight: 600;
+    color: #3f3f46;
+}
+
+.paymentInputWrap {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    border: 1px solid rgba(17, 24, 39, 0.12);
+    border-radius: 16px;
+    background: #f8f8fb;
+    padding: 0 12px;
+}
+
+.paymentInput {
+    width: 100%;
+    border: none;
+    outline: none;
+    background: transparent;
+    border-radius: 16px;
+    color: #171717;
+    font-size: 15px;
+    padding: 14px 0;
+}
+
+.paymentRow {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+}
+
+.paymentError {
+    border-radius: 14px;
+    background: rgba(229, 72, 77, 0.12);
+    color: #b42318;
+    font-size: 12px;
+    padding: 10px 12px;
+}
+
+.paymentHint {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    border-radius: 14px;
+    background: rgba(212, 255, 0, 0.2);
+    color: #3e5100;
+    font-size: 12px;
+    padding: 10px 12px;
+}
+
+.paymentSubmit {
+    border: none;
+    border-radius: 18px;
+    background: #ff6e1a;
+    color: #ffffff;
+    font-size: 15px;
+    font-weight: 800;
+    padding: 14px 16px;
+    cursor: pointer;
+}
+
 .chatInputBarContainer {
     position: fixed;
     bottom: 20px;
-    left: 20px;
-    right: 20px;
+    left: 50%;
+    transform: translateX(-50%);
     z-index: 50;
-    background: #000000;
-    border-radius: 35px;
-    padding: 4px;
+    width: calc(100% - 40px);
+    max-width: 488px;
+    background: rgba(255, 255, 255, 0.92);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border-radius: 28px;
+    padding: 6px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1), 0 2px 8px rgba(0, 0, 0, 0.06);
+    border: 1px solid rgba(0, 0, 0, 0.06);
 }
 
 .chatInputBar {
     display: flex;
     align-items: center;
-    gap: 12px;
-    background: #000000;
-    border-radius: 30px;
+    gap: 8px;
+    background: transparent;
+    border-radius: 24px;
     width: 100%;
 }
 
 .chatInputWrapper {
     flex: 1;
-    border: 1px solid #ffffff;
-    border-radius: 25px;
-    padding: 6px 16px;
+    background: #f5f5f7;
+    border: 1px solid rgba(0, 0, 0, 0.06);
+    border-radius: 22px;
+    padding: 9px 16px;
     display: flex;
     align-items: center;
+    transition: all 0.15s ease;
+}
+
+.chatInputWrapper:focus-within {
+    background: #ffffff;
+    border-color: rgba(161, 129, 255, 0.4);
+    box-shadow: 0 0 0 3px rgba(161, 129, 255, 0.12);
 }
 
 .chatInput {
     flex: 1;
     background: transparent;
     border: none;
-    color: #ffffff;
+    color: #111111;
     font-size: 15px;
     outline: none;
+}
+
+.chatInput::placeholder {
+    color: rgba(0, 0, 0, 0.35);
 }
 
 .chatButtonsGroup {
     display: flex;
     align-items: center;
-    gap: 8px;
+    gap: 6px;
     margin-left: auto;
     /* Ensure it stays on the right */
 }
@@ -917,21 +1327,703 @@
     width: 40px;
     height: 40px;
     border-radius: 50%;
-    background: transparent;
-    border: 1px solid rgba(255, 255, 255, 0.5);
-    color: #ffffff;
+    background: #f5f5f7;
+    border: 1px solid rgba(0, 0, 0, 0.06);
+    color: #333333;
     cursor: pointer;
+    transition: all 0.15s ease;
+    flex-shrink: 0;
+}
+
+.chatIconButton:hover {
+    background: #ebebef;
 }
 
 .chatSendButton {
     display: flex;
     align-items: center;
     justify-content: center;
-    width: 40px;
-    height: 40px;
+    width: 42px;
+    height: 42px;
     border-radius: 50%;
     background: #d4ff00;
     color: #000000;
     border: none;
     cursor: pointer;
+    box-shadow: 0 4px 12px rgba(212, 255, 0, 0.4);
+    transition: all 0.15s ease;
+    flex-shrink: 0;
+}
+
+.chatSendButton:hover:not(:disabled) {
+    transform: scale(1.05);
+    box-shadow: 0 6px 18px rgba(212, 255, 0, 0.5);
+}
+
+.chatSendButton:active:not(:disabled) {
+    transform: scale(0.96);
+}
+
+.aiTopBarIconBtn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    border-radius: 999px;
+    background: transparent;
+    border: 0;
+    color: #ffffff;
+    cursor: pointer;
+    flex-shrink: 0;
+    padding: 0;
+    opacity: 0.9;
+    transition: background 0.15s ease, opacity 0.15s ease;
+}
+
+.aiTopBarIconBtn:hover {
+    background: rgba(255, 255, 255, 0.08);
+    opacity: 1;
+}
+
+/* Drawer истории чатов ИИ */
+
+.historyOverlay {
+    position: fixed;
+    inset: 0;
+    z-index: 200;
+    background: rgba(0, 0, 0, 0.35);
+    backdrop-filter: blur(6px);
+    display: flex;
+    align-items: stretch;
+    justify-content: flex-start;
+    animation: fadeIn 0.2s ease-out;
+}
+
+.historyDrawer {
+    width: min(88vw, 380px);
+    height: 100%;
+    background: #1e1a1c;
+    color: #ffffff;
+    display: flex;
+    flex-direction: column;
+    padding: 24px 20px 16px;
+    box-sizing: border-box;
+    box-shadow: 12px 0 40px rgba(0, 0, 0, 0.35);
+    animation: slideInLeft 0.25s ease-out;
+}
+
+@keyframes slideInLeft {
+    from {
+        transform: translateX(-24px);
+        opacity: 0;
+    }
+    to {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+
+.historySearchWrap {
+    position: relative;
+    margin-bottom: 28px;
+}
+
+.historySearch {
+    width: 100%;
+    height: 52px;
+    border-radius: 28px;
+    background: transparent;
+    border: 1.5px solid rgba(255, 255, 255, 0.72);
+    color: #ffffff;
+    padding: 0 20px 0 46px;
+    font-size: 16px;
+    outline: none;
+    box-sizing: border-box;
+}
+
+.historySearch::placeholder {
+    color: rgba(255, 255, 255, 0.55);
+}
+
+.historySearchIcon {
+    position: absolute;
+    left: 18px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: rgba(255, 255, 255, 0.6);
+    pointer-events: none;
+}
+
+.historyList {
+    flex: 1;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 22px;
+    padding-bottom: 16px;
+}
+
+.historyGroup {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+}
+
+.historyGroupLabel {
+    font-size: 16px;
+    color: rgba(255, 255, 255, 0.6);
+    letter-spacing: 0.01em;
+}
+
+.historyGroupItems {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.historyItem {
+    display: block;
+    width: 100%;
+    text-align: left;
+    background: transparent;
+    border: 0;
+    padding: 10px 12px;
+    border-radius: 14px;
+    color: #ffffff;
+    font-size: 32px;
+    line-height: 1.1;
+    font-weight: 700;
+    cursor: pointer;
+    transition: background 0.15s ease, transform 0.1s ease;
+    box-sizing: border-box;
+}
+
+.historyItem:hover {
+    background: rgba(255, 255, 255, 0.08);
+}
+
+.historyItem:active {
+    transform: scale(0.98);
+}
+
+.historyItemActive {
+    background: rgba(212, 255, 0, 0.12);
+    color: #e7ff63;
+}
+
+.historyEmpty {
+    font-size: 13px;
+    color: rgba(255, 255, 255, 0.6);
+    line-height: 1.4;
+    padding: 16px 4px;
+}
+
+.historyFooter {
+    padding-top: 16px;
+    margin-top: auto;
+    border-top: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.profileRow {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 8px 4px;
+}
+
+.profileAvatar {
+    width: 52px;
+    height: 52px;
+    border-radius: 999px;
+    background: #d6d6d6;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #1e1a1c;
+    flex-shrink: 0;
+}
+
+.profileInfo {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    min-width: 0;
+}
+
+.profileName {
+    font-size: 26px;
+    font-weight: 600;
+    color: #ffffff;
+    letter-spacing: -0.01em;
+}
+
+.profileChevron {
+    color: rgba(255, 255, 255, 0.7);
+    flex-shrink: 0;
+    transform: rotate(180deg);
+}
+
+/* Кастомные PNG-иконки в шапке ИИ */
+
+.aiTopBarIconImg {
+    width: 22px;
+    height: 22px;
+    object-fit: contain;
+    display: block;
+    filter: brightness(0) invert(1);
+    pointer-events: none;
+}
+
+/* Карточка после оплаты — маршрут + скачать билеты (D0FF1A фон) */
+
+.postPayCard {
+    margin-top: 10px;
+    width: 100%;
+    max-width: 380px;
+    background: #D0FF1A;
+    border-radius: 32px;
+    padding: 18px 18px 18px;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    box-sizing: border-box;
+    box-shadow: 0 14px 34px rgba(208, 255, 26, 0.22);
+}
+
+.postPayRouteBlock {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 12px;
+    background: rgba(255, 255, 255, 0.55);
+    border-radius: 28px;
+    padding: 16px 14px 14px;
+}
+
+.postPayRouteImg {
+    width: 100%;
+    height: 140px;
+    object-fit: contain;
+    display: block;
+    border-radius: 20px;
+    background: #ffffff;
+    padding: 10px;
+    box-sizing: border-box;
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.06);
+}
+
+.postPayRouteBtn {
+    width: 100%;
+    min-height: 54px;
+    border-radius: 999px;
+    background: #1e1a1c;
+    color: #ffffff;
+    border: 0;
+    font-size: 17px;
+    font-weight: 600;
+    line-height: 1.2;
+    letter-spacing: 0;
+    padding: 0 16px;
+    cursor: pointer;
+    transition: transform 0.1s ease, background 0.15s ease;
+}
+
+.postPayRouteBtn:hover {
+    background: #2a2427;
+}
+
+.postPayRouteBtn:active {
+    transform: scale(0.98);
+}
+
+.postPayTicketsBlock {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 12px;
+    background: linear-gradient(180deg, rgba(255, 255, 255, 0.15), rgba(173, 128, 255, 0.18));
+    border-radius: 28px;
+    padding: 16px 14px 14px;
+    overflow: hidden;
+}
+
+.postPayTicketsImg {
+    width: 100%;
+    height: 150px;
+    object-fit: contain;
+    display: block;
+    pointer-events: none;
+    border-radius: 20px;
+    background: #ffffff;
+    padding: 10px;
+    box-sizing: border-box;
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.06);
+}
+
+.postPayTicketsBtn {
+    width: 100%;
+    min-height: 58px;
+    border-radius: 999px;
+    background: #ff6a14;
+    color: #ffffff;
+    border: 0;
+    font-size: 18px;
+    font-weight: 600;
+    line-height: 1.2;
+    letter-spacing: 0;
+    padding: 0 18px;
+    cursor: pointer;
+    transition: transform 0.1s ease, background 0.15s ease;
+    box-shadow: 0 8px 18px rgba(255, 106, 20, 0.28);
+}
+
+.postPayTicketsBtn:hover {
+    background: #ff7a2d;
+}
+
+.postPayTicketsBtn:active {
+    transform: scale(0.98);
+}
+
+.postPayTicketsBtn:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+    transform: none;
+}
+
+/* ===== Модалка маршрута ===== */
+.routeModalOverlay {
+    position: fixed;
+    inset: 0;
+    z-index: 9998;
+    background: rgba(10, 10, 12, 0.55);
+    backdrop-filter: blur(6px);
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+    padding: 0;
+    animation: fadeIn 0.2s ease;
+}
+
+@media (min-width: 768px) {
+    .routeModalOverlay {
+        align-items: center;
+        padding: 24px;
+    }
+}
+
+.routeModal {
+    width: 100%;
+    max-width: 520px;
+    max-height: 90vh;
+    background: #ffffff;
+    border-radius: 28px 28px 0 0;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    box-shadow: 0 -20px 60px rgba(0, 0, 0, 0.25);
+    animation: slideUp 0.25s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+@media (min-width: 768px) {
+    .routeModal {
+        border-radius: 28px;
+        max-height: 85vh;
+    }
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+@keyframes slideUp {
+    from { transform: translateY(40px); opacity: 0; }
+    to { transform: translateY(0); opacity: 1; }
+}
+
+.routeModalHeader {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    padding: 22px 22px 14px;
+    gap: 12px;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+    flex-shrink: 0;
+}
+
+.routeModalEyebrow {
+    display: block;
+    font-size: 11px;
+    font-weight: 500;
+    color: #9ca3af;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    margin-bottom: 4px;
+}
+
+.routeModalTitle {
+    margin: 0;
+    font-size: 20px;
+    font-weight: 700;
+    color: #111;
+    line-height: 1.2;
+}
+
+.routeModalClose {
+    width: 38px;
+    height: 38px;
+    border-radius: 999px;
+    border: 0;
+    background: #f3f4f6;
+    color: #111;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    transition: background 0.15s;
+}
+
+.routeModalClose:hover {
+    background: #e5e7eb;
+}
+
+.routeBody {
+    overflow-y: auto;
+    padding: 20px 22px 28px;
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+}
+
+.routeHeaderCard {
+    background: linear-gradient(135deg, #D0FF1A 0%, #9ae600 100%);
+    border-radius: 24px;
+    padding: 22px 20px;
+    box-shadow: 0 10px 28px rgba(208, 255, 26, 0.25);
+}
+
+.routeCities {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    margin-bottom: 10px;
+}
+
+.routeCityFrom,
+.routeCityTo {
+    font-size: 17px;
+    font-weight: 600;
+    color: #111;
+    flex: 1;
+}
+
+.routeCityTo {
+    text-align: right;
+}
+
+.routePlaneIcon {
+    width: 40px;
+    height: 40px;
+    border-radius: 999px;
+    background: #111;
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+.routeCodes {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+}
+
+.routeCode {
+    font-size: 14px;
+    font-weight: 500;
+    color: rgba(0, 0, 0, 0.6);
+    letter-spacing: 0.03em;
+    min-width: 48px;
+}
+
+.routeCode:last-child {
+    text-align: right;
+}
+
+.routeDashedLine {
+    flex: 1;
+    height: 0;
+    border-top: 2px dashed rgba(0, 0, 0, 0.3);
+}
+
+/* ===== Таймлайн ===== */
+.routeTimeline {
+    display: flex;
+    gap: 14px;
+    background: #fafafa;
+    border-radius: 20px;
+    padding: 18px 16px;
+}
+
+.routeTimelineCol {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 22px;
+    flex-shrink: 0;
+}
+
+.routeTimelineDotGreen {
+    width: 14px;
+    height: 14px;
+    border-radius: 999px;
+    background: #22c55e;
+    box-shadow: 0 0 0 4px rgba(34, 197, 94, 0.15);
+    flex-shrink: 0;
+}
+
+.routeTimelineDotRed {
+    width: 14px;
+    height: 14px;
+    border-radius: 999px;
+    background: #ef4444;
+    box-shadow: 0 0 0 4px rgba(239, 68, 68, 0.15);
+    flex-shrink: 0;
+}
+
+.routeTimelineLine {
+    flex: 1;
+    width: 2px;
+    background: linear-gradient(180deg, #22c55e 0%, #e5e7eb 50%, #ef4444 100%);
+    margin: 6px 0;
+    min-height: 40px;
+}
+
+.routeTimelineContent {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.routeTimelineItem {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.routeTimelineTime {
+    font-size: 17px;
+    font-weight: 600;
+    color: #111;
+}
+
+.routeTimelineInfo {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 13px;
+    font-weight: 500;
+    color: #374151;
+}
+
+.routeTimelineMeta {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 12px;
+    color: #6b7280;
+}
+
+.routeTimelineDuration {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 8px 12px;
+    background: #ffffff;
+    border-radius: 12px;
+    font-size: 13px;
+    color: #6b7280;
+    border: 1px solid #e5e7eb;
+}
+
+.routeTimelineDuration span:first-child {
+    font-weight: 600;
+    color: #111;
+}
+
+/* ===== Сетка деталей ===== */
+.routeDetailsGrid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+}
+
+.routeDetailCard {
+    background: #f9fafb;
+    border-radius: 16px;
+    padding: 14px;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    border: 1px solid #e5e7eb;
+}
+
+.routeDetailLabel {
+    font-size: 12px;
+    color: #6b7280;
+    font-weight: 500;
+}
+
+.routeDetailValue {
+    font-size: 14px;
+    color: #111;
+    font-weight: 600;
+    word-break: break-word;
+}
+
+/* ===== Футер ===== */
+.routeFooterCard {
+    background: #fefefe;
+    border-radius: 18px;
+    padding: 14px 16px;
+    border: 1px solid #e5e7eb;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.routeFooterRow {
+    display: flex;
+    justify-content: space-between;
+    gap: 12px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid #f3f4f6;
+}
+
+.routeFooterRow:last-child {
+    padding-bottom: 0;
+    border-bottom: 0;
+}
+
+.routeFooterLabel {
+    font-size: 13px;
+    color: #6b7280;
+    flex-shrink: 0;
+}
+
+.routeFooterValue {
+    font-size: 13px;
+    color: #111;
+    font-weight: 500;
+    text-align: right;
 }
