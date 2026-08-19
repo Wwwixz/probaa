@@ -90,6 +90,7 @@ export const MOCK_CHATS: Chat[] = [
 		preview: 'Подберу билеты, отель и дам ссылку на оформление',
 		online: true,
 		quickActions: [
+			'Мои билеты',
 			'Найди поезд Москва -> Питер на завтра',
 			'Самый дешёвый авиабилет в Сочи',
 			'Собери маршрут с пересадками',
@@ -175,36 +176,6 @@ const FLIGHT_BACK_1: FlightOption = {
 	trailColor: '#d0ff1a',
 };
 
-<<<<<<< HEAD
-=======
-export const AI_AGENT_CHAT: Chat = {
-	id: 'ai-agent',
-	name: 'ИИ-агент',
-	role: 'поиск билетов, маршрутов и отелей через Tutu MCP',
-	preview: 'Подберу билеты, отель и дам ссылку на оформление',
-	online: true,
-	quickActions: [
-		'Мои билеты',
-		'Найди поезд Москва -> Питер на завтра',
-		'Самый дешёвый авиабилет в Сочи',
-		'Собери маршрут с пересадками',
-		'Подбери отель у моря'
-	],
-	messages: [
-		{
-			id: '1',
-			author: 'them',
-			content: {
-				kind: 'text',
-				text: 'Привет! Я помогу подобрать билет, маршрут или отель через Tutu и сразу дам ссылку на оформление.',
-			},
-			time: 'сейчас',
-		},
-	],
-};
-
->>>>>>> c2e6fd9d7cfb8f66c2659ffea4272e0a012857eb
 export function getChatById(id: string): Chat | undefined {
-	if (id === 'ai-agent') return AI_AGENT_CHAT;
 	return MOCK_CHATS.find((chat) => chat.id === id);
 }
