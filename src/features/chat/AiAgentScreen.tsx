@@ -156,18 +156,17 @@ export function AiAgentScreen({ chat }: AiAgentScreenProps) {
 								key={message.id}
 								className={`${styles.messageRow} ${
 									isButtonMessage
-										? styles.messageRowCenter
+										? styles.messageRowThem
 										: message.author === 'me'
 											? styles.messageRowMe
 											: styles.messageRowThem
 								}`}
 							>
-								{!isButtonMessage &&
-									(message.author === 'them' ? (
-										<img src={avatarPlaceholder.src} alt="" className={styles.messageAvatar} />
-									) : (
-										<img src={myAvatar.src} alt="" className={styles.messageAvatar} />
-									))}
+								{message.author === 'them' ? (
+									<img src={avatarPlaceholder.src} alt="" className={styles.messageAvatar} />
+								) : (
+									<img src={myAvatar.src} alt="" className={styles.messageAvatar} />
+								)}
 
 								{message.content.kind === 'text' && (
 									<div

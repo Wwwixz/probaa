@@ -823,8 +823,7 @@
     right: 0;
     z-index: 49;
     display: flex;
-    justify-content: center;
-    /* Centered */
+    justify-content: flex-start;
     gap: 8px;
     overflow-x: auto;
     padding: 0 20px 8px;
