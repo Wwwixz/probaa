@@ -1,8 +1,18 @@
 ---
+/**
+ * Главная страница приложения (роут /).
+ * Серверная часть компонента Astro. Здесь можно делать запросы к БД или сторонним API
+ * при генерации страницы (SSR) или на этапе сборки (SSG).
+ */
 import AppLayout from '../layouts/AppLayout.astro';
 import { HomeFeed } from '../widgets/content-feed/HomeFeed';
 ---
 
 <AppLayout title="Главная — TUTU">
+	{/*
+		client:load указывает Astro, что этот React-компонент нужно 
+		гидратировать (оживить) сразу же при загрузке страницы.
+		Без этой директивы React-компонент отрендерится как статический HTML.
+	*/}
 	<HomeFeed client:load />
 </AppLayout>

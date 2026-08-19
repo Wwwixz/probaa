@@ -161,22 +161,28 @@ export async function getUserBySessionToken(token: string | undefined) {
 		return null;
 	}
 
-	await ensureDb();
-	const tokenHash = hashToken(token);
+	try {
+		await ensureDb();
+		const tokenHash = hashToken(token);
 
-	const result = await db.query<SessionUserRow>(
-		`
-			SELECT users.id, users.email, users.display_name
-			FROM sessions
-			INNER JOIN users ON users.id = sessions.user_id
-			WHERE sessions.token_hash = $1
-				AND sessions.expires_at > NOW()
-			LIMIT 1
-		`,
-		[tokenHash]
-	);
+		const result = await db.query<SessionUserRow>(
+			`
+				SELECT users.id, users.email, users.display_name
+				FROM sessions
+				INNER JOIN users ON users.id = sessions.user_id
+				WHERE sessions.token_hash = $1
+					AND sessions.expires_at > NOW()
+				LIMIT 1
+			`,
+			[tokenHash]
+		);
 
-	return result.rows[0] ? mapUser(result.rows[0]) : null;
+		return result.rows[0] ? mapUser(result.rows[0]) : null;
+	} catch (error) {
+		const message = error instanceof Error ? error.message : String(error);
+		console.error('Database query failed in getUserBySessionToken:', message);
+		return null;
+	}
 }
 
 export async function deleteSession(token: string | undefined, cookies?: AstroCookies) {

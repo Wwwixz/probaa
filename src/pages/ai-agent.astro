@@ -1,9 +1,15 @@
 ---
 import AppLayout from '../layouts/AppLayout.astro';
 import { AiAgentScreen } from '../features/chat/AiAgentScreen';
-import { AI_AGENT_CHAT } from '../entities/chat/mockChats';
+import { getChatById } from '../entities/chat/mockChats';
+
+const aiAgentChat = getChatById('ai-agent');
+
+if (!aiAgentChat) {
+	throw new Error('AI Agent chat not found');
+}
 ---
 
 <AppLayout title="ИИ-агент — TUTU">
-	<AiAgentScreen chat={AI_AGENT_CHAT} client:load />
+	<AiAgentScreen chat={aiAgentChat} client:load />
 </AppLayout>

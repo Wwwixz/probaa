@@ -1,0 +1,257 @@
+.page {
+  position: relative;
+  min-height: 100vh;
+  background: var(--color-brand-lime);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.blob {
+  position: absolute;
+  left: -20%;
+  right: -20%;
+  bottom: -18%;
+  height: 42%;
+  background: #c9b8ff;
+  border-radius: 50% 50% 0 0 / 70% 70% 0 0;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.topBar {
+  position: relative;
+  z-index: 1;
+  background: #ffffff;
+  width: 100%;
+}
+
+.topBar :global(header) {
+  max-width: 480px;
+  padding: 12px 20px;
+}
+
+.sheet {
+  position: relative;
+  z-index: 1;
+  flex: 1;
+  width: 100%;
+  max-width: 480px;
+  margin: 12px auto 56px;
+  background: #ffffff;
+  border-radius: 36px;
+  padding: 20px 24px 32px;
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+}
+
+.subHeader {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 28px;
+}
+
+.backBtn {
+  width: 44px;
+  height: 44px;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  cursor: pointer;
+  flex-shrink: 0;
+  line-height: 0;
+}
+
+.title {
+  margin: 0;
+  font-size: 28px;
+  font-weight: 800;
+  color: var(--color-ink);
+  letter-spacing: -0.3px;
+}
+
+.rows {
+  display: flex;
+  flex-direction: column;
+  gap: 22px;
+}
+
+.rowLink {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  padding: 0;
+  border: 0;
+  background: none;
+  color: var(--color-brand-violet);
+  font-size: 16px;
+  font-weight: 600;
+  text-decoration: none;
+  cursor: pointer;
+  font-family: inherit;
+}
+
+.rowLink svg {
+  color: #c4b4ff;
+  flex-shrink: 0;
+}
+
+.block {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.blockLabel {
+  margin: 0;
+  color: var(--color-brand-violet);
+  font-size: 16px;
+  font-weight: 600;
+}
+
+.themeRow {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+.themeBtnIdle,
+.themeBtnActive {
+  height: 44px;
+  border-radius: 22px;
+  font-size: 15px;
+  font-weight: 700;
+  cursor: pointer;
+  font-family: inherit;
+}
+
+.themeBtnIdle {
+  background: #ffffff;
+  color: var(--color-brand-orange);
+  border: 1.5px solid var(--color-brand-orange);
+}
+
+.themeBtnActive {
+  background: var(--color-brand-lime);
+  color: var(--color-ink);
+  border: 1.5px solid var(--color-brand-lime);
+}
+
+.supportBox {
+  background: var(--color-ink);
+  color: var(--color-brand-violet);
+  border-radius: 12px;
+  padding: 14px 16px;
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 1.45;
+}
+
+.actions {
+  margin-top: auto;
+  padding-top: 40px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 14px;
+}
+
+.dangerBtn {
+  width: 100%;
+  height: 56px;
+  border: 0;
+  border-radius: 28px;
+  background: #ff6e1a;
+  color: #ffffff;
+  font-size: 16px;
+  font-weight: 700;
+  cursor: pointer;
+  font-family: inherit;
+}
+
+.dangerBtn:active {
+  transform: scale(0.98);
+}
+
+.textBtn {
+  border: 0;
+  background: none;
+  padding: 4px 8px;
+  color: #ff6e1a;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  font-family: inherit;
+}
+
+.overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 20;
+  background: rgba(38, 33, 34, 0.45);
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  padding: 16px;
+}
+
+.modal {
+  width: 100%;
+  max-width: 480px;
+  background: #ffffff;
+  border-radius: 24px;
+  padding: 20px 20px 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.modalTitle {
+  margin: 0 0 6px;
+  font-size: 20px;
+  font-weight: 800;
+  color: var(--color-ink);
+}
+
+.modalText {
+  margin: 0 0 8px;
+  font-size: 14px;
+  color: var(--color-muted);
+  line-height: 1.4;
+}
+
+.option,
+.optionActive {
+  height: 48px;
+  border-radius: 12px;
+  font-size: 15px;
+  font-weight: 650;
+  cursor: pointer;
+  font-family: inherit;
+}
+
+.option {
+  background: #ffffff;
+  border: 1.5px solid var(--color-brand-orange);
+  color: var(--color-brand-orange);
+}
+
+.optionActive {
+  background: var(--color-brand-lime);
+  border: 1.5px solid var(--color-brand-lime);
+  color: var(--color-ink);
+}
+
+.modalCancel {
+  margin-top: 4px;
+  border: 0;
+  background: none;
+  color: var(--color-brand-violet);
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  font-family: inherit;
+}

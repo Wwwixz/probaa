@@ -9,6 +9,8 @@ import styles from './auth-form.module.css';
 
 /**
  * Форма входа через TUTU, подключенная к реальному auth API.
+ * Использует локальное состояние (useState) для хранения введенных данных
+ * и выполняет запрос к серверной функции login() при отправке (onSubmit).
  */
 export function LoginForm() {
 	const [email, setEmail] = useState('');
@@ -18,13 +20,16 @@ export function LoginForm() {
 	const [error, setError] = useState<string | null>(null);
 	const [isSubmitting, setIsSubmitting] = useState(false);
 
+	/** Обработчик сабмита формы */
 	async function handleSubmit(event: FormEvent<HTMLFormElement>) {
 		event.preventDefault();
 
 		try {
 			setIsSubmitting(true);
 			setError(null);
+			// Вызываем API функцию входа
 			await login({ email, password });
+			// Если успешно, перезагружаем страницу на главную (чтобы кука применилась для всего приложения)
 			window.location.href = '/';
 		} catch (submitError) {
 			setError(submitError instanceof Error ? submitError.message : 'Не удалось войти.');

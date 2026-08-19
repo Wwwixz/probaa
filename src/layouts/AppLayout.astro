@@ -1,8 +1,13 @@
 ---
+/**
+ * Базовый layout-компонент, в который оборачиваются все остальные страницы.
+ * Содержит общую структуру HTML документа (head, body).
+ */
 import { ClientRouter } from 'astro:transitions';
 import '../styles/global.css';
 
 interface Props {
+	/** Заголовок страницы, подставляется в тег <title> */
 	title: string;
 }
 
@@ -15,10 +20,16 @@ const { title } = Astro.props;
 		<meta charset="UTF-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 		<title>{title}</title>
+		{/* 
+			Подключаем ClientRouter из astro:transitions
+			Это включает механизм SPA-подобной навигации: при клике на ссылки
+			страницы не перезагружаются целиком, а подменяется только контент (slot).
+		*/}
 		<ClientRouter />
 	</head>
 	<body class="antialiased">
 		<div class="app-shell">
+			{/* Сюда будет подставляться контент конкретной страницы */}
 			<slot />
 		</div>
 	</body>
