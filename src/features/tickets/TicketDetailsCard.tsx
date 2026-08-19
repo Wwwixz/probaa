@@ -2,6 +2,7 @@ import styles from './tickets.module.css';
 import type { TicketData } from './ticketCodec';
 import { TicketBarcode } from './TicketBarcode';
 import { getAirportCoords } from './ticketCodec';
+import backIcon from '../../assets/icons/header/icon-back.svg';
 
 import mapPlaceholder from '../../assets/images/map/map-city-placeholder.jpg';
 
@@ -44,33 +45,40 @@ function getAirportLabel(code: string) {
 	return code;
 }
 
+function flightChip(flightNumber: string) {
+	return flightNumber.split(/[\s-]/)[0] || flightNumber;
+}
+
 export function TicketDetailsCard({
 	ticket,
+	onBack,
 	onBackToScan,
 }: {
 	ticket: TicketData;
-	onBackToScan: () => void;
+	onBack?: () => void;
+	onBackToScan?: () => void;
 }) {
+	const goBack = onBack ?? onBackToScan ?? (() => {
+		window.location.href = '/camera';
+	});
 	const cityFlagFrom = getFlagSvg(ticket.fromCity);
 	const cityFlagTo = getFlagSvg(ticket.toCity);
-
-	// For demo we always show "Туда". If you later encode direction into barcode,
-	// this can be derived from `ticket`.
 	const routeImage = getRouteImage();
-
-	// Get airport coordinates for map display
 	const airportCoords = getAirportCoords(ticket.fromCode);
+	const airportName = getAirportLabel(ticket.fromCode);
+	const backSrc = typeof backIcon === 'string' ? backIcon : backIcon.src;
 
 	return (
 		<div className={styles.ticketPage}>
-			<button type="button" className={styles.ticketBackBtn} onClick={onBackToScan}>
-				<span>←</span>
-				<span>Сканировать снова</span>
-			</button>
+			<div className={styles.ticketCover}>
+				<button type="button" className={styles.ticketCoverBack} onClick={goBack} aria-label="Назад">
+					<img src={backSrc} alt="" width={44} height={44} />
+				</button>
+			</div>
 
 			<div className={styles.ticketDetailsCard}>
 				<div className={styles.ticketTitle}>
-					{ticket.fromCode}-{ticket.toCode}
+					{ticket.flightNumber} место {ticket.seatNumber}
 				</div>
 				<div className={styles.ticketSubtitle}>Самолет</div>
 
@@ -93,7 +101,7 @@ export function TicketDetailsCard({
 							<img src={routeImage} alt="" className={styles.ticketPlaneArt} />
 						</div>
 
-						<div className={styles.ticketPoint}>
+						<div className={`${styles.ticketPoint} ${styles.ticketPointEnd}`}>
 							<span className={styles.ticketCode}>{ticket.toCode}</span>
 							<div className={styles.ticketCityRow}>
 								<span className={styles.ticketCity}>{ticket.toCity}</span>
@@ -103,32 +111,40 @@ export function TicketDetailsCard({
 					</div>
 
 					<div className={styles.ticketFooter}>
-						<span className={styles.ticketChip}>{ticket.fromCode}</span>
+						<span className={styles.ticketChip}>{flightChip(ticket.flightNumber)}</span>
 						<span className={styles.ticketDirection}>Туда</span>
 					</div>
 				</div>
 
+				<div className={styles.ticketDescLabel}>Описание рейса</div>
 				<div className={styles.ticketCTA}>
-					Рейс {ticket.flightNumber} от Аэрофлота в аэропорту {getAirportLabel(ticket.fromCode)}
+					Рейс {ticket.flightNumber} от Аэрофлота в аэропорту {airportName}…
 				</div>
 
 				<div className={styles.ticketAirportRow}>
-					<div className={styles.ticketAirportLabel}>Аэропорт: {getAirportLabel(ticket.fromCode)}</div>
-					<div className={styles.ticketLogoCircle}>L</div>
+					<div className={styles.ticketAirportLabel}>Аэропорт: {airportName}</div>
+					<div className={styles.ticketLogoCircle} aria-hidden="true">
+						<svg width="22" height="22" viewBox="0 0 24 24" fill="none">
+							<path
+								d="M3 13.2C8.2 12.2 12.6 7.4 14.8 3c.8 5.2 3.4 9.2 7.2 11.2-5.2 1-9.6 5.8-11.8 10.2C9.4 19.2 6.8 15.2 3 13.2Z"
+								fill="#fff"
+							/>
+						</svg>
+					</div>
 				</div>
 
 				<div className={styles.ticketMapSectionTitle}>Местоположение аэропорта на карте</div>
 				{airportCoords ? (
 					<div className={styles.ticketMapThumb}>
-						<img 
+						<img
 							src={`https://static-maps.yandex.ru/1.x/?ll=${airportCoords[0]},${airportCoords[1]}&z=12&l=map&pt=${airportCoords[0]},${airportCoords[1]},pm2rdm`}
-							className={styles.ticketMapImg} 
-							alt={`Карта аэропорта ${getAirportLabel(ticket.fromCode)}`}
+							className={styles.ticketMapImg}
+							alt={`Карта аэропорта ${airportName}`}
 						/>
 					</div>
 				) : (
 					<div className={styles.ticketMapThumb}>
-						<img src={mapPlaceholder.src} className={styles.ticketMapImg} alt="Карта аэропорта" />
+						<img src={typeof mapPlaceholder === 'string' ? mapPlaceholder : mapPlaceholder.src} className={styles.ticketMapImg} alt="Карта аэропорта" />
 					</div>
 				)}
 

@@ -4,22 +4,18 @@ import zxingBrowser from '@zxing/browser';
 
 import styles from './tickets.module.css';
 import { decodeTicketBarcode, type TicketData } from './ticketCodec';
-import type { AiAgentOfferCard } from '../../shared/api/ai-agent';
 
 const { BrowserMultiFormatReader, BarcodeFormat, DecodeHintType } = zxingBrowser;
 
 export function TicketScanner({
-	demoOffer,
 	onScanned,
-	onUseDemoTicket,
 }: {
-	demoOffer: AiAgentOfferCard | null;
 	onScanned: (ticket: TicketData) => void;
-	onUseDemoTicket: () => void;
 }) {
 	const videoRef = useRef<HTMLVideoElement | null>(null);
 	const [error, setError] = useState<string | null>(null);
 	const [isScanning, setIsScanning] = useState(false);
+	const [scannedOk, setScannedOk] = useState(false);
 
 	useEffect(() => {
 		let stopped = false;
@@ -59,7 +55,7 @@ export function TicketScanner({
 						controls?.stop?.();
 						stopFn?.();
 						setIsScanning(false);
-
+						setScannedOk(true);
 						onScanned(decoded);
 					}
 				);
@@ -68,7 +64,7 @@ export function TicketScanner({
 			} catch (e) {
 				// Most common cases: permission denied / no camera / unsupported browser.
 				console.error(e);
-				setError('Камера недоступна. Разрешите доступ к камере или используйте демо-вариант.');
+				setError('Камера недоступна. Разрешите доступ к камере или откройте информацию о билете кнопкой ниже.');
 				setIsScanning(false);
 			}
 		}
@@ -112,15 +108,16 @@ export function TicketScanner({
 			</div>
 
 			<div className={styles.scannerControls}>
+				<a href="/ticket" className={styles.scannerButtonSecondary} data-astro-reload>
+					<ScanLine size={18} />
+					Информация о билете
+				</a>
+
+				{scannedOk && <div className={styles.scannerSuccess}>Штрихкод считан. Откройте информацию о билете.</div>}
 				{error && <div className={styles.scannerError}>{error}</div>}
 
-				<button type="button" className={styles.scannerButtonSecondary} onClick={onUseDemoTicket} disabled={!demoOffer}>
-					<ScanLine size={18} />
-					Показать билет из чата
-				</button>
-
 				<p className={styles.ticketScanHint}>
-					Наведи штрихкод в рамку. Для демо можно открыть билет из чата с агентом.
+					Наведи штрихкод в рамку или открой информацию о билете кнопкой ниже.
 				</p>
 			</div>
 		</div>
