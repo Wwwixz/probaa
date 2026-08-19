@@ -3,6 +3,7 @@ import { BottomNav } from '../../widgets/bottom-nav/BottomNav';
 import { SAMPLE_TICKET } from './myTickets';
 import { TicketDetailsCard } from './TicketDetailsCard';
 
+/** Экран карточки билета: открывается по кнопке «Информация о билете» на сканере. */
 export function TicketInfoScreen() {
 	return (
 		<div style={{ background: '#151515', minHeight: '100vh' }}>
