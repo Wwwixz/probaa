@@ -220,7 +220,6 @@
     background-color: #9A7BFF;
     display: none;
     flex-direction: column;
-    justify-content: center;
     align-items: center;
     z-index: 20;
     padding: 20px;
@@ -242,6 +241,14 @@
     pointer-events: none;
     background-image: url('data:image/svg+xml;utf8,<svg viewBox="0 0 400 800" xmlns="http://www.w3.org/2000/svg"><path d="M0 100 Q 100 50, 200 150 T 400 100 M 0 300 Q 100 250, 200 350 T 400 300 M 0 500 Q 100 450, 200 550 T 400 500 M 0 700 Q 100 650, 200 750 T 400 700" fill="none" stroke="black" stroke-width="2"/></svg>');
     background-size: cover;
+}
+
+.resultNav {
+    width: 100%;
+    display: flex;
+    justify-content: flex-start;
+    padding: 10px 0 0;
+    z-index: 10;
 }
 
 .resultContent {
@@ -336,7 +343,7 @@
     box-shadow: 0 5px 15px rgba(255, 110, 26, 0.4);
     width: 80%;
     display: flex;
-    justify-content: space-between;
+    justify-content: center;
     align-items: center;
     z-index: 3;
     margin-top: 20px;

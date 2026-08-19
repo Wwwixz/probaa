@@ -72,8 +72,7 @@ export function MiniGameScreen() {
 
     const handleClaim = () => {
         setShowResult(false);
-        setIsPlaying(false);
-        setGifts(1);
+        // Do NOT re-enable gifts to prevent spinning again
         
         initTracks();
         
@@ -139,7 +138,11 @@ export function MiniGameScreen() {
             <div className={`${styles.resultScreen} ${showResult ? styles.resultScreenVisible : ''}`}>
                 <div className={styles.resultBg}></div>
                 
-                <div className={styles.resultContent}>
+                <div className={styles.resultNav}>
+                    <div className={styles.backBtn} onClick={handleClaim}>‹</div>
+                </div>
+                
+                <div className={styles.resultContent} style={{ flex: 1, justifyContent: 'center', marginTop: '-50px' }}>
                     <div className={styles.starburst}></div>
                     <div className={styles.resultCard}>
                         <div className={styles.resultDiscount}>{wonDiscount}</div>
@@ -152,11 +155,8 @@ export function MiniGameScreen() {
                         Вы можете применить её в любое время до 31.12.2026
                     </p>
                     
-                    <button className={styles.claimBtn} onClick={handleClaim}>
-                        Крутить ещё раз
-                        <div className={styles.giftBadge} style={{ backgroundColor: '#D0FF1A', padding: '5px 15px', fontSize: '16px', color: '#222222', boxShadow: 'none' }}>
-                            0 🎁
-                        </div>
+                    <button className={styles.claimBtn} onClick={handleClaim} style={{ justifyContent: 'center' }}>
+                        Забрать скидку
                     </button>
                 </div>
             </div>
